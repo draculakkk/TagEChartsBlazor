@@ -7,11 +7,12 @@
     <AssemblyName>TagEChartsBlazor</AssemblyName>
     <RootNamespace>TagEChartsBlazor</RootNamespace>
     <Authors>draculakkk</Authors>
-    <Version>0.6.0</Version>
+    <Version>0.6.1</Version>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>MIT OR Apache-2.0</PackageLicenseExpression>
     <PackageIcon>u=3825681062,601782652&amp;fm=21&amp;gp=0.jpg</PackageIcon>
     <Description>Blazor component based on ECharts</Description>
+    <PackageProjectUrl>https://github.com/draculakkk/EChartsBlazor</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
