@@ -14,6 +14,7 @@
 |属性|说明|
 |:---|:---|
 |Style|标签style样式|
+|ClassName|类名|
 |AutoRender|图表上的任何属性有变动会自动刷新图表，默认关闭|
 |debugModel|启用后浏览器控台会输出图表的option项|
 |OnRenderComplete|OnAfterRender执行完的委托|
