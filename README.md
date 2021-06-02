@@ -1,23 +1,27 @@
-一款基于ECharts的blazor组件，主要以层级标签的方式来使用，所有属性说明可参考echarts官网api说明文档，版本5.1.1
+# 一款基于ECharts的blazor组件，主要以层级标签的方式来使用，所有属性说明可参考echarts官网api说明文档，版本5.1.1
 
-简要说明：
+## 简要说明：
 
-1：Program注册Services.AddECharts();
-2：wwwroot/index.html(WebAssembly)或_Host.cshtml(Blazor Server)添加
-<script src="_content/TagEChartsBlazor/script/echarts.min.js"></script>
+### 1：nuget 搜索 agEChartsBlazor安装类库
+### 2：Program注册Services.AddECharts();
+### 3：wwwroot/index.html(WebAssembly)或_Host.cshtml(Blazor Server)添加
+<script src="_content/TagEChartsBlazor/script/echarts.min.js"></script><br/>
 <script src="_content/TagEChartsBlazor/script/common.js"></script>
-3：_Imports.razor 添加 @using TagEChartsBlazor.Components
+### 4：_Imports.razor 添加 @using TagEChartsBlazor.Components
 
-顶层ECharts标签自带的属性说明：
+## 顶层ECharts标签自带的属性说明：
 
-Style：标签style样式
-ClassName：类名
-AutoRender：图表上的任何属性有变动会自动刷新图表，默认关闭
-debugModel：启用后浏览器控台会输出图表的option项
-OnRenderComplete：OnAfterRender执行完的委托
-OnRenderBefore：OnAfterRender执行前的委托
+|属性|说明|
+|:---|:---|
+|Style|标签style样式|
+|AutoRender|图表上的任何属性有变动会自动刷新图表，默认关闭|
+|debugModel|启用后浏览器控台会输出图表的option项|
+|OnRenderComplete|OnAfterRender执行完的委托|
+|OnRenderBefore|OnAfterRender执行前的委托|
 
-示例1：标准用法，所有标签支持razor动态控制，目前所有formatter属性如需设置函数，需要填写js字符串
+
+### 示例1：标准用法，所有标签支持razor动态控制，目前所有formatter属性如需设置函数，需要填写js字符串
+```html
 <ECharts Style="width: 800px; height: 400px;">
     <Title text="ECharts 入门示例"></Title>
     <Legend data="@(new[] { "销量" })"></Legend>
@@ -36,9 +40,10 @@ OnRenderBefore：OnAfterRender执行前的委托
     <Series name="销量" type="bar" data="@(new[] { 5, 20, 36, 10, 10, 20 })">
     </Series>
 </ECharts>
+```
 
-示例2：data属性支持匿名对象，也可以使用Data标签显示创建
-
+### 示例2：data属性支持匿名对象，也可以使用Data标签显示创建
+```html
 <ECharts Style="width: 800px; height: 400px;">
     <Title text="折线图堆叠" />
     <Tooltip trigger="axis" />
@@ -57,8 +62,10 @@ OnRenderBefore：OnAfterRender执行前的委托
     <Series name="直接访问" type="line" stack="总量" data="@(new[] { 320, 332, 301, 334, 390, 330, 320 })" />
     <Series name="搜索引擎" type="line" stack="总量" data="@(new[] { 820, 932, 901, 934, 1290, 1330, 1320 })" />
 </ECharts>
+```
 
-示例3：顶层ECharts标签支持鼠标委托事件，极少对象没有标签，需要用类生成，如此例的colorStops渐变类
+### 示例3：顶层ECharts标签支持鼠标委托事件，极少对象没有标签，需要用类生成，如此例的colorStops渐变类
+```html
 <ECharts Style="width: 800px; height: 400px;"
          OnClick="@(new(async (param, chart) =>
                     {
@@ -92,10 +99,11 @@ OnRenderBefore：OnAfterRender执行前的委托
         </Emphasis>
     </Series>
 </ECharts>
+```
 
-示例4：演示使用主题和外部资源，由于异步加载可能会执行2次render，且echarts会默认缓存首次加载信息，这里手动控制了外部资源加载完再输出标签，
-EChartsHelper对应echarts的全局类
+### 示例4：演示使用主题和外部资源，由于异步加载可能会执行2次render，且echarts会默认缓存首次加载信息，这里手动控制了外部资源加载完再输出标签，EChartsHelper对应echarts的全局类
 
+```html
 @inject EChartsHelper echartHelper
 @inject HttpClient Http
 
@@ -141,7 +149,4 @@ EChartsHelper对应echarts的全局类
       await echartHelper.RegisterThemeAsync("wyy", json);
   }
 }
-
-
-
-
+```
