@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TagEChartsBlazor.Components;
 
-namespace TagEChartsBlazor
+namespace TagEChartsBlazor.Components
 {
     public class Handle : BaseItemComponent
     {
