@@ -1,0 +1,47 @@
+﻿@inherits BaseGraphic
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    private Dictionary<string, object> setting = new Dictionary<string, object>();
+    private IList<Dictionary<string, object>> childrenData = new List<Dictionary<string, object>>();
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        if (Base is ECharts ecomponent)
+        {
+            ecomponent.SetGraphicData((graphic) =>
+            {
+                if (!graphic.Contains(setting))
+                    graphic.Add(setting);
+            });
+        }
+
+        return setting;
+    }
+
+    public void SetChildrenData(Action<IList<Dictionary<string, object>>> action)
+    {
+        FillSetting("children", childrenData);
+        action?.Invoke(childrenData);
+    }
+
+    public void RemoveChildrenData(Dictionary<string, object> item)
+    {
+        if (childrenData.Contains(item))
+            childrenData.Remove(item);
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            if (Base is ECharts ecomponent)
+            {
+                ecomponent.RemoveGraphicData(setting);
+            }
+        }
+    }
+}

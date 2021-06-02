@@ -1,0 +1,61 @@
+﻿@inherits BaseItemComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    private IDictionary<string, object> iconStyle = new Dictionary<string, object>();
+    private IDictionary<string, object> emphasis = new Dictionary<string, object>();
+
+    [Parameter]
+    public bool? show { get; set; }
+
+    [Parameter]
+    public string? title { get; set; }
+
+    [Parameter]
+    public string? icon { get; set; }
+
+    public override void SetSetting(IDictionary<string, object> setting)
+    {
+        if (show.HasValue)
+            FillSetting("show", show.Value);
+
+        if (show.HasValue)
+            FillSetting("show", show.Value);
+
+        if (!string.IsNullOrEmpty(title))
+            FillSetting("title", title);
+
+        if (!string.IsNullOrEmpty(icon))
+            FillSetting("icon", icon);
+    }
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is Feature fecomponent)
+        {
+            fecomponent.SetRestore((restore) =>
+            {
+                setting = restore;
+            });
+        }
+
+        return setting ?? new Dictionary<string, object>();
+    }
+
+    public void SetIconStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("iconStyle ", iconStyle);
+        action?.Invoke(iconStyle);
+    }
+
+    public void SetEmphasis(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("emphasis ", emphasis);
+        action?.Invoke(emphasis);
+    }
+}

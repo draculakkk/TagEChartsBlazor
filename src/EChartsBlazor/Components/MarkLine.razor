@@ -1,0 +1,185 @@
+﻿@inherits BaseItemComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    private IDictionary<string, object> label = new Dictionary<string, object>();
+    private IDictionary<string, object> lineStyle = new Dictionary<string, object>();
+    private Dictionary<string, object> emphasis = new Dictionary<string, object>();
+    private Dictionary<string, object> blur = new Dictionary<string, object>();
+    private IList<List<Dictionary<string, object>>> datadm = new List<List<Dictionary<string, object>>>();
+
+    /// <summary>
+    /// 标线的数据数组
+    /// </summary>
+    [Parameter]
+    public object[]? data { get; set; }
+
+    /// <summary>
+    /// 图形是否不响应和触发鼠标事件
+    /// </summary>
+    [Parameter]
+    public bool? silent { get; set; }
+
+    /// <summary>
+    /// 标线两端的标记类型，可以是一个数组分别指定两端，也可以是单个统一指定
+    /// </summary>
+    [Parameter]
+    public dynamic? symbol { get; set; }
+
+    /// <summary>
+    /// 标线两端的标记大小，可以是一个数组分别指定两端，也可以是单个统一指定
+    /// </summary>
+    [Parameter]
+    public dynamic? symbolSize { get; set; }
+
+    /// <summary>
+    /// 标线数值的精度，在显示平均值线的时候有用
+    /// </summary>
+    [Parameter]
+    public int? precision { get; set; }
+
+    /// <summary>
+    /// 是否开启动画
+    /// </summary>
+    [Parameter]
+    public bool? animation { get; set; }
+
+    /// <summary>
+    /// 是否开启动画的阈值，当单个系列显示的图形数量大于这个阈值时会关闭动画
+    /// </summary>
+    [Parameter]
+    public int? animationThreshold { get; set; }
+
+    /// <summary>
+    /// 初始动画的时长，支持回调函数
+    /// </summary>
+    [Parameter]
+    public int? animationDuration { get; set; }
+
+    /// <summary>
+    /// 初始动画的缓动效果
+    /// </summary>
+    [Parameter]
+    public string? animationEasing { get; set; }
+
+    /// <summary>
+    /// 初始动画的延迟，支持回调函数
+    /// </summary>
+    [Parameter]
+    public int? animationDelay { get; set; }
+
+    /// <summary>
+    /// 数据更新动画的时长
+    /// </summary>
+    [Parameter]
+    public int? animationDurationUpdate { get; set; }
+
+    /// <summary>
+    /// 数据更新动画的缓动效果
+    /// </summary>
+    [Parameter]
+    public string? animationEasingUpdate { get; set; }
+
+    /// <summary>
+    /// 数据更新动画的延迟，支持回调函数
+    /// </summary>
+    [Parameter]
+    public int? animationDelayUpdate { get; set; }
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is Series scomponent)
+        {
+            scomponent.SetMarkLine((markLine) =>
+            {
+                setting = markLine;
+            });
+        }
+
+        return setting ?? new Dictionary<string, object>();
+    }
+
+    public override void SetSetting(IDictionary<string, object> setting)
+    {
+        if (data != null && data.Length > 0)
+            FillSetting("data", data);
+
+        if (silent.HasValue)
+            FillSetting("silent", silent);
+
+        if (symbol != null)
+            FillSetting("symbol", symbol);
+
+        if (symbolSize != null)
+            FillSetting("symbolSize", symbolSize);
+
+        if (precision.HasValue)
+            FillSetting("precision", precision);
+
+        if (animation.HasValue)
+            FillSetting("animation", animation);
+
+        if (animationThreshold.HasValue)
+            FillSetting("animationThreshold", animationThreshold);
+
+        if (animationDuration.HasValue)
+            FillSetting("animationDuration", animationDuration);
+
+        if (!string.IsNullOrEmpty(animationEasing))
+            FillSetting("animationEasing", animationEasing);
+
+        if (animationDelay.HasValue)
+            FillSetting("animationDelay", animationDelay.Value);
+
+        if (animationDurationUpdate.HasValue)
+            FillSetting("animationDurationUpdate", animationDurationUpdate.Value);
+
+        if (!string.IsNullOrEmpty(animationEasingUpdate))
+            FillSetting("animationEasingUpdate", animationEasingUpdate);
+
+        if (animationDelayUpdate.HasValue)
+            FillSetting("animationDelayUpdate", animationDelayUpdate.Value);
+    }
+
+    public void SetLabel(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("label", label);
+        action?.Invoke(label);
+    }
+
+    public void SetLineStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("lineStyle", lineStyle);
+        action?.Invoke(lineStyle);
+    }
+
+    public void SetEmphasis(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("emphasis", emphasis);
+        action?.Invoke(emphasis);
+    }
+
+    public void SetBlur(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("blur", blur);
+        action?.Invoke(blur);
+    }
+
+    public void SetDatas(Action<IList<List<Dictionary<string, object>>>> action)
+    {
+        FillSetting("data", datadm);
+        action?.Invoke(datadm);
+    }
+
+    public void RemoveDatas(List<Dictionary<string, object>> item)
+    {
+        if (datadm.Contains(item))
+            datadm.Remove(item);
+    }
+
+}

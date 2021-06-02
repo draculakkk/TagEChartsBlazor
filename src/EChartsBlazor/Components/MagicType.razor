@@ -1,0 +1,95 @@
+﻿@inherits BaseItemComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    private IDictionary<string, object> iconStyle = new Dictionary<string, object>();
+    private IDictionary<string, object> emphasis = new Dictionary<string, object>();
+
+    /// <summary>
+    /// 是否显示该工具
+    /// </summary>
+    [Parameter]
+    public bool? show { get; set; }
+
+    /// <summary>
+    /// 启用的动态类型，包括'line'（切换为折线图）, 'bar'（切换为柱状图）, 'stack'（切换为堆叠模式）
+    /// </summary>
+    [Parameter]
+    public string[]? type { get; set; }
+
+    /// <summary>
+    /// 各个类型的标题文本，可以分别配置
+    /// </summary>
+    [Parameter]
+    public MagicTypeInfo? title { get; set; }
+
+    /// <summary>
+    /// 各个类型的 icon path，可以分别配置
+    /// </summary>
+    [Parameter]
+    public MagicTypeInfo? icon { get; set; }
+
+    /// <summary>
+    /// 各个类型的专有配置项
+    /// </summary>
+    [Parameter]
+    public MagicTypeInfo? option { get; set; }
+
+    /// <summary>
+    /// 各个类型对应的系列的列表
+    /// </summary>
+    [Parameter]
+    public MagicTypeInfo? seriesIndex { get; set; }
+
+
+    public override void SetSetting(IDictionary<string, object> setting)
+    {
+        if (show.HasValue)
+            FillSetting("show", show.Value);
+
+        if (type != null && type.Length > 0)
+            FillSetting("type", type);
+
+        if (title.HasValue)
+            FillSetting("title", title.Value.ToOptionObject());
+
+        if (icon.HasValue)
+            FillSetting("icon", icon.Value.ToOptionObject());
+
+        if (option.HasValue)
+            FillSetting("option", option.Value.ToOptionObject());
+
+        if (seriesIndex.HasValue)
+            FillSetting("seriesIndex", seriesIndex.Value.ToOptionObject());
+    }
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is Feature fecomponent)
+        {
+            fecomponent.SetMagicType((magicTyp) =>
+            {
+                setting = magicTyp;
+            });
+        }
+
+        return setting ?? new Dictionary<string, object>();
+    }
+
+    public void SetIconStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("iconStyle ", iconStyle);
+        action?.Invoke(iconStyle);
+    }
+
+    public void SetEmphasis(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("emphasis ", emphasis);
+        action?.Invoke(emphasis);
+    }
+}

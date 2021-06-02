@@ -1,0 +1,35 @@
+﻿@inherits BaseMarkData
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+
+    private Dictionary<string, object> setting = new Dictionary<string, object>();
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        if (Base is Data bdcomponent)
+        {
+            bdcomponent.SetMarkData((markDatas) =>
+            {
+                if (!markDatas.Contains(setting))
+                    markDatas.Add(setting);
+            });
+        }
+
+        return setting ?? new Dictionary<string, object>();
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            if (Base is Data bdcomponent)
+            {
+                bdcomponent.RemoveMarkData(setting);
+            }
+        }
+    }
+}

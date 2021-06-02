@@ -1,0 +1,180 @@
+﻿@inherits BaseData
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    private Dictionary<string, object> setting = new Dictionary<string, object>();
+    private List<Dictionary<string, object>> markDatas = new List<Dictionary<string, object>>();
+
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        if (Base is YAxis ycomponent)
+        {
+            ycomponent.SetAxisData((axisData) =>
+            {
+                if (!axisData.Contains(setting))
+                    axisData.Add(setting);
+            });
+        }
+        else if (Base is XAxis xcomponent)
+        {
+            xcomponent.SetAxisData((axisData) =>
+            {
+                if (!axisData.Contains(setting))
+                    axisData.Add(setting);
+            });
+        }
+        else if (Base is RadiusAxis rcomponent)
+        {
+            rcomponent.SetAxisData((axisData) =>
+            {
+                if (!axisData.Contains(setting))
+                    axisData.Add(setting);
+            });
+        }
+        else if (Base is AngleAxis acomponent)
+        {
+            acomponent.SetAxisData((axisData) =>
+            {
+                if (!axisData.Contains(setting))
+                    axisData.Add(setting);
+            });
+        }
+        else if (Base is Legend lgcomponent)
+        {
+            lgcomponent.SetLegendData((legendData) =>
+            {
+                if (!legendData.Contains(setting))
+                    legendData.Add(setting);
+            });
+        }
+        else if (Base is Series scomponent)
+        {
+            scomponent.SetData((datas) =>
+            {
+                if (!datas.Contains(setting))
+                    datas.Add(setting);
+            });
+        }
+        else if (Base is MarkPoint mpcomponent)
+        {
+            mpcomponent.SetData((datas) =>
+            {
+                if (!datas.Contains(setting))
+                    datas.Add(setting);
+            });
+        }
+        else if (Base is MarkLine mlcomponent)
+        {
+            mlcomponent.SetDatas((datas) =>
+            {
+                if (!datas.Contains(markDatas))
+                    datas.Add(markDatas);
+            });
+        }
+        else if (Base is MarkArea macomponent)
+        {
+            macomponent.SetDatas((datas) =>
+            {
+                if (!datas.Contains(markDatas))
+                    datas.Add(markDatas);
+            });
+        }
+        else if (Base is ParallelAxisDefault plrcomponent)
+        {
+            plrcomponent.SetDatas((datas) =>
+            {
+                if (!datas.Contains(setting))
+                    datas.Add(setting);
+            });
+        }
+        else if (Base is ParallelAxis placomponent)
+        {
+            placomponent.SetDatas((datas) =>
+            {
+                if (!datas.Contains(setting))
+                    datas.Add(setting);
+            });
+        }
+        else if (Base is SingleAxis sicomponent)
+        {
+            sicomponent.SetDatas((datas) =>
+            {
+                if (!datas.Contains(setting))
+                    datas.Add(setting);
+            });
+        }
+
+        return setting;
+    }
+
+    public void SetMarkData(Action<IList<Dictionary<string, object>>> action)
+    {
+        FillSetting("data", markDatas);
+        action?.Invoke(markDatas);
+    }
+
+    public void RemoveMarkData(Dictionary<string, object> item)
+    {
+        if (markDatas.Contains(item))
+            markDatas.Remove(item);
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            if (Base is YAxis ycomponent)
+            {
+                ycomponent.RemoveAxisData(setting);
+            }
+            else if (Base is XAxis xcomponent)
+            {
+                xcomponent.RemoveAxisData(setting);
+            }
+            else if (Base is RadiusAxis rcomponent)
+            {
+                rcomponent.RemoveAxisData(setting);
+            }
+            else if (Base is AngleAxis acomponent)
+            {
+                acomponent.RemoveAxisData(setting);
+            }
+            else if (Base is Legend lgcomponent)
+            {
+                lgcomponent.RemoveLegendData(setting);
+            }
+            else if (Base is Series scomponent)
+            {
+                scomponent.RemoveData(setting);
+            }
+            else if (Base is MarkPoint mpcomponent)
+            {
+                mpcomponent.RemoveData(setting);
+            }
+            else if (Base is MarkLine mlcomponent)
+            {
+                mlcomponent.RemoveDatas(markDatas);
+            }
+            else if (Base is MarkArea macomponent)
+            {
+                macomponent.RemoveDatas(markDatas);
+            }
+            else if (Base is ParallelAxisDefault plrcomponent)
+            {
+                plrcomponent.RemoveDatas(setting);
+            }
+            else if (Base is ParallelAxis placomponent)
+            {
+                placomponent.RemoveDatas(setting);
+            }
+            else if (Base is SingleAxis sicomponent)
+            {
+                sicomponent.RemoveDatas(setting);
+            }
+        }
+    }
+}

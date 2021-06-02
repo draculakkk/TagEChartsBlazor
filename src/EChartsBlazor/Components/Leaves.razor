@@ -1,0 +1,62 @@
+﻿@inherits BaseItemComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    private IDictionary<string, object> label = new Dictionary<string, object>();
+    private IDictionary<string, object> itemStyle = new Dictionary<string, object>();
+    private IDictionary<string, object> emphasis = new Dictionary<string, object>();
+    private IDictionary<string, object> blur = new Dictionary<string, object>();
+    private IDictionary<string, object> select = new Dictionary<string, object>();
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is Series scomponent)
+        {
+            scomponent.SetLeaves((blur) =>
+            {
+                setting = blur;
+            });
+        }
+        return setting ?? new Dictionary<string, object>();
+    }
+
+    public override void SetSetting(IDictionary<string, object> setting)
+    {
+
+    }
+
+    public void SetLabel(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("label", label);
+        action?.Invoke(label);
+    }
+
+    public void SetItemStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("itemStyle", itemStyle);
+        action?.Invoke(itemStyle);
+    }
+
+    public void SetEmphasis(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("emphasis", emphasis);
+        action?.Invoke(emphasis);
+    }
+
+    public void SetBlur(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("blur", blur);
+        action?.Invoke(blur);
+    }
+
+    public void SetSelect(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("select", select);
+        action?.Invoke(select);
+    }
+}

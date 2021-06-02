@@ -1,0 +1,89 @@
+﻿@inherits BaseItemComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    private IDictionary<string, object> itemStyle = new Dictionary<string, object>();
+
+    /// <summary>
+    /// 是否显示固定点
+    /// </summary>
+    [Parameter]
+    public bool? show { get; set; }
+
+    /// <summary>
+    /// 固定点是否显示在指针上面
+    /// </summary>
+    [Parameter]
+    public bool? showAbove { get; set; }
+
+    /// <summary>
+    /// 固定点大小
+    /// </summary>
+    [Parameter]
+    public int? size { get; set; }
+
+    /// <summary>
+    /// ECharts 提供的标记类型包括'circle', 'rect', 'roundRect', 'triangle', 'diamond', 'pin', 'arrow', 'none'
+    /// 可以通过 'image://url' 设置为图片，其中 URL 为图片的链接，或者 dataURI。
+    /// </summary>
+    [Parameter]
+    public string? icon { get; set; }
+
+    /// <summary>
+    /// 相对于仪表盘中心的偏移位置，数组第一项是水平方向的偏移，第二项是垂直方向的偏移。
+    /// 可以是绝对的数值，也可以是相对于仪表盘半径的百分比
+    /// </summary>
+    [Parameter]
+    public object[]? offsetCenter { get; set; }
+
+    /// <summary>
+    /// 如果图标是 path:// 的形式，是否在缩放时保持该图形的长宽比
+    /// </summary>
+    [Parameter]
+    public bool? keepAspect { get; set; }
+
+    public override void SetSetting(IDictionary<string, object> setting)
+    {
+        if (show.HasValue)
+            FillSetting("show", show.Value);
+
+        if (showAbove.HasValue)
+            FillSetting("showAbove", showAbove.Value);
+
+        if (size.HasValue)
+            FillSetting("size", size.Value);
+
+        if (!string.IsNullOrEmpty(icon))
+            FillSetting("icon", icon);
+
+        if (offsetCenter != null && offsetCenter.Length > 0)
+            FillSetting("offsetCenter", offsetCenter);
+
+        if (keepAspect.HasValue)
+            FillSetting("keepAspect", keepAspect.Value);
+    }
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is Series scomponent)
+        {
+            scomponent.SetAnchor((anchor) =>
+            {
+                setting = anchor;
+            });
+        }
+
+        return setting ?? new Dictionary<string, object>();
+    }
+
+    public void SetItemStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("itemStyle", itemStyle);
+        action?.Invoke(itemStyle);
+    }
+}

@@ -1,0 +1,99 @@
+﻿@inherits BaseChartComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    protected override string ComponentName => "dataset";
+
+    private IList<Dictionary<string, object>> transformData = new List<Dictionary<string, object>>();
+
+    private IDictionary<string, object> dimensionsData = new Dictionary<string, object>();
+
+    /// <summary>
+    /// 组件 ID
+    /// </summary>
+    [Parameter]
+    public string? id { get; set; }
+
+    /// <summary>
+    /// 原始数据
+    /// </summary>
+    [Parameter]
+    public dynamic? source { get; set; }
+
+    /// <summary>
+    /// 使用 dimensions 定义 series.data 或者 dataset.source 的每个维度的信息
+    /// </summary>
+    [Parameter]
+    public object[]? dimensions { get; set; }
+
+    /// <summary>
+    /// dataset.source 第一行/列是否是 维度名 信息
+    /// </summary>
+    [Parameter]
+    public bool? sourceHeader { get; set; }
+
+    /// <summary>
+    /// 指定 dataset.transform 以哪个 dataset 作为输入
+    /// </summary>
+    [Parameter]
+    public int? fromDatasetIndex { get; set; }
+
+    /// <summary>
+    /// 指定 dataset.transform 以哪个 dataset 作为输入
+    /// </summary>
+    [Parameter]
+    public string? fromDatasetId { get; set; }
+
+    /// <summary>
+    /// 如果一个 dataset.transform 会产出多个结果 data
+    /// </summary>
+    [Parameter]
+    public int? fromTransformResult { get; set; }
+
+    protected override Task SetParametersAsync()
+    {
+        if (!string.IsNullOrEmpty(id))
+            FillSetting("id", id);
+
+        if (source != null)
+            FillSetting("source", source);
+
+        if (dimensions != null && dimensions.Length > 0)
+            FillSetting("dimensions", dimensions);
+
+        if (sourceHeader.HasValue)
+            FillSetting("sourceHeader", sourceHeader.Value);
+
+        if (fromDatasetIndex.HasValue)
+            FillSetting("fromDatasetIndex", fromDatasetIndex.Value);
+
+        if (!string.IsNullOrEmpty(fromDatasetId))
+            FillSetting("fromDatasetId", fromDatasetId);
+
+        if (fromTransformResult.HasValue)
+            FillSetting("fromTransformResult", fromTransformResult.Value);
+
+        return Task.CompletedTask;
+    }
+
+    public void SetTransformData(Action<IList<Dictionary<string, object>>> action)
+    {
+        FillSetting("transform", transformData);
+        action?.Invoke(transformData);
+    }
+
+    public void SetDimensions(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("dimensions", dimensionsData);
+        action?.Invoke(dimensionsData);
+    }
+
+    public void RemoveTransformData(Dictionary<string, object> item)
+    {
+        if (transformData.Contains(item))
+            transformData.Remove(item);
+    }
+}

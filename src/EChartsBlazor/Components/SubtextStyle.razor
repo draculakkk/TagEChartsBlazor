@@ -1,0 +1,22 @@
+﻿@inherits BaseTextStyle
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is Title component)
+        {
+            component.SetSubtextStyle((subtextStyle) =>
+            {
+                setting = subtextStyle;
+            });
+        }
+
+        return setting ?? new Dictionary<string, object>();
+    }
+}

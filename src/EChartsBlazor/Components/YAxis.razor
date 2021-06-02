@@ -1,0 +1,34 @@
+﻿@inherits BaseAxis
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    private Dictionary<string, object> setting = new Dictionary<string, object>();
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        if (Base is ECharts component)
+        {
+            component.SetYAxisData((yAxis) =>
+            {
+                if (!yAxis.Contains(setting))
+                    yAxis.Add(setting);
+            });
+        }
+
+        return setting;
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            if (Base is ECharts component)
+            {
+                component.RemoveYAxisData(setting);
+            }
+        }
+    }
+}

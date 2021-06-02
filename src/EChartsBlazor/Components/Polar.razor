@@ -1,0 +1,67 @@
+﻿@inherits BaseChartComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    private IDictionary<string, object> tooltip = new Dictionary<string, object>();
+
+    protected override string ComponentName => "polar";
+
+    /// <summary>
+    /// 组件 ID
+    /// </summary>
+    [Parameter]
+    public string? id { get; set; }
+
+    /// <summary>
+    /// 所有图形的 zlevel 值
+    /// </summary>
+    [Parameter]
+    public int? zlevel { get; set; }
+
+    /// <summary>
+    /// 组件的所有图形的z值
+    /// </summary>
+    [Parameter]
+    public int? z { get; set; }
+
+    /// <summary>
+    /// 极坐标系的中心（圆心）坐标，数组的第一项是横坐标，第二项是纵坐标
+    /// </summary>
+    [Parameter]
+    public object[]? center { get; set; }
+
+    /// <summary>
+    /// 极坐标系的半径
+    /// </summary>
+    [Parameter]
+    public dynamic? radius { get; set; }
+
+    protected override Task SetParametersAsync()
+    {
+        if (!string.IsNullOrEmpty(id))
+            FillSetting("id", id);
+
+        if (zlevel.HasValue)
+            FillSetting("zlevel", zlevel.Value);
+
+        if (z.HasValue)
+            FillSetting("z", z.Value);
+
+        if (center != null && center.Length > 0)
+            FillSetting("center", center);
+
+        if (radius != null)
+            FillSetting("radius", radius);
+
+        return Task.CompletedTask;
+    }
+
+    public void SetTooltip(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("tooltip", tooltip);
+        action?.Invoke(tooltip);
+    }
+}

@@ -1,0 +1,81 @@
+﻿@inherits BaseItemComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+
+@code {
+    private IDictionary<string, object> areaStyle = new Dictionary<string, object>();
+
+    [Parameter]
+    public bool? show { get; set; }
+
+    [Parameter]
+    public string? interval { get; set; }
+
+    public override void SetSetting(IDictionary<string, object> setting)
+    {
+        if (show.HasValue)
+            FillSetting("show", show.Value);
+
+        if (!string.IsNullOrEmpty(interval))
+            FillSetting("interval", interval);
+    }
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is YAxis ycomponent)
+        {
+            ycomponent.SetSplitArea((splitArea) =>
+            {
+                setting = splitArea;
+            });
+        }
+        else if (Base is XAxis xcomponent)
+        {
+            xcomponent.SetSplitArea((splitArea) =>
+            {
+                setting = splitArea;
+            });
+        }
+        else if (Base is RadiusAxis rcomponent)
+        {
+            rcomponent.SetSplitArea((splitArea) =>
+            {
+                setting = splitArea;
+            });
+        }
+        else if (Base is AngleAxis acomponent)
+        {
+            acomponent.SetSplitArea((splitArea) =>
+            {
+                setting = splitArea;
+            });
+        }
+        else if (Base is Radar racomponent)
+        {
+            racomponent.SetSplitArea((splitArea) =>
+            {
+                setting = splitArea;
+            });
+        }
+        else if (Base is SingleAxis sicomponent)
+        {
+            sicomponent.SetSplitArea((splitArea) =>
+            {
+                setting = splitArea;
+            });
+        }
+
+        return setting ?? new Dictionary<string, object>();
+    }
+
+    public void SetAreaStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("areaStyle", areaStyle);
+        action?.Invoke(areaStyle);
+    }
+}

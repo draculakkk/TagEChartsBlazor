@@ -1,0 +1,115 @@
+﻿@inherits BaseItemComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    private IDictionary<string, object> lineStyle = new Dictionary<string, object>();
+    private IDictionary<string, object> label = new Dictionary<string, object>();
+    private IDictionary<string, object> emphasis = new Dictionary<string, object>();
+    private IDictionary<string, object> blur = new Dictionary<string, object>();
+    private IDictionary<string, object> select = new Dictionary<string, object>();
+
+    /// <summary>
+    /// 边的源节点名称的字符串，也支持使用数字表示源节点的索引
+    /// </summary>
+    [Parameter]
+    public string? source { get; set; }
+
+    /// <summary>
+    /// 边的目标节点名称的字符串，也支持使用数字表示源节点的索引
+    /// </summary>
+    [Parameter]
+    public string? target { get; set; }
+
+    /// <summary>
+    /// 边的数值，可以在力引导布局中用于映射到边的长度
+    /// </summary>
+    [Parameter]
+    public int? value { get; set; }
+
+    /// <summary>
+    /// 边两端的标记类型，可以是一个数组分别指定两端，也可以是单个统一指定
+    /// </summary>
+    [Parameter]
+    public dynamic? symbol { get; set; }
+
+    /// <summary>
+    /// 边两端的标记大小，可以是一个数组分别指定两端，也可以是单个统一指定
+    /// </summary>
+    [Parameter]
+    public dynamic? symbolSize { get; set; }
+
+    /// <summary>
+    /// 使此边不进行力导图布局的计算
+    /// </summary>
+    [Parameter]
+    public bool? ignoreForceLayout { get; set; }
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is Series scomponent)
+        {
+            scomponent.SetLinks((links) =>
+            {
+                setting = links;
+            });
+        }
+
+        return setting ?? new Dictionary<string, object>();
+    }
+
+    public override void SetSetting(IDictionary<string, object> setting)
+    {
+        if (!string.IsNullOrEmpty(source))
+            FillSetting("source", source);
+
+        if (!string.IsNullOrEmpty(target))
+            FillSetting("target", target);
+
+        if (value.HasValue)
+            FillSetting("value", value.Value);
+
+        if (symbol != null)
+            FillSetting("symbol", symbol);
+
+        if (symbolSize != null)
+            FillSetting("symbolSize", symbolSize);
+
+        if (ignoreForceLayout.HasValue)
+            FillSetting("ignoreForceLayout", ignoreForceLayout.Value);
+    }
+
+    public void SetLineStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("lineStyle", lineStyle);
+        action?.Invoke(lineStyle);
+    }
+
+    public void SetLabel(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("label", label);
+        action?.Invoke(label);
+    }
+
+    public void SetEmphasis(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("emphasis", emphasis);
+        action?.Invoke(emphasis);
+    }
+
+    public void SetBlur(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("blur", blur);
+        action?.Invoke(blur);
+    }
+
+    public void SetSelect(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("select", select);
+        action?.Invoke(select);
+    }
+}

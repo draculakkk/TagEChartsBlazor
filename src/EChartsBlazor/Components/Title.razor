@@ -1,0 +1,314 @@
+﻿@inherits BaseItemComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    private IDictionary<string, object> textStyle = new Dictionary<string, object>();
+
+    private IDictionary<string, object> subtextStyle = new Dictionary<string, object>();
+
+    #region 参数
+
+    /// <summary>
+    /// 主标题文本，支持使用 \n 换行
+    /// </summary>
+    [Parameter]
+    public string? text { get; set; }
+
+    /// <summary>
+    /// 组件 ID
+    /// </summary>
+    [Parameter]
+    public string? id { get; set; }
+
+    /// <summary>
+    /// 是否显示标题组件
+    /// </summary>
+    [Parameter]
+    public bool? show { get; set; }
+
+    /// <summary>
+    /// 主标题文本超链接
+    /// </summary>
+    [Parameter]
+    public string? link { get; set; }
+
+    /// <summary>
+    /// 指定窗口打开主标题超链接, 'self' 当前窗口打开,'blank' 新窗口打开
+    /// </summary>
+    [Parameter]
+    public string? target { get; set; }
+
+    /// <summary>
+    /// 副标题文本，支持使用 \n 换行
+    /// </summary>
+    [Parameter]
+    public string? subtext { get; set; }
+
+    /// <summary>
+    /// 副标题文本超链接
+    /// </summary>
+    [Parameter]
+    public string? sublink { get; set; }
+
+    /// <summary>
+    /// 指定窗口打开副标题超链接，可选：'self' 当前窗口打开,'blank' 新窗口打开
+    /// </summary>
+    [Parameter]
+    public string? subtarget { get; set; }
+
+    /// <summary>
+    /// 整体（包括 text 和 subtext）的水平对齐，可选值：'auto'、'left'、'right'、'center'
+    /// </summary>
+    [Parameter]
+    public string? textAlign { get; set; }
+
+    /// <summary>
+    /// 整体（包括 text 和 subtext）的垂直对齐，可选值：'auto'、'top'、'bottom'、'middle'
+    /// </summary>
+    [Parameter]
+    public string? textVerticalAlign { get; set; }
+
+    /// <summary>
+    /// 是否触发事件
+    /// </summary>
+    [Parameter]
+    public bool? triggerEvent { get; set; }
+
+    /// <summary>
+    /// 标题内边距，单位px，默认各方向内边距为5，接受数组分别设定上右下左边距
+    /// </summary>
+    [Parameter]
+    public dynamic? padding { get; set; }
+
+    /// <summary>
+    /// 主副标题之间的间距
+    /// </summary>
+    [Parameter]
+    public int? itemGap { get; set; }
+
+    /// <summary>
+    /// 所有图形的 zlevel 值
+    /// </summary>
+    [Parameter]
+    public int? zlevel { get; set; }
+
+    /// <summary>
+    /// 组件的所有图形的z值，控制图形的前后顺序，z值小的图形会被z值大的图形覆盖
+    /// </summary>
+    [Parameter]
+    public int? z { get; set; }
+
+    /// <summary>
+    /// title 组件离容器左侧的距离
+    /// </summary>
+    [Parameter]
+    public string? left { get; set; }
+
+    /// <summary>
+    /// title 组件离容器上侧的距离
+    /// </summary>
+    [Parameter]
+    public string? top { get; set; }
+
+    /// <summary>
+    /// title 组件离容器右侧的距离
+    /// </summary>
+    [Parameter]
+    public string? right { get; set; }
+
+    /// <summary>
+    /// title 组件离容器下侧的距离
+    /// </summary>
+    [Parameter]
+    public string? bottom { get; set; }
+
+    /// <summary>
+    /// 标题背景色，默认透明
+    /// </summary>
+    [Parameter]
+    public string? backgroundColor { get; set; }
+
+    /// <summary>
+    /// 标题的边框颜色。支持的颜色格式同 backgroundColor
+    /// </summary>
+    [Parameter]
+    public string? borderColor { get; set; }
+
+    /// <summary>
+    /// 标题的边框线宽
+    /// </summary>
+    [Parameter]
+    public int? borderWidth { get; set; }
+
+    /// <summary>
+    /// 圆角半径，单位px，支持传入数组分别指定 4 个圆角半径
+    /// </summary>
+    [Parameter]
+    public dynamic? borderRadius { get; set; }
+
+    /// <summary>
+    /// 图形阴影的模糊大小。该属性配合 shadowColor,shadowOffsetX, shadowOffsetY 一起设置图形的阴影效果
+    /// </summary>
+    [Parameter]
+    public int? shadowBlur { get; set; }
+
+    /// <summary>
+    /// 阴影颜色。支持的格式同color
+    /// </summary>
+    [Parameter]
+    public string? shadowColor { get; set; }
+
+    /// <summary>
+    /// 阴影水平方向上的偏移距离
+    /// </summary>
+    [Parameter]
+    public int? shadowOffsetX { get; set; }
+
+    /// <summary>
+    /// 阴影垂直方向上的偏移距离
+    /// </summary>
+    [Parameter]
+    public int? shadowOffsetY { get; set; }
+
+    #endregion
+
+    public override void SetSetting(IDictionary<string, object> setting)
+    {
+        if (!string.IsNullOrEmpty(text))
+            FillSetting("text", text);
+
+        if (!string.IsNullOrEmpty(id))
+            FillSetting("id", id);
+
+        if (!string.IsNullOrEmpty(link))
+            FillSetting("link", link);
+
+        if (!string.IsNullOrEmpty(target))
+            FillSetting("target", target);
+
+        if (!string.IsNullOrEmpty(subtext))
+            FillSetting("subtext", subtext);
+
+        if (!string.IsNullOrEmpty(id))
+            FillSetting("id", id);
+
+        if (!string.IsNullOrEmpty(link))
+            FillSetting("link", link);
+
+        if (show.HasValue)
+            FillSetting("subtext", show.Value);
+
+        if (!string.IsNullOrEmpty(sublink))
+            FillSetting("sublink", sublink);
+
+        if (!string.IsNullOrEmpty(subtarget))
+            FillSetting("subtarget", subtarget);
+
+        if (!string.IsNullOrEmpty(textAlign))
+            FillSetting("textAlign", textAlign);
+
+        if (!string.IsNullOrEmpty(textVerticalAlign))
+            FillSetting("textVerticalAlign", textVerticalAlign);
+
+        if (triggerEvent.HasValue)
+            FillSetting("triggerEvent", triggerEvent.Value);
+
+        if (padding != null)
+            FillSetting("padding", padding);
+
+        if (itemGap.HasValue)
+            FillSetting("itemGap", itemGap.Value);
+
+        if (zlevel.HasValue)
+            FillSetting("zlevel", zlevel.Value);
+
+        if (z.HasValue)
+            FillSetting("z", z.Value);
+
+        if (left != null)
+            FillSetting("left", left);
+
+        if (top != null)
+            FillSetting("top", top);
+
+        if (right != null)
+            FillSetting("right", right);
+
+        if (bottom != null)
+            FillSetting("bottom", bottom);
+
+        if (!string.IsNullOrEmpty(backgroundColor))
+            FillSetting("backgroundColor", backgroundColor);
+
+        if (!string.IsNullOrEmpty(borderColor))
+            FillSetting("borderColor", borderColor);
+
+        if (borderWidth.HasValue)
+            FillSetting("borderWidth", borderWidth.Value);
+
+        if (borderRadius != null)
+            FillSetting("borderRadius", borderRadius);
+
+        if (shadowBlur.HasValue)
+            FillSetting("shadowBlur", shadowBlur.Value);
+
+        if (!string.IsNullOrEmpty(shadowColor))
+            FillSetting("shadowColor", shadowColor);
+
+        if (shadowOffsetX.HasValue)
+            FillSetting("shadowOffsetX", shadowOffsetX.Value);
+
+        if (shadowOffsetY.HasValue)
+            FillSetting("shadowOffsetY", shadowOffsetY.Value);
+
+
+    }
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is ECharts Chart)
+        {
+            setting = new Dictionary<string, object>();
+            Chart.SetOption((option) =>
+            {
+                if (!option.ContainsKey("title"))
+                    option.Add("title", setting);
+                else
+                    option["title"] = setting;
+            });
+        }
+        else if (Base is Data dcomponent)
+        {
+            dcomponent.SetTitle((title) =>
+            {
+                setting = title;
+            });
+        }
+        else if (Base is Series scomponent)
+        {
+            scomponent.SetTitle((title) =>
+            {
+                setting = title;
+            });
+        }
+
+        return setting ?? new Dictionary<string, object>();
+    }
+
+    public void SetTextStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("textStyle", textStyle);
+        action?.Invoke(textStyle);
+    }
+
+    public void SetSubtextStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("subtextStyle", subtextStyle);
+        action?.Invoke(subtextStyle);
+    }
+}

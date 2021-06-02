@@ -1,0 +1,274 @@
+﻿@inherits BaseItemComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    private IDictionary<string, object> selectorLabel = new Dictionary<string, object>();
+    private IDictionary<string, object> handleStyle = new Dictionary<string, object>();
+    private IDictionary<string, object> moveHandleStyle = new Dictionary<string, object>();
+    private IDictionary<string, object> label = new Dictionary<string, object>();
+    private IDictionary<string, object> labelLine = new Dictionary<string, object>();
+    private IDictionary<string, object> itemStyle = new Dictionary<string, object>();
+    private IDictionary<string, object> lineStyle = new Dictionary<string, object>();
+    private IDictionary<string, object> areaStyle = new Dictionary<string, object>();
+    private IDictionary<string, object> endLabel = new Dictionary<string, object>();
+    private IDictionary<string, object> edgeLabel = new Dictionary<string, object>();
+    private IDictionary<string, object> iconStyle = new Dictionary<string, object>();
+    private IDictionary<string, object> checkpointStyle = new Dictionary<string, object>();
+    private IDictionary<string, object> controlStyle = new Dictionary<string, object>();
+
+    /// <summary>
+    /// 是否开启高亮后扇区的放大效果
+    /// </summary>
+    [Parameter]
+    public bool? scale { get; set; }
+
+    /// <summary>
+    /// 在高亮图形时，是否淡出其它数据的图形已达到聚焦的效果，支持以下配置
+    /// 'none' 'self' 'series'
+    /// </summary>
+    [Parameter]
+    public string? focus { get; set; }
+
+    /// <summary>
+    /// 在开启focus的时候，可以通过blurScope配置淡出的范围。支持如下配置
+    /// 'coordinateSystem' 'series' 'global'
+    /// </summary>
+    [Parameter]
+    public string? blurScope { get; set; }
+
+    /// <summary>
+    /// 高亮后扇区的放大尺寸, 在开启 emphasis.scale 后有效
+    /// </summary>
+    [Parameter]
+    public int? scaleSize { get; set; }
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is Legend lgcomponent)
+        {
+            lgcomponent.SetEmphasis((emphasis) =>
+            {
+                setting = emphasis;
+            });
+        }
+        else if (Base is DataZoom dzcomponent)
+        {
+            dzcomponent.SetEmphasis((emphasis) =>
+            {
+                setting = emphasis;
+            });
+        }
+        else if (Base is Series scomponent)
+        {
+            scomponent.SetEmphasis((emphasis) =>
+            {
+                setting = emphasis;
+            });
+        }
+        else if (Base is Data dcomponent)
+        {
+            dcomponent.SetEmphasis((emphasis) =>
+            {
+                setting = emphasis;
+            });
+        }
+        else if (Base is Nodes ndcomponent)
+        {
+            ndcomponent.SetEmphasis((emphasis) =>
+            {
+                setting = emphasis;
+            });
+        }
+        else if (Base is MarkPoint mpcomponent)
+        {
+            mpcomponent.SetEmphasis((emphasis) =>
+            {
+                setting = emphasis;
+            });
+        }
+        else if (Base is MarkLine mlcomponent)
+        {
+            mlcomponent.SetEmphasis((emphasis) =>
+            {
+                setting = emphasis;
+            });
+        }
+        else if (Base is MarkArea macomponent)
+        {
+            macomponent.SetEmphasis((emphasis) =>
+            {
+                setting = emphasis;
+            });
+        }
+        else if (Base is Leaves lecomponent)
+        {
+            lecomponent.SetEmphasis((emphasis) =>
+            {
+                setting = emphasis;
+            });
+        }
+        else if (Base is Categories cacomponent)
+        {
+            cacomponent.SetEmphasis((emphasis) =>
+            {
+                setting = emphasis;
+            });
+        }
+        else if (Base is Links lkcomponent)
+        {
+            lkcomponent.SetEmphasis((emphasis) =>
+            {
+                setting = emphasis;
+            });
+        }
+        else if (Base is Levels lvcomponent)
+        {
+            lvcomponent.SetEmphasis((emphasis) =>
+            {
+                setting = emphasis;
+            });
+        }
+        else if (Base is SaveAsImage saicomponent)
+        {
+            saicomponent.SetEmphasis((emphasis) =>
+            {
+                setting = emphasis;
+            });
+        }
+        else if (Base is Restore rscomponent)
+        {
+            rscomponent.SetEmphasis((emphasis) =>
+            {
+                setting = emphasis;
+            });
+        }
+        else if (Base is DataView dvcomponent)
+        {
+            dvcomponent.SetEmphasis((emphasis) =>
+            {
+                setting = emphasis;
+            });
+        }
+        else if (Base is Toolbox tbcomponent)
+        {
+            tbcomponent.SetEmphasis((emphasis) =>
+            {
+                setting = emphasis;
+            });
+        }
+        else if (Base is Geo geocomponent)
+        {
+            geocomponent.SetEmphasis((emphasis) =>
+            {
+                setting = emphasis;
+            });
+        }
+        else if (Base is Geo regcomponent)
+        {
+            regcomponent.SetEmphasis((emphasis) =>
+            {
+                setting = emphasis;
+            });
+        }
+
+        return setting ?? new Dictionary<string, object>();
+    }
+
+    public override void SetSetting(IDictionary<string, object> setting)
+    {
+        if (scale.HasValue)
+            FillSetting("scale", scale.Value);
+
+        if (!string.IsNullOrEmpty(focus))
+            FillSetting("focus", focus);
+
+        if (!string.IsNullOrEmpty(blurScope))
+            FillSetting("blurScope", blurScope);
+
+        if (scaleSize.HasValue)
+            FillSetting("scaleSize", scaleSize.Value);
+    }
+
+    public void SetSelectorLabel(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("selectorLabel", selectorLabel);
+        action?.Invoke(selectorLabel);
+    }
+
+    public void SetHandleStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("handleStyle", handleStyle);
+        action?.Invoke(handleStyle);
+    }
+
+    public void SetMoveHandleStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("moveHandleStyle", moveHandleStyle);
+        action?.Invoke(moveHandleStyle);
+    }
+
+    public void SetLabel(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("label", label);
+        action?.Invoke(label);
+    }
+
+    public void SetLabelLine(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("labelLine", labelLine);
+        action?.Invoke(labelLine);
+    }
+
+    public void SetItemStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("itemStyle", itemStyle);
+        action?.Invoke(itemStyle);
+    }
+
+    public void SetLineStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("lineStyle", lineStyle);
+        action?.Invoke(lineStyle);
+    }
+
+    public void SetAreaStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("areaStyle", areaStyle);
+        action?.Invoke(areaStyle);
+    }
+
+    public void SetEndLabel(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("endLabel", endLabel);
+        action?.Invoke(endLabel);
+    }
+
+    public void SetEdgeLabel(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("edgeLabel", edgeLabel);
+        action?.Invoke(edgeLabel);
+    }
+
+    public void SetIconStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("iconStyle", iconStyle);
+        action?.Invoke(iconStyle);
+    }
+
+    public void SetCheckpointStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("checkpointStyle", checkpointStyle);
+        action?.Invoke(checkpointStyle);
+    }
+
+    public void SetControlStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("controlStyle", controlStyle);
+        action?.Invoke(controlStyle);
+    }
+}

@@ -1,0 +1,72 @@
+﻿@inherits BaseItemComponent
+
+@code {
+
+    /// <summary>
+    /// 映射到 X 轴的维度
+    /// </summary>
+    [Parameter]
+    public dynamic? x { get; set; }
+
+    /// <summary>
+    /// 映射到 Y 轴的维度
+    /// </summary>
+    [Parameter]
+    public dynamic? y { get; set; }
+
+    /// <summary>
+    /// 在 tooltip 中显示的维度
+    /// </summary>
+    [Parameter]
+    public object[]? tooltip { get; set; }
+
+    /// <summary>
+    /// 连起来作为系列名的维度
+    /// </summary>
+    [Parameter]
+    public object[]? seriesName { get; set; }
+
+    /// <summary>
+    /// 使用指定维度作为 id，这在使用 setOption 动态更新数据时有用处，可以使新老数据用 id 对应起来，从而能够产生合适的数据更新动画
+    /// </summary>
+    [Parameter]
+    public int? itemId { get; set; }
+
+    /// <summary>
+    /// 使用指定维度作为数据项名称，在饼图等图表中有用，可以使这个名字显示在图例（legend）中
+    /// </summary>
+    [Parameter]
+    public int? itemName { get; set; }
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is Series scomponent)
+        {
+            scomponent.SetEncode((encode) =>
+            {
+                setting = encode;
+            });
+        }
+        return setting ?? new Dictionary<string, object>();
+    }
+
+    public override void SetSetting(IDictionary<string, object> setting)
+    {
+        if (x != null)
+            FillSetting("x", x);
+
+        if (y != null)
+            FillSetting("y", y);
+
+        if (tooltip != null && tooltip.Length > 0)
+            FillSetting("tooltip", tooltip);
+
+        if (seriesName != null && seriesName.Length > 0)
+            FillSetting("seriesName", seriesName);
+
+        if (itemName.HasValue)
+            FillSetting("itemName", itemName.Value);
+    }
+}

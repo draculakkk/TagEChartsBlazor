@@ -1,0 +1,277 @@
+﻿@inherits BaseItemComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    private IDictionary<string, object> colorex = new Dictionary<string, object>();
+
+    /// <summary>
+    /// 线的颜色
+    /// </summary>
+    [Parameter]
+    public string? color { get; set; }
+
+    /// <summary>
+    /// 线宽
+    /// </summary>
+    [Parameter]
+    public float? width { get; set; }
+
+    /// <summary>
+    /// 线的类型。可选：'solid' 'dashed' 'dotted'
+    /// </summary>
+    [Parameter]
+    public string? type { get; set; }
+
+    /// <summary>
+    /// 图形阴影的模糊大小
+    /// </summary>
+    [Parameter]
+    public int? shadowBlur { get; set; }
+
+    /// <summary>
+    /// 阴影颜色
+    /// </summary>
+    [Parameter]
+    public string? shadowColor { get; set; }
+
+    /// <summary>
+    /// 阴影水平方向上的偏移距离
+    /// </summary>
+    [Parameter]
+    public int? shadowOffsetX { get; set; }
+
+    /// <summary>
+    /// 阴影垂直方向上的偏移距离
+    /// </summary>
+    [Parameter]
+    public int? shadowOffsetY { get; set; }
+
+    /// <summary>
+    /// 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形
+    /// </summary>
+    [Parameter]
+    public float? opacity { get; set; }
+
+    /// <summary>
+    /// 用于设置虚线的偏移量，可搭配 type 指定 dash array 实现灵活的虚线效果
+    /// </summary>
+    [Parameter]
+    public int? dashOffset { get; set; }
+
+    /// <summary>
+    /// 用于指定线段末端的绘制方式，可以是：'butt': 线段末端以方形结束。'round': 线段末端以圆形结束。'square': 线段末端以方形结束
+    /// </summary>
+    [Parameter]
+    public string? cap { get; set; }
+
+    /// <summary>
+    /// 用于设置2个长度不为0的相连部分（线段，圆弧，曲线）如何连接在一起的属性
+    /// 可以是：'bevel' 'round' 'miter'
+    /// </summary>
+    [Parameter]
+    public string? join { get; set; }
+
+    /// <summary>
+    /// 用于设置斜接面限制比例。只有当 join 为 miter 时， miterLimit 才有效
+    /// </summary>
+    [Parameter]
+    public int? miterLimit { get; set; }
+
+    /// <summary>
+    /// 边的曲度，支持从 0 到 1 的值，值越大曲度越大
+    /// </summary>
+    [Parameter]
+    public float? curveness { get; set; }
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is AxisLine alcomponent)
+        {
+            alcomponent.SetLineStyle((lineStyle) =>
+            {
+                setting = lineStyle;
+            });
+        }
+        else if (Base is AxisTick atcomponent)
+        {
+            atcomponent.SetLineStyle((lineStyle) =>
+            {
+                setting = lineStyle;
+            });
+        }
+        else if (Base is MinorTick mtcomponent)
+        {
+            mtcomponent.SetLineStyle((lineStyle) =>
+            {
+                setting = lineStyle;
+            });
+        }
+        else if (Base is SplitLine scomponent)
+        {
+            scomponent.SetLineStyle((lineStyle) =>
+            {
+                setting = lineStyle;
+            });
+        }
+        else if (Base is MinorSplitLine mslcomponent)
+        {
+            mslcomponent.SetLineStyle((lineStyle) =>
+            {
+                setting = lineStyle;
+            });
+        }
+        else if (Base is AxisPointer apomponent)
+        {
+            apomponent.SetLineStyle((lineStyle) =>
+            {
+                setting = lineStyle;
+            });
+        }
+        else if (Base is Data datacomponent)
+        {
+            datacomponent.SetLineStyle((lineStyle) =>
+            {
+                setting = lineStyle;
+            });
+        }
+        else if (Base is DataBackground dbcomponent)
+        {
+            dbcomponent.SetLineStyle((lineStyle) =>
+            {
+                setting = lineStyle;
+            });
+        }
+        else if (Base is SelectedDataBackground sdbcomponent)
+        {
+            sdbcomponent.SetLineStyle((lineStyle) =>
+            {
+                setting = lineStyle;
+            });
+        }
+        else if (Base is LabelLine lbcomponent)
+        {
+            lbcomponent.SetLineStyle((lineStyle) =>
+            {
+                setting = lineStyle;
+            });
+        }
+        else if (Base is Series sbcomponent)
+        {
+            sbcomponent.SetLineStyle((lineStyle) =>
+            {
+                setting = lineStyle;
+            });
+        }
+        else if (Base is Emphasis emcomponent)
+        {
+            emcomponent.SetLineStyle((lineStyle) =>
+            {
+                setting = lineStyle;
+            });
+        }
+        else if (Base is Blur blcomponent)
+        {
+            blcomponent.SetLineStyle((lineStyle) =>
+            {
+                setting = lineStyle;
+            });
+        }
+        else if (Base is Select slcomponent)
+        {
+            slcomponent.SetLineStyle((lineStyle) =>
+            {
+                setting = lineStyle;
+            });
+        }
+        else if (Base is MarkLine mlcomponent)
+        {
+            mlcomponent.SetLineStyle((lineStyle) =>
+            {
+                setting = lineStyle;
+            });
+        }
+        else if (Base is Links lkcomponent)
+        {
+            lkcomponent.SetLineStyle((lineStyle) =>
+            {
+                setting = lineStyle;
+            });
+        }
+        else if (Base is Levels lvcomponent)
+        {
+            lvcomponent.SetLineStyle((lineStyle) =>
+            {
+                setting = lineStyle;
+            });
+        }
+        else if (Base is Timeline tlcomponent)
+        {
+            tlcomponent.SetLineStyle((lineStyle) =>
+            {
+                setting = lineStyle;
+            });
+        }
+        else if (Base is Progress prcomponent)
+        {
+            prcomponent.SetLineStyle((lineStyle) =>
+            {
+                setting = lineStyle;
+            });
+        }
+
+        return setting ?? new Dictionary<string, object>();
+    }
+
+    public override void SetSetting(IDictionary<string, object> setting)
+    {
+        if (!string.IsNullOrEmpty(color))
+            FillSetting("color", color);
+
+        if (width.HasValue)
+            FillSetting("width", width.Value);
+
+        if (!string.IsNullOrEmpty(type))
+            FillSetting("type", type);
+
+        if (shadowBlur.HasValue)
+            FillSetting("shadowBlur", shadowBlur.Value);
+
+        if (!string.IsNullOrEmpty(shadowColor))
+            FillSetting("shadowColor", shadowColor);
+
+        if (shadowOffsetX.HasValue)
+            FillSetting("shadowOffsetX", shadowOffsetX.Value);
+
+        if (shadowOffsetY.HasValue)
+            FillSetting("shadowOffsetY", shadowOffsetY.Value);
+
+        if (opacity.HasValue)
+            FillSetting("opacity", opacity.Value);
+
+        if (dashOffset.HasValue)
+            FillSetting("dashOffset", dashOffset.Value);
+
+        if (!string.IsNullOrEmpty(cap))
+            FillSetting("cap", cap);
+
+        if (!string.IsNullOrEmpty(join))
+            FillSetting("join", join);
+
+        if (miterLimit.HasValue)
+            FillSetting("miterLimit", miterLimit.Value);
+
+        if (curveness.HasValue)
+            FillSetting("curveness", curveness.Value);
+    }
+
+    public void SetColor(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("color", colorex);
+        action?.Invoke(colorex);
+    }
+}

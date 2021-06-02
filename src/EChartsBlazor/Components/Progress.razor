@@ -1,0 +1,92 @@
+﻿@inherits BaseItemComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    private IDictionary<string, object> lineStyle = new Dictionary<string, object>();
+    private IDictionary<string, object> itemStyle = new Dictionary<string, object>();
+    private IDictionary<string, object> label = new Dictionary<string, object>();
+
+    /// <summary>
+    /// 是否显示进度条
+    /// </summary>
+    [Parameter]
+    public bool? show { get; set; }
+
+    /// <summary>
+    /// 多组数据时进度条是否重叠
+    /// </summary>
+    [Parameter]
+    public bool? overlap { get; set; }
+
+    /// <summary>
+    /// 进度条宽度
+    /// </summary>
+    [Parameter]
+    public int? width { get; set; }
+
+    /// <summary>
+    /// 是否在两端显示成圆形
+    /// </summary>
+    [Parameter]
+    public bool? roundCap { get; set; }
+
+    /// <summary>
+    /// 是否裁掉超出部分
+    /// </summary>
+    [Parameter]
+    public bool? clip { get; set; }
+
+    public override void SetSetting(IDictionary<string, object> setting)
+    {
+        if (show.HasValue)
+            FillSetting("show", show.Value);
+
+        if (overlap.HasValue)
+            FillSetting("overlap", overlap.Value);
+
+        if (width.HasValue)
+            FillSetting("width", width.Value);
+
+        if (roundCap.HasValue)
+            FillSetting("roundCap", roundCap.Value);
+
+        if (clip.HasValue)
+            FillSetting("clip", clip.Value);
+    }
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is Series scomponent)
+        {
+            scomponent.SetProgress((progress) =>
+            {
+                setting = progress;
+            });
+        }
+
+        return setting ?? new Dictionary<string, object>();
+    }
+
+    public void SetItemStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("itemStyle", itemStyle);
+        action?.Invoke(itemStyle);
+    }
+
+    public void SetLineStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("lineStyle", lineStyle);
+        action?.Invoke(lineStyle);
+    }
+
+    public void SetLabel(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("label", label);
+        action?.Invoke(label);
+    }
+}

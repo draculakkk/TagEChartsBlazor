@@ -1,0 +1,20 @@
+﻿@inherits BaseDataBackground
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+        if (Base is DataZoom component)
+        {
+            component.SetDataBackground((dataBackground) =>
+            {
+                setting = dataBackground;
+            });
+        }
+        return setting ?? new Dictionary<string, object>();
+    }
+}

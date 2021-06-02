@@ -1,0 +1,125 @@
+﻿@inherits BaseItemComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    private IDictionary<string, object> label = new Dictionary<string, object>();
+    private IDictionary<string, object> itemStyle = new Dictionary<string, object>();
+    private Dictionary<string, object> emphasis = new Dictionary<string, object>();
+    private Dictionary<string, object> blur = new Dictionary<string, object>();
+    private IList<List<Dictionary<string, object>>> datadm = new List<List<Dictionary<string, object>>>();
+
+
+    [Parameter]
+    public object[]? data { get; set; }
+
+    [Parameter]
+    public bool? silent { get; set; }
+
+    [Parameter]
+    public bool? animation { get; set; }
+
+    [Parameter]
+    public int? animationThreshold { get; set; }
+
+    [Parameter]
+    public int? animationDuration { get; set; }
+
+    [Parameter]
+    public string? animationEasing { get; set; }
+
+    [Parameter]
+    public int? animationDelay { get; set; }
+
+    [Parameter]
+    public int? animationDurationUpdate { get; set; }
+
+    [Parameter]
+    public string? animationEasingUpdate { get; set; }
+
+    [Parameter]
+    public int? animationDelayUpdate { get; set; }
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is Series scomponent)
+        {
+            scomponent.SetMarkArea((markArea) =>
+            {
+                setting = markArea;
+            });
+        }
+
+        return setting ?? new Dictionary<string, object>();
+    }
+
+    public override void SetSetting(IDictionary<string, object> setting)
+    {
+        if (data != null && data.Length > 0)
+            FillSetting("data", data);
+
+        if (silent.HasValue)
+            FillSetting("silent", silent);
+
+        if (animationThreshold.HasValue)
+            FillSetting("animationThreshold", animationThreshold);
+
+        if (animationDuration.HasValue)
+            FillSetting("animationDuration", animationDuration);
+
+        if (!string.IsNullOrEmpty(animationEasing))
+            FillSetting("animationEasing", animationEasing);
+
+        if (animationDelay.HasValue)
+            FillSetting("animationDelay", animationDelay.Value);
+
+        if (animationDurationUpdate.HasValue)
+            FillSetting("animationDurationUpdate", animationDurationUpdate.Value);
+
+        if (!string.IsNullOrEmpty(animationEasingUpdate))
+            FillSetting("animationEasingUpdate", animationEasingUpdate);
+
+        if (animationDelayUpdate.HasValue)
+            FillSetting("animationDelayUpdate", animationDelayUpdate.Value);
+    }
+
+    public void SetLabel(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("label", label);
+        action?.Invoke(label);
+    }
+
+    public void SetItemStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("itemStyle", itemStyle);
+        action?.Invoke(itemStyle);
+    }
+
+    public void SetEmphasis(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("emphasis", emphasis);
+        action?.Invoke(emphasis);
+    }
+
+    public void SetBlur(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("blur", blur);
+        action?.Invoke(blur);
+    }
+
+    public void SetDatas(Action<IList<List<Dictionary<string, object>>>> action)
+    {
+        FillSetting("data", datadm);
+        action?.Invoke(datadm);
+    }
+
+    public void RemoveDatas(List<Dictionary<string, object>> item)
+    {
+        if (datadm.Contains(item))
+            datadm.Remove(item);
+    }
+}

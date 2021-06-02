@@ -1,0 +1,114 @@
+﻿@inherits BaseItemComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    private IDictionary<string, object> lineStyle = new Dictionary<string, object>();
+
+    /// <summary>
+    /// 是否显示视觉引导线
+    /// </summary>
+    [Parameter]
+    public bool? show { get; set; }
+
+    /// <summary>
+    /// 是否显示在图形上方
+    /// </summary>
+    [Parameter]
+    public bool? showAbove { get; set; }
+
+    /// <summary>
+    /// 视觉引导线第一段的长度
+    /// </summary>
+    [Parameter]
+    public int? length { get; set; }
+
+    /// <summary>
+    /// 视觉引导项第二段的长度
+    /// </summary>
+    [Parameter]
+    public int? length2 { get; set; }
+
+    /// <summary>
+    /// 是否平滑视觉引导线，默认不平滑
+    /// </summary>
+    [Parameter]
+    public bool? smooth { get; set; }
+
+    /// <summary>
+    /// 通过调整第二段线的长度，限制引导线两端之间最小的夹角，以防止过小的夹角导致显示不美观
+    /// </summary>
+    [Parameter]
+    public int? minTurnAngle { get; set; }
+
+    public override void SetSetting(IDictionary<string, object> setting)
+    {
+        if (show.HasValue)
+            FillSetting("show", show.Value);
+
+        if (showAbove.HasValue)
+            FillSetting("showAbove", showAbove.Value);
+
+        if (length2.HasValue)
+            FillSetting("length2", length2.Value);
+
+        if (smooth.HasValue)
+            FillSetting("smooth", smooth);
+
+        if (minTurnAngle.HasValue)
+            FillSetting("minTurnAngle", minTurnAngle);
+
+        if (length.HasValue)
+            FillSetting("length", length.Value);
+    }
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is Series scomponent)
+        {
+            scomponent.SetLabelLine((labelLine) =>
+            {
+                setting = labelLine;
+            });
+        }
+        else if (Base is Emphasis emcomponent)
+        {
+            emcomponent.SetLabelLine((labelLine) =>
+            {
+                setting = labelLine;
+            });
+        }
+        else if (Base is Blur blcomponent)
+        {
+            blcomponent.SetLabelLine((labelLine) =>
+            {
+                setting = labelLine;
+            });
+        }
+        else if (Base is Select slcomponent)
+        {
+            slcomponent.SetLabelLine((labelLine) =>
+            {
+                setting = labelLine;
+            });
+        }
+        else if (Base is Data dcomponent)
+        {
+            dcomponent.SetLabelLine((labelLine) =>
+            {
+                setting = labelLine;
+            });
+        }
+        return setting ?? new Dictionary<string, object>();
+    }
+
+    public void SetLineStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("lineStyle", lineStyle);
+        action?.Invoke(lineStyle);
+    }
+}

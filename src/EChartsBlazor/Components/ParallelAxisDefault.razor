@@ -1,0 +1,245 @@
+﻿@inherits BaseItemComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+
+@code {
+    private IDictionary<string, object> axisLabel = new Dictionary<string, object>();
+
+    private IDictionary<string, object> nameTextStyle = new Dictionary<string, object>();
+
+    private IDictionary<string, object> axisLine = new Dictionary<string, object>();
+
+    private IDictionary<string, object> axisTick = new Dictionary<string, object>();
+
+    private IDictionary<string, object> minorTick = new Dictionary<string, object>();
+
+    private IList<Dictionary<string, object>> datas = new List<Dictionary<string, object>>();
+
+    #region 参数
+
+    /// <summary>
+    /// 坐标轴类型
+    /// 'value' 数值轴，适用于连续数据。'category' 类目轴，适用于离散的类目数据。
+    /// 'time' 时间轴，适用于连续的时序数据。'log' 对数轴。适用于对数数据
+    /// </summary>
+    [Parameter]
+    public string? type { get; set; }
+
+    /// <summary>
+    /// 坐标轴名称
+    /// </summary>
+    [Parameter]
+    public string? name { get; set; }
+
+    /// <summary>
+    /// 坐标轴名称显示位置可选：'start' 'middle' 或者 'center' 'end'
+    /// </summary>
+    [Parameter]
+    public string? nameLocation { get; set; }
+
+    /// <summary>
+    /// 坐标轴名称与轴线之间的距离
+    /// </summary>
+    [Parameter]
+    public int? nameGap { get; set; }
+
+    /// <summary>
+    /// 坐标轴名字旋转，角度值
+    /// </summary>
+    [Parameter]
+    public int? nameRotate { get; set; }
+
+    /// <summary>
+    /// 是否是反向坐标轴
+    /// </summary>
+    [Parameter]
+    public bool? inverse { get; set; }
+
+    /// <summary>
+    /// 坐标轴两边留白策略，类目轴和非类目轴的设置和表现不一样
+    /// </summary>
+    [Parameter]
+    public dynamic? boundaryGap { get; set; }
+
+    /// <summary>
+    /// 坐标轴刻度最小值
+    /// </summary>
+    [Parameter]
+    public string? min { get; set; }
+
+    /// <summary>
+    /// 坐标轴刻度最大值
+    /// </summary>
+    [Parameter]
+    public string? max { get; set; }
+
+    /// <summary>
+    /// 是否是脱离 0 值比例
+    /// </summary>
+    [Parameter]
+    public bool? scale { get; set; }
+
+    /// <summary>
+    /// 坐标轴的分割段数
+    /// </summary>
+    [Parameter]
+    public int? splitNumber { get; set; }
+
+    /// <summary>
+    /// 自动计算的坐标轴最小间隔大小
+    /// </summary>
+    [Parameter]
+    public int? minInterval { get; set; }
+
+    /// <summary>
+    /// 自动计算的坐标轴最大间隔大小
+    /// </summary>
+    [Parameter]
+    public int? maxInterval { get; set; }
+
+    /// <summary>
+    /// 强制设置坐标轴分割间隔
+    /// </summary>
+    [Parameter]
+    public int? interval { get; set; }
+
+    /// <summary>
+    /// 对数轴的底数，只在对数轴中（type: 'log'）有效
+    /// </summary>
+    [Parameter]
+    public int? logBase { get; set; }
+
+    /// <summary>
+    /// 坐标轴是否是静态无法交互
+    /// </summary>
+    [Parameter]
+    public bool? silent { get; set; }
+
+    /// <summary>
+    /// 坐标轴的标签是否响应和触发鼠标事件，默认不响应
+    /// </summary>
+    [Parameter]
+    public bool? triggerEvent { get; set; }
+
+    [Parameter]
+    public object[]? data { get; set; }
+
+    #endregion
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is Parallel plcomponent)
+        {
+            plcomponent.SetParallelAxisDefault((parallelAxisDefault) =>
+            {
+                setting = parallelAxisDefault;
+            });
+        }
+
+        return setting ?? new Dictionary<string, object>();
+    }
+
+    public override void SetSetting(IDictionary<string, object> setting)
+    {
+        if (!string.IsNullOrEmpty(type))
+            FillSetting("type", type);
+
+        if (!string.IsNullOrEmpty(name))
+            FillSetting("name", name);
+
+        if (!string.IsNullOrEmpty(nameLocation))
+            FillSetting("nameLocation", nameLocation);
+
+        if (nameGap.HasValue)
+            FillSetting("nameGap", nameGap.Value);
+
+        if (nameRotate.HasValue)
+            FillSetting("nameRotate", nameRotate.Value);
+
+        if (inverse.HasValue)
+            FillSetting("inverse", inverse.Value);
+
+        if (!string.IsNullOrEmpty(min))
+            FillSetting("min", min);
+
+        if (!string.IsNullOrEmpty(max))
+            FillSetting("max", max);
+
+        if (boundaryGap != null)
+            FillSetting("boundaryGap", boundaryGap);
+
+        if (scale.HasValue)
+            FillSetting("scale", scale.Value);
+
+        if (splitNumber.HasValue)
+            FillSetting("splitNumber", splitNumber.Value);
+
+        if (minInterval.HasValue)
+            FillSetting("minInterval", minInterval.Value);
+
+        if (maxInterval.HasValue)
+            FillSetting("maxInterval", maxInterval.Value);
+
+        if (interval.HasValue)
+            FillSetting("interval", interval.Value);
+
+        if (logBase.HasValue)
+            FillSetting("logBase", logBase.Value);
+
+        if (silent.HasValue)
+            FillSetting("silent", silent.Value);
+
+        if (triggerEvent.HasValue)
+            FillSetting("triggerEvent", triggerEvent.Value);
+
+        if (data != null && data.Length > 0)
+            FillSetting("data", data);
+    }
+
+    public void SetAxisLabel(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("axisLabel", axisLabel);
+        action?.Invoke(axisLabel);
+    }
+
+    public void SetNameTextStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("nameTextStyle", nameTextStyle);
+        action?.Invoke(nameTextStyle);
+    }
+
+    public void SetAxisLine(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("axisLine", axisLine);
+        action?.Invoke(axisLine);
+    }
+
+    public void SetAxisTick(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("axisTick", axisTick);
+        action?.Invoke(axisTick);
+    }
+
+    public void SetMinorTick(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("minorTick", minorTick);
+        action?.Invoke(minorTick);
+    }
+
+    public void SetDatas(Action<IList<Dictionary<string, object>>> action)
+    {
+        FillSetting("data", datas);
+        action?.Invoke(datas);
+    }
+
+    public void RemoveDatas(Dictionary<string, object> item)
+    {
+        if (datas.Contains(item))
+            datas.Remove(item);
+    }
+}

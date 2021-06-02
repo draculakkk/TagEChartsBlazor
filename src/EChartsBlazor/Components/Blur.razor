@@ -1,0 +1,154 @@
+﻿@inherits BaseItemComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    private IDictionary<string, object> label = new Dictionary<string, object>();
+    private IDictionary<string, object> labelLine = new Dictionary<string, object>();
+    private IDictionary<string, object> itemStyle = new Dictionary<string, object>();
+    private IDictionary<string, object> lineStyle = new Dictionary<string, object>();
+    private IDictionary<string, object> areaStyle = new Dictionary<string, object>();
+    private IDictionary<string, object> endLabel = new Dictionary<string, object>();
+    private IDictionary<string, object> edgeLabel = new Dictionary<string, object>();
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is Series scomponent)
+        {
+            scomponent.SetBlur((blur) =>
+            {
+                setting = blur;
+            });
+        }
+        else if (Base is Data dcomponent)
+        {
+            dcomponent.SetBlur((blur) =>
+            {
+                setting = blur;
+            });
+        }
+        else if (Base is Nodes ndcomponent)
+        {
+            ndcomponent.SetBlur((ndcomponent) =>
+            {
+                setting = ndcomponent;
+            });
+        }
+        else if (Base is MarkPoint mpcomponent)
+        {
+            mpcomponent.SetBlur((blur) =>
+            {
+                setting = blur;
+            });
+        }
+        else if (Base is MarkLine mlcomponent)
+        {
+            mlcomponent.SetBlur((blur) =>
+            {
+                setting = blur;
+            });
+        }
+        else if (Base is MarkArea macomponent)
+        {
+            macomponent.SetBlur((blur) =>
+            {
+                setting = blur;
+            });
+        }
+        else if (Base is Leaves lecomponent)
+        {
+            lecomponent.SetBlur((blur) =>
+            {
+                setting = blur;
+            });
+        }
+        else if (Base is Categories cacomponent)
+        {
+            cacomponent.SetBlur((blur) =>
+            {
+                setting = blur;
+            });
+        }
+        else if (Base is Links lkcomponent)
+        {
+            lkcomponent.SetBlur((blur) =>
+            {
+                setting = blur;
+            });
+        }
+        else if (Base is Levels lvcomponent)
+        {
+            lvcomponent.SetBlur((blur) =>
+            {
+                setting = blur;
+            });
+        }
+        else if (Base is Geo geocomponent)
+        {
+            geocomponent.SetBlur((blur) =>
+            {
+                setting = blur;
+            });
+        }
+        else if (Base is Regions regcomponent)
+        {
+            regcomponent.SetBlur((blur) =>
+            {
+                setting = blur;
+            });
+        }
+
+        return setting ?? new Dictionary<string, object>();
+    }
+
+    public override void SetSetting(IDictionary<string, object> setting)
+    {
+
+    }
+
+    public void SetLabel(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("label", label);
+        action?.Invoke(label);
+    }
+
+    public void SetLabelLine(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("labelLine", labelLine);
+        action?.Invoke(labelLine);
+    }
+
+    public void SetItemStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("itemStyle", itemStyle);
+        action?.Invoke(itemStyle);
+    }
+
+    public void SetLineStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("lineStyle", lineStyle);
+        action?.Invoke(lineStyle);
+    }
+
+    public void SetAreaStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("areaStyle", areaStyle);
+        action?.Invoke(areaStyle);
+    }
+
+    public void SetEndLabel(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("endLabel", endLabel);
+        action?.Invoke(endLabel);
+    }
+
+    public void SetEdgeLabel(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("edgeLabel", edgeLabel);
+        action?.Invoke(edgeLabel);
+    }
+}

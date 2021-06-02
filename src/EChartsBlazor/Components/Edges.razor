@@ -1,0 +1,23 @@
+﻿@inherits Links
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is Series scomponent)
+        {
+            scomponent.SetEdges((edges) =>
+            {
+                setting = edges;
+            });
+        }
+
+        return setting ?? new Dictionary<string, object>();
+    }
+}

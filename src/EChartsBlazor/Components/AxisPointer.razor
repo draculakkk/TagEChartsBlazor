@@ -1,0 +1,180 @@
+﻿@inherits BaseItemComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+
+@code {
+    private IDictionary<string, object> label = new Dictionary<string, object>();
+    private IDictionary<string, object> lineStyle = new Dictionary<string, object>();
+    private IDictionary<string, object> shadowStyle = new Dictionary<string, object>();
+    private IDictionary<string, object> handle = new Dictionary<string, object>();
+
+    /// <summary>
+    /// 组件 ID
+    /// </summary>
+    [Parameter]
+    public string? id { get; set; }
+
+    /// <summary>
+    /// 自动显示 axisPointer
+    /// </summary>
+    [Parameter]
+    public bool? show { get; set; }
+
+    /// <summary>
+    /// 指示器类型。可选'line' 直线指示器'shadow' 阴影指示器'none' 无指示器
+    /// </summary>
+    [Parameter]
+    public string? type { get; set; }
+
+    /// <summary>
+    /// 坐标轴指示器是否自动吸附到点上
+    /// </summary>
+    [Parameter]
+    public bool? snap { get; set; }
+
+    /// <summary>
+    /// 坐标轴指示器的 z 值
+    /// </summary>
+    [Parameter]
+    public int? z { get; set; }
+
+    /// <summary>
+    /// 是否触发 tooltip
+    /// </summary>
+    [Parameter]
+    public bool? triggerTooltip { get; set; }
+
+    /// <summary>
+    /// 当前的 value
+    /// </summary>
+    [Parameter]
+    public int? value { get; set; }
+
+    /// <summary>
+    /// 当前的状态，可取值为 'show' 和 'hide'
+    /// </summary>
+    [Parameter]
+    public string? status { get; set; }
+
+    /// <summary>
+    /// 不同轴的 axisPointer 可以进行联动
+    /// </summary>
+    [Parameter]
+    public dynamic? link { get; set; }
+
+    /// <summary>
+    /// 提示框触发的条件，可选：'mousemove'鼠标移动时触发。'click'鼠标点击时触发。'none' 不在 'mousemove' 或 'click' 时触发
+    /// </summary>
+    [Parameter]
+    public string? triggerOn { get; set; }
+
+    public override void SetSetting(IDictionary<string, object> setting)
+    {
+        if (!string.IsNullOrEmpty(id))
+            FillSetting("id", id);
+
+        if (show.HasValue)
+            FillSetting("show", show.Value);
+
+        if (!string.IsNullOrEmpty(type))
+            FillSetting("type", type);
+
+        if (snap.HasValue)
+            FillSetting("snap", snap.Value);
+
+        if (z.HasValue)
+            FillSetting("z", z.Value);
+
+        if (triggerTooltip.HasValue)
+            FillSetting("triggerTooltip", triggerTooltip.Value);
+
+        if (value.HasValue)
+            FillSetting("value", value.Value);
+
+        if (!string.IsNullOrEmpty(status))
+            FillSetting("status", status);
+
+        if (link != null)
+            FillSetting("link", link);
+
+        if (!string.IsNullOrEmpty(triggerOn))
+            FillSetting("triggerOn", triggerOn);
+    }
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is YAxis ycomponent)
+        {
+            ycomponent.SetAxisPointer((axisPointer) =>
+            {
+                setting = axisPointer;
+            });
+        }
+        else if (Base is XAxis xcomponent)
+        {
+            xcomponent.SetAxisPointer((axisPointer) =>
+            {
+                setting = axisPointer;
+            });
+        }
+        else if (Base is RadiusAxis rcomponent)
+        {
+            rcomponent.SetAxisPointer((axisPointer) =>
+            {
+                setting = axisPointer;
+            });
+        }
+        else if (Base is AngleAxis acomponent)
+        {
+            acomponent.SetAxisPointer((axisPointer) =>
+            {
+                setting = axisPointer;
+            });
+        }
+        else if (Base is Tooltip ttcomponent)
+        {
+            ttcomponent.SetAxisPointer((axisPointer) =>
+            {
+                setting = axisPointer;
+            });
+        }
+        else if (Base is SingleAxis sicomponent)
+        {
+            sicomponent.SetAxisPointer((axisPointer) =>
+            {
+                setting = axisPointer;
+            });
+        }
+
+        return setting ?? new Dictionary<string, object>();
+    }
+
+    public void SetLabel(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("label", label);
+        action?.Invoke(label);
+    }
+
+    public void SetLineStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("lineStyle", lineStyle);
+        action?.Invoke(lineStyle);
+    }
+
+    public void SetShadowStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("shadowStyle", shadowStyle);
+        action?.Invoke(shadowStyle);
+    }
+
+    public void SetHandle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("handle", handle);
+        action?.Invoke(handle);
+    }
+}

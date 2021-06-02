@@ -1,0 +1,33 @@
+﻿@inherits Label
+
+@code {
+
+    /// <summary>
+    /// 星期显示的效果，默认为'en' 可设置中英文以及自定义 下标0为对应星期天的文字显示
+    /// </summary>
+    [Parameter]
+    public dynamic? nameMap { get; set; }
+
+    public override void SetSetting(IDictionary<string, object> setting)
+    {
+        base.SetSetting(setting);
+
+        if (nameMap != null)
+            FillSetting("nameMap", nameMap);
+    }
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is Calendar cdcomponent)
+        {
+            cdcomponent.SetMonthLabel((monthLabel) =>
+            {
+                setting = monthLabel;
+            });
+        }
+
+        return setting ?? new Dictionary<string, object>();
+    }
+}

@@ -1,0 +1,290 @@
+﻿@inherits BaseItemComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    private IDictionary<string, object> axisPointer = new Dictionary<string, object>();
+    private IDictionary<string, object> textStyle = new Dictionary<string, object>();
+
+    /// <summary>
+    /// 是否显示提示框组件
+    /// </summary>
+    [Parameter]
+    public bool? show { get; set; }
+
+    /// <summary>
+    /// 触发类型。可选：'item' 'axis' 'none'
+    /// </summary>
+    [Parameter]
+    public string? trigger { get; set; }
+
+    /// <summary>
+    /// 是否显示提示框浮层，默认显示
+    /// </summary>
+    [Parameter]
+    public bool? showContent { get; set; }
+
+    /// <summary>
+    /// 是否永远显示提示框内容
+    /// </summary>
+    [Parameter]
+    public bool? alwaysShowContent { get; set; }
+
+    /// <summary>
+    /// 提示框触发的条件，可选：'mousemove'鼠标移动时触发。'click'鼠标点击时触发。'mousemove|click'同时鼠标移动和点击时触发。'none'不在 'mousemove' 或 'click' 时触发
+    /// </summary>
+    [Parameter]
+    public string? triggerOn { get; set; }
+
+    /// <summary>
+    /// 浮层显示的延迟，单位为 ms
+    /// </summary>
+    [Parameter]
+    public int? showDelay { get; set; }
+
+    /// <summary>
+    /// 浮层隐藏的延迟，单位为 ms
+    /// </summary>
+    [Parameter]
+    public int? hideDelay { get; set; }
+
+    /// <summary>
+    /// 鼠标是否可进入提示框浮层中
+    /// </summary>
+    [Parameter]
+    public bool? enterable { get; set; }
+
+    /// <summary>
+    /// 浮层的渲染模式，默认以 'html 即额外的 DOM 节点展示 tooltip，此外还可以设置为 'richText' 表示以富文本的形式渲染
+    /// </summary>
+    [Parameter]
+    public string? renderMode { get; set; }
+
+    /// <summary>
+    /// 是否将 tooltip 框限制在图表的区域内
+    /// </summary>
+    [Parameter]
+    public bool? confine { get; set; }
+
+    /// <summary>
+    /// 是否将 tooltip 的 DOM 节点添加为 HTML 的 <body> 的子节点
+    /// </summary>
+    [Parameter]
+    public bool? appendToBody { get; set; }
+
+    /// <summary>
+    /// 指定 tooltip 的 DOM 节点的 CSS 类
+    /// </summary>
+    [Parameter]
+    public string? className { get; set; }
+
+    /// <summary>
+    /// 提示框浮层的移动动画过渡时间，单位是 s
+    /// </summary>
+    [Parameter]
+    public float? transitionDuration { get; set; }
+
+    /// <summary>
+    /// 提示框浮层的位置
+    /// </summary>
+    [Parameter]
+    public dynamic? position { get; set; }
+
+    /// <summary>
+    /// 提示框浮层内容格式器，支持字符串模板和回调函数两种形式
+    /// </summary>
+    [Parameter]
+    public string? formatter { get; set; }
+
+    /// <summary>
+    /// 提示框浮层的背景颜色
+    /// </summary>
+    [Parameter]
+    public string? backgroundColor { get; set; }
+
+    /// <summary>
+    /// 提示框浮层的边框颜色
+    /// </summary>
+    [Parameter]
+    public string? borderColor { get; set; }
+
+    /// <summary>
+    /// 提示框浮层的边框宽
+    /// </summary>
+    [Parameter]
+    public int? borderWidth { get; set; }
+
+    /// <summary>
+    /// 提示框浮层内边距，单位px
+    /// </summary>
+    [Parameter]
+    public dynamic? padding { get; set; }
+
+    /// <summary>
+    /// 额外附加到浮层的 css 样式
+    /// </summary>
+    [Parameter]
+    public string? extraCssText { get; set; }
+
+    /// <summary>
+    /// 多系列提示框浮层排列顺序。默认值为 'seriesAsc' 可选：'seriesAsc' 'seriesDesc' 'valueAsc' 'valueDesc'
+    /// </summary>
+    [Parameter]
+    public string? order { get; set; }
+
+    public override void SetSetting(IDictionary<string, object> setting)
+    {
+        if (show.HasValue)
+            FillSetting("show", show.Value);
+
+        if (!string.IsNullOrEmpty(trigger))
+            FillSetting("trigger", trigger);
+
+        if (alwaysShowContent.HasValue)
+            FillSetting("showContent", alwaysShowContent.Value);
+
+        if (!string.IsNullOrEmpty(triggerOn))
+            FillSetting("triggerOn", triggerOn);
+
+        if (hideDelay.HasValue)
+            FillSetting("hideDelay", hideDelay.Value);
+
+        if (enterable.HasValue)
+            FillSetting("enterable", enterable.Value);
+
+        if (!string.IsNullOrEmpty(renderMode))
+            FillSetting("renderMode", renderMode);
+
+        if (confine.HasValue)
+            FillSetting("confine", confine.Value);
+
+        if (appendToBody.HasValue)
+            FillSetting("appendToBody", appendToBody.Value);
+
+        if (!string.IsNullOrEmpty(className))
+            FillSetting("className", className);
+
+        if (transitionDuration.HasValue)
+            FillSetting("transitionDuration", transitionDuration.Value);
+
+        if (position != null)
+            FillSetting("position", position);
+
+        if (!string.IsNullOrEmpty(formatter))
+            FillSetting("formatter", formatter);
+
+        if (!string.IsNullOrEmpty(backgroundColor))
+            FillSetting("backgroundColor", backgroundColor);
+
+        if (!string.IsNullOrEmpty(borderColor))
+            FillSetting("borderColor", borderColor);
+
+        if (borderWidth.HasValue)
+            FillSetting("borderWidth", borderWidth.Value);
+
+        if (padding != null)
+            FillSetting("padding", padding);
+
+        if (!string.IsNullOrEmpty(extraCssText))
+            FillSetting("extraCssText", extraCssText);
+
+        if (!string.IsNullOrEmpty(order))
+            FillSetting("order", order);
+    }
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is ECharts Chart)
+        {
+            setting = new Dictionary<string, object>();
+            Chart.SetOption((option) =>
+            {
+                if (!option.ContainsKey("tooltip"))
+                    option.Add("tooltip", setting);
+                else
+                    option["tooltip"] = setting;
+            });
+        }
+        else if (Base is Legend lgcomponent)
+        {
+            lgcomponent.SetTooltip((tooltip) =>
+            {
+                setting = tooltip;
+            });
+        }
+        else if (Base is Grid gdcomponent)
+        {
+            gdcomponent.SetTooltip((tooltip) =>
+            {
+                setting = tooltip;
+            });
+        }
+        else if (Base is Polar plcomponent)
+        {
+            plcomponent.SetTooltip((tooltip) =>
+            {
+                setting = tooltip;
+            });
+        }
+        else if (Base is Data dcomponent)
+        {
+            dcomponent.SetTooltip((tooltip) =>
+            {
+                setting = tooltip;
+            });
+        }
+        else if (Base is Nodes ndcomponent)
+        {
+            ndcomponent.SetTooltip((tooltip) =>
+            {
+                setting = tooltip;
+            });
+        }
+        else if (Base is Toolbox tbcomponent)
+        {
+            tbcomponent.SetTooltip((tooltip) =>
+            {
+                setting = tooltip;
+            });
+        }
+        else if (Base is Geo geocomponent)
+        {
+            geocomponent.SetTooltip((tooltip) =>
+            {
+                setting = tooltip;
+            });
+        }
+        else if (Base is Regions regcomponent)
+        {
+            regcomponent.SetTooltip((tooltip) =>
+            {
+                setting = tooltip;
+            });
+        }
+        else if (Base is SingleAxis sicomponent)
+        {
+            sicomponent.SetTooltip((tooltip) =>
+            {
+                setting = tooltip;
+            });
+        }
+
+        return setting ?? new Dictionary<string, object>();
+    }
+
+    public void SetAxisPointer(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("axisPointer", axisPointer);
+        action?.Invoke(axisPointer);
+    }
+
+    public void SetTextStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("textStyle", textStyle);
+        action?.Invoke(textStyle);
+    }
+}

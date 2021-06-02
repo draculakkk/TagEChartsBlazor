@@ -1,0 +1,51 @@
+﻿@inherits BaseGraphic
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    private Dictionary<string, object> setting = new Dictionary<string, object>();
+
+    [Parameter]
+    public LayoutRect? shape { get; set; }
+
+    [Parameter]
+    public GraphicStyle? style { get; set; }
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        if (Base is Graphic gpcomponent)
+        {
+            gpcomponent.SetChildrenData((children) =>
+            {
+                if (!children.Contains(setting))
+                    children.Add(setting);
+            });
+        }
+
+        return setting;
+    }
+
+    public override void SetSetting(IDictionary<string, object> setting)
+    {
+        base.SetSetting(setting);
+
+        if (shape.HasValue)
+            FillSetting("shape", shape.Value.ToOptionObject());
+
+        if (style.HasValue)
+            FillSetting("style", style.Value.ToOptionObject());
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            if (Base is Graphic gpcomponent)
+            {
+                gpcomponent.RemoveChildrenData(setting);
+            }
+        }
+    }
+}

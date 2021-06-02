@@ -1,0 +1,54 @@
+﻿@inherits BaseRichComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    private IDictionary<string, IDictionary<string, object>> richItem = new Dictionary<string, IDictionary<string, object>>();
+
+    protected override void LoadSetting()
+    {
+        if (Base is BaseTextStyle tscomponent)
+        {
+            tscomponent.SetRich((rich) =>
+            {
+                richItem = rich;
+            });
+        }
+        else if (Base is AxisLabel alcomponent)
+        {
+            alcomponent.SetRich((rich) =>
+            {
+                richItem = rich;
+            });
+        }
+        else if (Base is SelectorLabel slcomponent)
+        {
+            slcomponent.SetRich((rich) =>
+            {
+                richItem = rich;
+            });
+        }
+        else if (Base is Label lbcomponent)
+        {
+            lbcomponent.SetRich((rich) =>
+            {
+                richItem = rich;
+            });
+        }
+        else if (Base is EndLabel elbcomponent)
+        {
+            elbcomponent.SetRich((rich) =>
+            {
+                richItem = rich;
+            });
+        }
+    }
+
+    public void SetRichItem(Action<IDictionary<string, IDictionary<string, object>>> action)
+    {
+        action?.Invoke(richItem);
+    }
+}
+

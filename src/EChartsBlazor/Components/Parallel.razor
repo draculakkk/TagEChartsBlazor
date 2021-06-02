@@ -1,0 +1,157 @@
+﻿@inherits BaseChartComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    private IDictionary<string, object> parallelAxisDefault = new Dictionary<string, object>();
+
+    protected override string ComponentName => "parallel";
+
+    /// <summary>
+    /// 组件 ID
+    /// </summary>
+    [Parameter]
+    public string? id { get; set; }
+
+    /// <summary>
+    /// 所有图形的 zlevel 值
+    /// </summary>
+    [Parameter]
+    public int? zlevel { get; set; }
+
+    /// <summary>
+    /// 组件的所有图形的z值。控制图形的前后顺序。z值小的图形会被z值大的图形覆盖
+    /// </summary>
+    [Parameter]
+    public int? z { get; set; }
+
+    /// <summary>
+    /// 组件离容器左侧的距离
+    /// </summary>
+    [Parameter]
+    public string? left { get; set; }
+
+    /// <summary>
+    /// 组件离容器上侧的距离
+    /// </summary>
+    [Parameter]
+    public string? top { get; set; }
+
+    /// <summary>
+    /// 组件离容器右侧的距离
+    /// </summary>
+    [Parameter]
+    public string? right { get; set; }
+
+    /// <summary>
+    /// 组件离容器下侧的距离
+    /// </summary>
+    [Parameter]
+    public string? bottom { get; set; }
+
+    /// <summary>
+    ///  组件的宽度。默认自适应
+    /// </summary>
+    [Parameter]
+    public string? width { get; set; }
+
+    /// <summary>
+    /// 组件的高度。默认自适应
+    /// </summary>
+    [Parameter]
+    public string? height { get; set; }
+
+    /// <summary>
+    /// 布局方式，可选值为：'horizontal'：水平排布各个坐标轴。'vertical'：竖直排布各个坐标轴
+    /// </summary>
+    [Parameter]
+    public string? layout { get; set; }
+
+    /// <summary>
+    /// 是否允许点击展开折叠 axis
+    /// </summary>
+    [Parameter]
+    public bool? axisExpandable { get; set; }
+
+    /// <summary>
+    /// 初始时，以哪个轴为中心展开，这里给出轴的 index。没有默认值，需要手动指定
+    /// </summary>
+    [Parameter]
+    public int? axisExpandCenter { get; set; }
+
+    /// <summary>
+    /// 初始时，有多少个轴会处于展开状态。建议根据你的维度个数而手动指定
+    /// </summary>
+    [Parameter]
+    public int? axisExpandCount { get; set; }
+
+    /// <summary>
+    /// 在展开状态，轴的间距是多少，单位为像素
+    /// </summary>
+    [Parameter]
+    public int? axisExpandWidth { get; set; }
+
+    /// <summary>
+    /// 'click'：鼠标点击的时候 expand。'mousemove'：鼠标悬浮的时候 expand
+    /// </summary>
+    [Parameter]
+    public string? axisExpandTriggerOn { get; set; }
+
+    protected override Task SetParametersAsync()
+    {
+        if (!string.IsNullOrEmpty(id))
+            FillSetting("id", id);
+
+        if (zlevel.HasValue)
+            FillSetting("zlevel", zlevel.Value);
+
+        if (z.HasValue)
+            FillSetting("z", z.Value);
+
+        if (!string.IsNullOrEmpty(left))
+            FillSetting("left", left);
+
+        if (!string.IsNullOrEmpty(top))
+            FillSetting("top", top);
+
+        if (!string.IsNullOrEmpty(right))
+            FillSetting("right", right);
+
+        if (!string.IsNullOrEmpty(bottom))
+            FillSetting("bottom", bottom);
+
+        if (!string.IsNullOrEmpty(width))
+            FillSetting("width", width);
+
+        if (!string.IsNullOrEmpty(height))
+            FillSetting("height", height);
+
+        if (!string.IsNullOrEmpty(layout))
+            FillSetting("layout", layout);
+
+        if (axisExpandable.HasValue)
+            FillSetting("axisExpandable", axisExpandable.Value);
+
+        if (axisExpandCenter.HasValue)
+            FillSetting("axisExpandCenter", axisExpandCenter.Value);
+
+        if (axisExpandCount.HasValue)
+            FillSetting("axisExpandCount", axisExpandCount.Value);
+
+        if (axisExpandWidth.HasValue)
+            FillSetting("axisExpandWidth", axisExpandWidth.Value);
+
+        if (!string.IsNullOrEmpty(axisExpandTriggerOn))
+            FillSetting("axisExpandTriggerOn", axisExpandTriggerOn);
+
+        return Task.CompletedTask;
+    }
+
+    public void SetParallelAxisDefault(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("parallelAxisDefault", parallelAxisDefault);
+        action?.Invoke(parallelAxisDefault);
+    }
+}

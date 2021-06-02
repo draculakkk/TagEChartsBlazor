@@ -1,0 +1,305 @@
+﻿@inherits BaseItemComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+
+    private Dictionary<string, object> setting = new Dictionary<string, object>();
+    private IDictionary<string, object> handleStyle = new Dictionary<string, object>();
+    private IDictionary<string, object> textStyle = new Dictionary<string, object>();
+    private IDictionary<string, object> indicatorStyle = new Dictionary<string, object>();
+
+    #region 参数
+
+    [Parameter]
+    public string? type { get; set; }
+
+    [Parameter]
+    public string? id { get; set; }
+
+    [Parameter]
+    public int? min { get; set; }
+
+    [Parameter]
+    public int? max { get; set; }
+
+    [Parameter]
+    public int[]? range { get; set; }
+
+    [Parameter]
+    public bool? calculable { get; set; }
+
+    [Parameter]
+    public bool? realtime { get; set; }
+
+    [Parameter]
+    public bool? inverse { get; set; }
+
+    [Parameter]
+    public int? precision { get; set; }
+
+    [Parameter]
+    public int? itemWidth { get; set; }
+
+    [Parameter]
+    public int? itemHeight { get; set; }
+
+    [Parameter]
+    public string? align { get; set; }
+
+    [Parameter]
+    public string[]? text { get; set; }
+
+    [Parameter]
+    public int? textGap { get; set; }
+
+    [Parameter]
+    public bool? show { get; set; }
+
+    [Parameter]
+    public object[,]? dimension { get; set; }
+
+    [Parameter]
+    public dynamic? seriesIndex { get; set; }
+
+    [Parameter]
+    public bool? hoverLink { get; set; }
+
+    [Parameter]
+    public int? zlevel { get; set; }
+
+    [Parameter]
+    public int? z { get; set; }
+
+    [Parameter]
+    public string? left { get; set; }
+
+    [Parameter]
+    public string? top { get; set; }
+
+    [Parameter]
+    public string? right { get; set; }
+
+    [Parameter]
+    public string? bottom { get; set; }
+
+    [Parameter]
+    public bool? vertical { get; set; }
+
+    [Parameter]
+    public dynamic? padding { get; set; }
+
+    [Parameter]
+    public string? backgroundColor { get; set; }
+
+    [Parameter]
+    public string? borderColor { get; set; }
+
+    [Parameter]
+    public string? borderWidth { get; set; }
+
+    [Parameter]
+    public string[]? color { get; set; }
+
+    [Parameter]
+    public string? formatter { get; set; }
+
+    [Parameter]
+    public string? handleIcon { get; set; }
+
+    [Parameter]
+    public string? handleSize { get; set; }
+
+    [Parameter]
+    public string? indicatorIcon { get; set; }
+
+    [Parameter]
+    public string? indicatorSize { get; set; }
+
+    [Parameter]
+    public string[]? categories { get; set; }
+
+    [Parameter]
+    public VMRange? inRange { get; set; }
+
+    [Parameter]
+    public VMRange? outOfRange { get; set; }
+
+    [Parameter]
+    public Controller? controller { get; set; }
+
+    [Parameter]
+    public string? orient { get; set; }
+
+    #endregion]
+
+    public override void SetSetting(IDictionary<string, object> setting)
+    {
+        if (!string.IsNullOrEmpty(type))
+            FillSetting("type", type);
+
+        if (!string.IsNullOrEmpty(id))
+            FillSetting("id", id);
+
+        if (min.HasValue)
+            FillSetting("min", min.Value);
+
+        if (max.HasValue)
+            FillSetting("max", max.Value);
+
+        if (range != null && range.Length > 0)
+            FillSetting("range", range);
+
+        if (calculable.HasValue)
+            FillSetting("calculable", calculable.Value);
+
+        if (realtime.HasValue)
+            FillSetting("realtime", realtime.Value);
+
+        if (inverse.HasValue)
+            FillSetting("inverse", inverse.Value);
+
+        if (precision.HasValue)
+            FillSetting("precision", precision.Value);
+
+        if (itemWidth.HasValue)
+            FillSetting("itemWidth", itemWidth.Value);
+
+        if (itemHeight.HasValue)
+            FillSetting("itemHeight", itemHeight.Value);
+
+        if (!string.IsNullOrEmpty(align))
+            FillSetting("align", align);
+
+        if (text != null && text.Length > 0)
+            FillSetting("text", text);
+
+        if (textGap.HasValue)
+            FillSetting("textGap", textGap.Value);
+
+        if (show.HasValue)
+            FillSetting("show", show.Value);
+
+        if (dimension != null && dimension.Length > 0)
+            FillSetting("dimension", dimension);
+
+        if (seriesIndex != null)
+            FillSetting("seriesIndex", seriesIndex);
+
+        if (hoverLink.HasValue)
+            FillSetting("hoverLink", hoverLink.Value);
+
+        if (zlevel.HasValue)
+            FillSetting("zlevel", zlevel.Value);
+
+        if (z.HasValue)
+            FillSetting("z", z.Value);
+
+        if (!string.IsNullOrEmpty(left))
+            FillSetting("left", left);
+
+        if (!string.IsNullOrEmpty(top))
+            FillSetting("top", top);
+
+        if (!string.IsNullOrEmpty(right))
+            FillSetting("right", right);
+
+        if (!string.IsNullOrEmpty(bottom))
+            FillSetting("bottom", bottom);
+
+        if (vertical.HasValue)
+            FillSetting("vertical", vertical.Value);
+
+        if (padding != null)
+            FillSetting("padding", padding);
+
+        if (!string.IsNullOrEmpty(backgroundColor))
+            FillSetting("backgroundColor", backgroundColor);
+
+        if (!string.IsNullOrEmpty(borderColor))
+            FillSetting("borderColor", borderColor);
+
+        if (!string.IsNullOrEmpty(borderWidth))
+            FillSetting("borderWidth", borderWidth);
+
+        if (color != null && color.Length > 0)
+            FillSetting("color", color);
+
+        if (!string.IsNullOrEmpty(formatter))
+            FillSetting("formatter", formatter);
+
+        if (!string.IsNullOrEmpty(handleIcon))
+            FillSetting("handleIcon", handleIcon);
+
+        if (!string.IsNullOrEmpty(handleSize))
+            FillSetting("handleSize", handleSize);
+
+        if (!string.IsNullOrEmpty(indicatorIcon))
+            FillSetting("indicatorIcon", indicatorIcon);
+
+        if (!string.IsNullOrEmpty(indicatorSize))
+            FillSetting("indicatorSize", indicatorSize);
+
+        if (categories != null && categories.Length > 0)
+            FillSetting("categories", categories);
+
+        if (inRange.HasValue)
+            FillSetting("inRange", inRange.Value.ToOptionObject());
+
+        if (outOfRange.HasValue)
+            FillSetting("outOfRange", outOfRange.Value.ToOptionObject());
+
+        if (controller != null)
+            FillSetting("controller", controller.ToOptionObject());
+
+        if (!string.IsNullOrEmpty(orient))
+            FillSetting("orient", orient);
+    }
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        if (Base is ECharts component)
+        {
+            component.SetVisualMapData((visualMapData) =>
+            {
+                if (!visualMapData.Contains(setting))
+                    visualMapData.Add(setting);
+            });
+        }
+
+        return setting;
+    }
+
+
+    public void SetHandleStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("handleStyle", handleStyle);
+        action?.Invoke(handleStyle);
+    }
+
+    public void SetTextStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("textStyle", textStyle);
+        action?.Invoke(textStyle);
+    }
+
+    public void SetIndicatorStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("indicatorStyle", indicatorStyle);
+        action?.Invoke(indicatorStyle);
+    }
+
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            if (Base is ECharts component)
+            {
+                component.RemoveVisualMapData(setting);
+            }
+        }
+    }
+}

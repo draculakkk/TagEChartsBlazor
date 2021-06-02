@@ -1,0 +1,141 @@
+﻿@inherits BaseStyle
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is Data datacomponent)
+        {
+            datacomponent.SetItemStyle((itemStyle) =>
+            {
+                setting = itemStyle;
+            });
+        }
+        else if (Base is Nodes ndcomponent)
+        {
+            ndcomponent.SetItemStyle((itemStyle) =>
+            {
+                setting = itemStyle;
+            });
+        }
+        else if (Base is Series scomponent)
+        {
+            scomponent.SetItemStyle((itemStyle) =>
+            {
+                setting = itemStyle;
+            });
+        }
+        else if (Base is Emphasis emcomponent)
+        {
+            emcomponent.SetItemStyle((itemStyle) =>
+            {
+                setting = itemStyle;
+            });
+        }
+        else if (Base is Blur blcomponent)
+        {
+            blcomponent.SetItemStyle((itemStyle) =>
+            {
+                setting = itemStyle;
+            });
+        }
+        else if (Base is Select slcomponent)
+        {
+            slcomponent.SetItemStyle((itemStyle) =>
+            {
+                setting = itemStyle;
+            });
+        }
+        else if (Base is MarkPoint mpcomponent)
+        {
+            mpcomponent.SetItemStyle((itemStyle) =>
+            {
+                setting = itemStyle;
+            });
+        }
+        else if (Base is MarkArea macomponent)
+        {
+            macomponent.SetItemStyle((itemStyle) =>
+            {
+                setting = itemStyle;
+            });
+        }
+        else if (Base is Leaves lecomponent)
+        {
+            lecomponent.SetItemStyle((itemStyle) =>
+            {
+                setting = itemStyle;
+            });
+        }
+        else if (Base is Categories cacomponent)
+        {
+            cacomponent.SetItemStyle((itemStyle) =>
+            {
+                setting = itemStyle;
+            });
+        }
+        else if (Base is Levels lvcomponent)
+        {
+            lvcomponent.SetItemStyle((itemStyle) =>
+            {
+                setting = itemStyle;
+            });
+        }
+        else if (Base is Progress prcomponent)
+        {
+            prcomponent.SetItemStyle((itemStyle) =>
+            {
+                setting = itemStyle;
+            });
+        }
+        else if (Base is Pointer ptcomponent)
+        {
+            ptcomponent.SetItemStyle((itemStyle) =>
+            {
+                setting = itemStyle;
+            });
+        }
+        else if (Base is Anchor ancomponent)
+        {
+            ancomponent.SetItemStyle((itemStyle) =>
+            {
+                setting = itemStyle;
+            });
+        }
+        else if (Base is Geo geocomponent)
+        {
+            geocomponent.SetItemStyle((itemStyle) =>
+            {
+                setting = itemStyle;
+            });
+        }
+        else if (Base is Geo regcomponent)
+        {
+            regcomponent.SetItemStyle((itemStyle) =>
+            {
+                setting = itemStyle;
+            });
+        }
+        else if (Base is Timeline tlcomponent)
+        {
+            tlcomponent.SetItemStyle((itemStyle) =>
+            {
+                setting = itemStyle;
+            });
+        }
+        else if (Base is Calendar cdcomponent)
+        {
+            cdcomponent.SetItemStyle((itemStyle) =>
+            {
+                setting = itemStyle;
+            });
+        }
+
+        return setting ?? new Dictionary<string, object>();
+    }
+}

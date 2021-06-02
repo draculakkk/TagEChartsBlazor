@@ -1,0 +1,52 @@
+﻿@inherits BaseItemComponent
+
+@code {
+    [Parameter]
+    public string? name { get; set; }
+
+    /// <summary>
+    /// 此维度的类型，如果类型没有被定义，会自动猜测类型。 可选：number ordinal float int time，
+    /// </summary>
+    [Parameter]
+    public string? type { get; set; }
+
+    /// <summary>
+    /// 一般用于 tooltip 中维度名的展示
+    /// </summary>
+    [Parameter]
+    public string? displayName { get; set; }
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is Dataset dscomponent)
+        {
+            dscomponent.SetDimensions((dimensions) =>
+            {
+                setting = dimensions;
+            });
+        }
+        else if (Base is Series scomponent)
+        {
+            scomponent.SetDimensions((dimensions) =>
+            {
+                setting = dimensions;
+            });
+        }
+
+        return setting ?? new Dictionary<string, object>();
+    }
+
+    public override void SetSetting(IDictionary<string, object> setting)
+    {
+        if (!string.IsNullOrEmpty(name))
+            FillSetting("name", name);
+
+        if (!string.IsNullOrEmpty(type))
+            FillSetting("type", type);
+
+        if (!string.IsNullOrEmpty(displayName))
+            FillSetting("displayName", displayName);
+    }
+}

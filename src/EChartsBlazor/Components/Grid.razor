@@ -1,0 +1,181 @@
+﻿@inherits BaseChartComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    private IDictionary<string, object> tooltip = new Dictionary<string, object>();
+
+    protected override string ComponentName => "grid";
+
+    /// <summary>
+    /// 组件 ID
+    /// </summary>
+    [Parameter]
+    public string? id { get; set; }
+
+    /// <summary>
+    /// 是否显示直角坐标系网格
+    /// </summary>
+    [Parameter]
+    public bool? show { get; set; }
+
+    /// <summary>
+    /// 所有图形的 zlevel 值
+    /// </summary>
+    [Parameter]
+    public int? zlevel { get; set; }
+
+    /// <summary>
+    /// 组件的所有图形的z值
+    /// </summary>
+    [Parameter]
+    public int? z { get; set; }
+
+    /// <summary>
+    /// grid 组件离容器左侧的距离
+    /// </summary>
+    [Parameter]
+    public string? left { get; set; }
+
+    /// <summary>
+    /// grid 组件离容器右侧的距离
+    /// </summary>
+    [Parameter]
+    public string? right { get; set; }
+
+    /// <summary>
+    /// grid 组件离容器上侧的距离
+    /// </summary>
+    [Parameter]
+    public string? top { get; set; }
+
+    /// <summary>
+    /// grid 组件离容器下侧的距离
+    /// </summary>
+    [Parameter]
+    public string? bottom { get; set; }
+
+    /// <summary>
+    /// grid 组件的宽度
+    /// </summary>
+    [Parameter]
+    public string? width { get; set; }
+
+    /// <summary>
+    /// grid 组件的高度
+    /// </summary>
+    [Parameter]
+    public string? height { get; set; }
+
+    /// <summary>
+    /// grid 区域是否包含坐标轴的刻度标签
+    /// </summary>
+    [Parameter]
+    public bool? containLabel { get; set; }
+
+    /// <summary>
+    /// 网格背景色，默认透明
+    /// </summary>
+    [Parameter]
+    public string? backgroundColor { get; set; }
+
+    /// <summary>
+    /// 网格的边框颜色。支持的颜色格式同 backgroundColor
+    /// </summary>
+    [Parameter]
+    public string? borderColor { get; set; }
+
+    /// <summary>
+    /// 网格的边框线宽
+    /// </summary>
+    [Parameter]
+    public int? borderWidth { get; set; }
+
+    /// <summary>
+    /// 图形阴影的模糊大小
+    /// </summary>
+    [Parameter]
+    public int? shadowBlur { get; set; }
+
+    /// <summary>
+    /// 阴影颜色
+    /// </summary>
+    [Parameter]
+    public string? shadowColor { get; set; }
+
+    /// <summary>
+    /// 阴影水平方向上的偏移距离
+    /// </summary>
+    [Parameter]
+    public int? shadowOffsetX { get; set; }
+
+    /// <summary>
+    /// 阴影水平方向上的偏移距离
+    /// </summary>
+    [Parameter]
+    public int? shadowOffsetY { get; set; }
+
+    protected override Task SetParametersAsync()
+    {
+        if (!string.IsNullOrEmpty(id))
+            FillSetting("id", id);
+
+        if (zlevel.HasValue)
+            FillSetting("zlevel", zlevel.Value);
+
+        if (z.HasValue)
+            FillSetting("z", z.Value);
+
+        if (!string.IsNullOrEmpty(left))
+            FillSetting("left", left);
+
+        if (!string.IsNullOrEmpty(right))
+            FillSetting("right", right);
+
+        if (!string.IsNullOrEmpty(top))
+            FillSetting("top", top);
+
+        if (!string.IsNullOrEmpty(bottom))
+            FillSetting("bottom", bottom);
+
+        if (!string.IsNullOrEmpty(width))
+            FillSetting("width", width);
+
+        if (!string.IsNullOrEmpty(height))
+            FillSetting("height", height);
+
+        if (containLabel.HasValue)
+            FillSetting("containLabel", containLabel.Value);
+
+        if (!string.IsNullOrEmpty(backgroundColor))
+            FillSetting("backgroundColor", backgroundColor);
+
+        if (!string.IsNullOrEmpty(borderColor))
+            FillSetting("borderColor", borderColor);
+
+        if (borderWidth.HasValue)
+            FillSetting("borderWidth", borderWidth.Value);
+
+        if (shadowBlur.HasValue)
+            FillSetting("shadowBlur", shadowBlur.Value);
+
+        if (!string.IsNullOrEmpty(shadowColor))
+            FillSetting("shadowColor", shadowColor);
+
+        if (shadowOffsetX.HasValue)
+            FillSetting("shadowOffsetX", shadowOffsetX.Value);
+
+        if (shadowOffsetY.HasValue)
+            FillSetting("shadowOffsetY", shadowOffsetY.Value);
+
+        return Task.CompletedTask;
+    }
+
+    public void SetTooltip(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("tooltip", tooltip);
+        action?.Invoke(tooltip);
+    }
+}

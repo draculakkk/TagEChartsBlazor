@@ -1,0 +1,19 @@
+﻿@inherits Label
+
+@code {
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is Calendar cdcomponent)
+        {
+            cdcomponent.SetYearLabel((yearLabel) =>
+            {
+                setting = yearLabel;
+            });
+        }
+
+        return setting ?? new Dictionary<string, object>();
+    }
+}

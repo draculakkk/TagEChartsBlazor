@@ -1,0 +1,70 @@
+﻿@inherits BaseItemComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    private IDictionary<string, object> lineStyle = new Dictionary<string, object>();
+
+    /// <summary>
+    /// 是否显示次分隔线。默认不显示
+    /// </summary>
+    [Parameter]
+    public bool? show { get; set; }
+
+    public override void SetSetting(IDictionary<string, object> setting)
+    {
+        if (show.HasValue)
+            FillSetting("show", show.Value);
+    }
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is YAxis ycomponent)
+        {
+            ycomponent.SetMinorSplitLine((minorSplitLine) =>
+            {
+                setting = minorSplitLine;
+            });
+        }
+        else if (Base is XAxis xcomponent)
+        {
+            xcomponent.SetMinorSplitLine((minorSplitLine) =>
+            {
+                setting = minorSplitLine;
+            });
+        }
+        else if (Base is RadiusAxis rcomponent)
+        {
+            rcomponent.SetMinorSplitLine((minorSplitLine) =>
+            {
+                setting = minorSplitLine;
+            });
+        }
+        else if (Base is AngleAxis acomponent)
+        {
+            acomponent.SetMinorSplitLine((minorSplitLine) =>
+            {
+                setting = minorSplitLine;
+            });
+        }
+        else if (Base is SingleAxis sicomponent)
+        {
+            sicomponent.SetMinorSplitLine((minorSplitLine) =>
+            {
+                setting = minorSplitLine;
+            });
+        }
+
+        return setting ?? new Dictionary<string, object>();
+    }
+
+    public void SetLineStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("lineStyle", lineStyle);
+        action?.Invoke(lineStyle);
+    }
+}

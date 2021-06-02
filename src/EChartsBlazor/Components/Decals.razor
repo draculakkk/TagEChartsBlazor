@@ -1,0 +1,107 @@
+﻿@inherits BaseItemComponent
+
+@code {
+    /// <summary>
+    /// 贴花的图案，如果是 string[] 表示循环使用数组中的图案
+    /// </summary>
+    [Parameter]
+    public dynamic? symbol { get; set; }
+
+    /// <summary>
+    /// 取值范围：0 到 1，表示占图案区域的百分比
+    /// </summary>
+    [Parameter]
+    public float? symbolSize { get; set; }
+
+    /// <summary>
+    /// 是否保持图案的长宽比
+    /// </summary>
+    [Parameter]
+    public bool? symbolKeepAspect { get; set; }
+
+    /// <summary>
+    /// 贴花图案的颜色，建议使用半透明色，这样能叠加在系列本身的颜色上
+    /// </summary>
+    [Parameter]
+    public string? color { get; set; }
+
+    /// <summary>
+    /// 贴花的背景色，将会覆盖在系列本身颜色之上，贴花图案之下
+    /// </summary>
+    [Parameter]
+    public string? backgroundColor { get; set; }
+
+    /// <summary>
+    /// 贴花图案的基本模式是在横向和纵向上分别以图案 - 空白 - 图案 - 空白 - 图案 - 空白的形式无限循环
+    /// </summary>
+    [Parameter]
+    public dynamic? dashArrayX { get; set; }
+
+    /// <summary>
+    /// 贴花图案的基本模式是在横向和纵向上分别以图案 - 空白 - 图案 - 空白 - 图案 - 空白的形式无限循环
+    /// </summary>
+    [Parameter]
+    public dynamic? dashArrayY { get; set; }
+
+    /// <summary>
+    /// 图案的整体旋转角度（弧度制），取值范围从 -Math.PI 到 Math.PI
+    /// </summary>
+    [Parameter]
+    public float? rotation { get; set; }
+
+    /// <summary>
+    /// 生成的图案在未重复之前的宽度上限
+    /// </summary>
+    [Parameter]
+    public int? maxTileWidth { get; set; }
+
+    /// <summary>
+    /// 生成的图案在未重复之前的高度上限
+    /// </summary>
+    [Parameter]
+    public int? maxTileHeight { get; set; }
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is Decal decomponent)
+        {
+            decomponent.SetDecals((decals) =>
+            {
+                setting = decals;
+            });
+        }
+        return setting ?? new Dictionary<string, object>();
+    }
+
+    public override void SetSetting(IDictionary<string, object> setting)
+    {
+        if (symbol != null)
+            FillSetting("symbol", symbol);
+
+        if (symbolSize.HasValue)
+            FillSetting("symbolSize", symbolSize.Value);
+
+        if (symbolKeepAspect.HasValue)
+            FillSetting("symbolKeepAspect", symbolKeepAspect.Value);
+
+        if (!string.IsNullOrEmpty(color))
+            FillSetting("color", color);
+
+        if (!string.IsNullOrEmpty(backgroundColor))
+            FillSetting("backgroundColor", backgroundColor);
+
+        if (dashArrayX != null)
+            FillSetting("dashArrayX", dashArrayX);
+
+        if (dashArrayY != null)
+            FillSetting("dashArrayY", dashArrayY);
+
+        if (maxTileWidth.HasValue)
+            FillSetting("maxTileWidth", maxTileWidth.Value);
+
+        if (maxTileHeight.HasValue)
+            FillSetting("maxTileHeight", maxTileHeight.Value);
+    }
+}

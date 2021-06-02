@@ -1,0 +1,143 @@
+﻿@inherits BaseItemComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    private IDictionary<string, object> colorex = new Dictionary<string, object>();
+
+    /// <summary>
+    /// 填充的颜色
+    /// </summary>
+    [Parameter]
+    public dynamic? color { get; set; }
+
+    /// <summary>
+    /// 图形区域的起始位置 可选值包括 'auto'（默认值）、 'start'、 'end'
+    /// </summary>
+    [Parameter]
+    public string? origin { get; set; }
+
+    /// <summary>
+    /// 图形阴影的模糊大小
+    /// </summary>
+    [Parameter]
+    public int? shadowBlur { get; set; }
+
+    /// <summary>
+    /// 阴影颜色阴影水平方向上的偏移距离
+    /// </summary>
+    [Parameter]
+    public string? shadowColor { get; set; }
+
+    /// <summary>
+    /// 阴影水平方向上的偏移距离
+    /// </summary>
+    [Parameter]
+    public int? shadowOffsetX { get; set; }
+
+    /// <summary>
+    /// 阴影垂直方向上的偏移距离
+    /// </summary>
+    [Parameter]
+    public int? shadowOffsetY { get; set; }
+
+    /// <summary>
+    /// 图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形
+    /// </summary>
+    [Parameter]
+    public float? opacity { get; set; }
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is SplitArea sacomponent)
+        {
+            sacomponent.SetAreaStyle((areaStyle) =>
+            {
+                setting = areaStyle;
+            });
+        }
+        else if (Base is DataBackground dbcomponent)
+        {
+            dbcomponent.SetAreaStyle((areaStyle) =>
+            {
+                setting = areaStyle;
+            });
+        }
+        else if (Base is SelectedDataBackground sdbcomponent)
+        {
+            sdbcomponent.SetAreaStyle((areaStyle) =>
+            {
+                setting = areaStyle;
+            });
+        }
+        else if (Base is Series scomponent)
+        {
+            scomponent.SetAreaStyle((areaStyle) =>
+            {
+                setting = areaStyle;
+            });
+        }
+        else if (Base is Emphasis emcomponent)
+        {
+            emcomponent.SetAreaStyle((areaStyle) =>
+            {
+                setting = areaStyle;
+            });
+        }
+        else if (Base is Blur blcomponent)
+        {
+            blcomponent.SetAreaStyle((areaStyle) =>
+            {
+                setting = areaStyle;
+            });
+        }
+        else if (Base is Select slcomponent)
+        {
+            slcomponent.SetAreaStyle((areaStyle) =>
+            {
+                setting = areaStyle;
+            });
+        }
+        return setting ?? new Dictionary<string, object>();
+    }
+
+    public override void SetSetting(IDictionary<string, object> setting)
+    {
+        if (color != null)
+            FillSetting("color", color);
+
+        if (!string.IsNullOrEmpty(origin))
+            FillSetting("origin", origin);
+
+        if (shadowBlur.HasValue)
+            FillSetting("shadowBlur", shadowBlur.Value);
+
+        if (!string.IsNullOrEmpty(shadowColor))
+            FillSetting("shadowColor", shadowColor);
+
+        if (shadowBlur.HasValue)
+            FillSetting("shadowBlur", shadowBlur.Value);
+
+        if (!string.IsNullOrEmpty(shadowColor))
+            FillSetting("shadowColor", shadowColor);
+
+        if (shadowOffsetX.HasValue)
+            FillSetting("shadowOffsetX", shadowOffsetX.Value);
+
+        if (shadowOffsetY.HasValue)
+            FillSetting("shadowOffsetY", shadowOffsetY.Value);
+
+        if (opacity.HasValue)
+            FillSetting("opacity", opacity.Value);
+    }
+
+    public void SetColor(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("color", colorex);
+        action?.Invoke(colorex);
+    }
+}

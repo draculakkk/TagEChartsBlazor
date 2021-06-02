@@ -1,0 +1,72 @@
+﻿@inherits BaseItemComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    Dictionary<string, object> setting = new Dictionary<string, object>();
+
+    /// <summary>
+    /// 指示器名称
+    /// </summary>
+    [Parameter]
+    public string? name { get; set; }
+
+    /// <summary>
+    /// 指示器的最大值，可选，建议设置
+    /// </summary>
+    [Parameter]
+    public int? max { get; set; }
+
+    /// <summary>
+    /// 指示器的最小值，可选，默认为 0
+    /// </summary>
+    [Parameter]
+    public int? min { get; set; }
+
+    /// <summary>
+    /// 标签特定的颜色
+    /// </summary>
+    [Parameter]
+    public string? color { get; set; }
+
+    public override void SetSetting(IDictionary<string, object> setting)
+    {
+        if (!string.IsNullOrEmpty(name))
+            FillSetting("name", name);
+
+        if (max.HasValue)
+            FillSetting("max", max.Value);
+
+        if (min.HasValue)
+            FillSetting("min", min.Value);
+
+        if (!string.IsNullOrEmpty(color))
+            FillSetting("color", color);
+    }
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        if (Base is Radar component)
+        {
+            component.SetRadarIndicator((radarIndicator) =>
+            {
+                if (!radarIndicator.Contains(setting))
+                    radarIndicator.Add(setting);
+            });
+        }
+        return setting;
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            if (Base is Radar component)
+            {
+                component.RemoveRadarIndicator(setting);
+            }
+        }
+    }
+}

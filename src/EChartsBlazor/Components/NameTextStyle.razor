@@ -1,0 +1,57 @@
+﻿@inherits BaseTextStyle
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is YAxis ycomponent)
+        {
+            ycomponent.SetNameTextStyle((textStyle) =>
+            {
+                setting = textStyle;
+            });
+        }
+        else if (Base is XAxis xcomponent)
+        {
+            xcomponent.SetNameTextStyle((textStyle) =>
+            {
+                setting = textStyle;
+            });
+        }
+        if (Base is RadiusAxis rcomponent)
+        {
+            rcomponent.SetNameTextStyle((textStyle) =>
+            {
+                setting = textStyle;
+            });
+        }
+        if (Base is ParallelAxisDefault plrcomponent)
+        {
+            plrcomponent.SetNameTextStyle((textStyle) =>
+            {
+                setting = textStyle;
+            });
+        }
+        if (Base is ParallelAxis placomponent)
+        {
+            placomponent.SetNameTextStyle((textStyle) =>
+            {
+                setting = textStyle;
+            });
+        }
+        if (Base is SingleAxis sicomponent)
+        {
+            sicomponent.SetNameTextStyle((textStyle) =>
+            {
+                setting = textStyle;
+            });
+        }
+
+        return setting ?? new Dictionary<string, object>();
+    }
+}

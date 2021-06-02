@@ -1,0 +1,456 @@
+﻿@inherits BaseItemComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    private IDictionary<string, IDictionary<string, object>> rich = new Dictionary<string, IDictionary<string, object>>();
+    private IDictionary<string, object> textStyle = new Dictionary<string, object>();
+    private IDictionary<string, object> colorex = new Dictionary<string, object>();
+
+    /// <summary>
+    /// 是否显示刻度标签
+    /// </summary>
+    [Parameter]
+    public bool? show { get; set; }
+
+    /// <summary>
+    /// 刻度标签是否朝内，默认朝外
+    /// </summary>
+    [Parameter]
+    public bool? inside { get; set; }
+
+    /// <summary>
+    /// 刻度标签旋转的角度
+    /// </summary>
+    [Parameter]
+    public int? rotate { get; set; }
+
+    /// <summary>
+    /// 刻度标签与轴线之间的距离
+    /// </summary>
+    [Parameter]
+    public int? margin { get; set; }
+
+    /// <summary>
+    /// 坐标轴刻度标签的显示间隔
+    /// </summary>
+    [Parameter]
+    public string? interval { get; set; }
+
+    /// <summary>
+    /// 刻度标签的内容格式器
+    /// </summary>
+    [Parameter]
+    public string? formatter { get; set; }
+
+    /// <summary>
+    /// 是否显示最小 tick 的 label
+    /// </summary>
+    [Parameter]
+    public bool? showMinLabel { get; set; }
+
+    /// <summary>
+    /// 是否显示最大 tick 的 label
+    /// </summary>
+    [Parameter]
+    public bool? showMaxLabel { get; set; }
+
+    /// <summary>
+    /// 刻度标签文字的颜色
+    /// </summary>
+    [Parameter]
+    public string? color { get; set; }
+
+    /// <summary>
+    /// 文字字体的风格。可选：'normal' 'italic' 'oblique'
+    /// </summary>
+    [Parameter]
+    public string? fontStyle { get; set; }
+
+    /// <summary>
+    /// 文字字体的粗细。可选：'normal' 'bold''bolder' 'lighter' 100 | 200 | 300 | 400...
+    /// </summary>
+    [Parameter]
+    public string? fontWeight { get; set; }
+
+    /// <summary>
+    /// 文字的字体系列
+    /// </summary>
+    [Parameter]
+    public string? fontFamily { get; set; }
+
+    /// <summary>
+    /// 文字的字体大小
+    /// </summary>
+    [Parameter]
+    public int? fontSize { get; set; }
+
+    /// <summary>
+    /// 文字水平对齐方式，默认自动。可选：'left' 'center' 'right'
+    /// </summary>
+    [Parameter]
+    public string? align { get; set; }
+
+    /// <summary>
+    /// 文字垂直对齐方式，默认自动。可选：'top' 'middle' 'bottom'
+    /// </summary>
+    [Parameter]
+    public string? verticalAlign { get; set; }
+
+    /// <summary>
+    /// 行高
+    /// </summary>
+    [Parameter]
+    public int? lineHeight { get; set; }
+
+    /// <summary>
+    /// 文字块背景色
+    /// </summary>
+    [Parameter]
+    public string? backgroundColor { get; set; }
+
+    /// <summary>
+    /// 文字块边框颜色
+    /// </summary>
+    [Parameter]
+    public string? borderColor { get; set; }
+
+    /// <summary>
+    /// 文字块边框宽度
+    /// </summary>
+    [Parameter]
+    public int? borderWidth { get; set; }
+
+    /// <summary>
+    /// 文字块边框描边类型。 可选：'solid' 'dashed' 'dotted'
+    /// </summary>
+    [Parameter]
+    public dynamic? borderType { get; set; }
+
+    /// <summary>
+    /// 用于设置虚线的偏移量
+    /// </summary>
+    [Parameter]
+    public int? borderDashOffset { get; set; }
+
+    /// <summary>
+    /// 文字块的圆角
+    /// </summary>
+    [Parameter]
+    public dynamic? borderRadius { get; set; }
+
+    /// <summary>
+    /// 标题内边距
+    /// </summary>
+    [Parameter]
+    public dynamic? padding { get; set; }
+
+    /// <summary>
+    /// 阴影颜色
+    /// </summary>
+    [Parameter]
+    public string? shadowColor { get; set; }
+
+    /// <summary>
+    /// 图形阴影的模糊大小
+    /// </summary>
+    [Parameter]
+    public int? shadowBlur { get; set; }
+
+    /// <summary>
+    /// 阴影水平方向上的偏移距离
+    /// </summary>
+    [Parameter]
+    public int? shadowOffsetX { get; set; }
+
+    /// <summary>
+    /// 阴影垂直方向上的偏移距离
+    /// </summary>
+    [Parameter]
+    public int? shadowOffsetY { get; set; }
+
+    /// <summary>
+    /// 文本显示宽度
+    /// </summary>
+    [Parameter]
+    public int? width { get; set; }
+
+    /// <summary>
+    /// 文本显示高度
+    /// </summary>
+    [Parameter]
+    public int? height { get; set; }
+
+    /// <summary>
+    /// 文字本身的描边颜色
+    /// </summary>
+    [Parameter]
+    public string? textBorderColor { get; set; }
+
+    /// <summary>
+    /// 文字本身的描边宽度
+    /// </summary>
+    [Parameter]
+    public int? textBorderWidth { get; set; }
+
+    /// <summary>
+    /// 文字本身的阴影颜色
+    /// </summary>
+    [Parameter]
+    public string? textShadowColor { get; set; }
+
+    /// <summary>
+    /// 文字本身的阴影长度
+    /// </summary>
+    [Parameter]
+    public int? textShadowBlur { get; set; }
+
+    /// <summary>
+    /// 文字本身的阴影 X 偏移
+    /// </summary>
+    [Parameter]
+    public int? textShadowOffsetX { get; set; }
+
+    /// <summary>
+    /// 文字本身的阴影 Y 偏移
+    /// </summary>
+    [Parameter]
+    public int? textShadowOffsetY { get; set; }
+
+    /// <summary>
+    /// 文字超出宽度是否截断或者换行 可选：'truncate' 截断 'break' 换行 'breakAll'换行,还会强制单词内换行图例组件离容器上侧的距离
+    /// </summary>
+    [Parameter]
+    public string? overflow { get; set; }
+
+    /// <summary>
+    /// 在overflow配置为'truncate'的时候，可以通过该属性配置末尾显示的文本
+    /// </summary>
+    [Parameter]
+    public string? ellipsis { get; set; }
+
+    /// <summary>
+    /// 文本超出高度部分是否截断，配置height时有效 可选：'truncate' 在文本行数超出高度部分截断
+    /// </summary>
+    [Parameter]
+    public string? lineOverflow { get; set; }
+
+    /// <summary>
+    /// 距离图形元素的距离
+    /// </summary>
+    [Parameter]
+    public int? distance { get; set; }
+
+
+    public override void SetSetting(IDictionary<string, object> setting)
+    {
+        if (show.HasValue)
+            FillSetting("show", show.Value);
+
+        if (inside.HasValue)
+            FillSetting("inside", inside.Value);
+
+        if (rotate.HasValue)
+            FillSetting("rotate", rotate.Value);
+
+        if (margin.HasValue)
+            FillSetting("margin", margin.Value);
+
+        if (!string.IsNullOrWhiteSpace(interval))
+            FillSetting("interval", interval);
+
+        if (!string.IsNullOrWhiteSpace(formatter))
+            FillSetting("formatter", formatter);
+
+        if (showMinLabel.HasValue)
+            FillSetting("showMinLabel", showMinLabel.Value);
+
+        if (showMaxLabel.HasValue)
+            FillSetting("showMaxLabel", showMaxLabel.Value);
+
+        if (!string.IsNullOrWhiteSpace(color))
+            FillSetting("color", color);
+
+        if (!string.IsNullOrWhiteSpace(fontStyle))
+            FillSetting("fontStyle", fontStyle);
+
+        if (!string.IsNullOrWhiteSpace(fontWeight))
+            FillSetting("fontWeight", fontWeight);
+
+        if (!string.IsNullOrWhiteSpace(fontFamily))
+            FillSetting("fontFamily", fontFamily);
+
+        if (fontSize.HasValue)
+            FillSetting("fontSize", fontSize.Value);
+
+        if (!string.IsNullOrWhiteSpace(align))
+            FillSetting("align", align);
+
+        if (!string.IsNullOrWhiteSpace(verticalAlign))
+            FillSetting("verticalAlign", verticalAlign);
+
+        if (lineHeight.HasValue)
+            FillSetting("lineHeight", lineHeight.Value);
+
+        if (!string.IsNullOrWhiteSpace(backgroundColor))
+            FillSetting("backgroundColor", backgroundColor);
+
+        if (!string.IsNullOrWhiteSpace(borderColor))
+            FillSetting("borderColor", borderColor);
+
+        if (borderWidth.HasValue)
+            FillSetting("borderWidth", borderWidth.Value);
+
+        if (borderType != null)
+            FillSetting("borderType", borderType);
+
+        if (borderDashOffset.HasValue)
+            FillSetting("borderDashOffset", borderDashOffset.Value);
+
+        if (borderRadius != null)
+            FillSetting("borderRadius", borderRadius);
+
+        if (padding != null)
+            FillSetting("padding", padding);
+
+        if (!string.IsNullOrWhiteSpace(shadowColor))
+            FillSetting("shadowColor", shadowColor);
+
+        if (shadowBlur.HasValue)
+            FillSetting("shadowBlur", shadowBlur.Value);
+
+        if (shadowOffsetX.HasValue)
+            FillSetting("shadowOffsetX", shadowOffsetX.Value);
+
+        if (shadowOffsetY.HasValue)
+            FillSetting("shadowOffsetY", shadowOffsetY.Value);
+
+        if (width.HasValue)
+            FillSetting("width", width.Value);
+
+        if (height.HasValue)
+            FillSetting("height", height.Value);
+
+        if (!string.IsNullOrWhiteSpace(textBorderColor))
+            FillSetting("textBorderColor", textBorderColor);
+
+        if (textBorderWidth.HasValue)
+            FillSetting("textBorderWidth", textBorderWidth.Value);
+
+        if (!string.IsNullOrWhiteSpace(textShadowColor))
+            FillSetting("textShadowColor", textShadowColor);
+
+        if (textShadowBlur.HasValue)
+            FillSetting("textShadowBlur", textShadowBlur.Value);
+
+        if (textShadowOffsetX.HasValue)
+            FillSetting("textShadowOffsetX", textShadowOffsetX.Value);
+
+        if (textShadowOffsetY.HasValue)
+            FillSetting("textShadowOffsetY", textShadowOffsetY.Value);
+
+        if (!string.IsNullOrWhiteSpace(overflow))
+            FillSetting("overflow", overflow);
+
+        if (!string.IsNullOrWhiteSpace(ellipsis))
+            FillSetting("ellipsis", ellipsis);
+
+        if (!string.IsNullOrWhiteSpace(lineOverflow))
+            FillSetting("lineOverflow", lineOverflow);
+
+        if (distance.HasValue)
+            FillSetting("distance", distance.Value);
+    }
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is YAxis ycomponent)
+        {
+            ycomponent.SetAxisLabel((axisLabel) =>
+            {
+                setting = axisLabel;
+            });
+        }
+        else if (Base is XAxis xcomponent)
+        {
+            xcomponent.SetAxisLabel((axisLabel) =>
+            {
+                setting = axisLabel;
+            });
+        }
+        else if (Base is RadiusAxis rcomponent)
+        {
+            rcomponent.SetAxisLabel((axisLabel) =>
+            {
+                setting = axisLabel;
+            });
+        }
+        else if (Base is AngleAxis acomponent)
+        {
+            acomponent.SetAxisLabel((axisLabel) =>
+            {
+                setting = axisLabel;
+            });
+        }
+        else if (Base is Radar racomponent)
+        {
+            racomponent.SetAxisLabel((axisLabel) =>
+            {
+                setting = axisLabel;
+            });
+        }
+        else if (Base is Series scomponent)
+        {
+            scomponent.SetAxisLabel((axisLabel) =>
+            {
+                setting = axisLabel;
+            });
+        }
+        else if (Base is ParallelAxisDefault plrcomponent)
+        {
+            plrcomponent.SetAxisLabel((axisLabel) =>
+            {
+                setting = axisLabel;
+            });
+        }
+        else if (Base is ParallelAxis placomponent)
+        {
+            placomponent.SetAxisLabel((axisLabel) =>
+            {
+                setting = axisLabel;
+            });
+        }
+
+        else if (Base is SingleAxis sicomponent)
+        {
+            sicomponent.SetAxisLabel((axisLabel) =>
+            {
+                setting = axisLabel;
+            });
+        }
+
+        return setting ?? new Dictionary<string, object>();
+    }
+
+    public void SetRich(Action<IDictionary<string, IDictionary<string, object>>> action)
+    {
+        FillSetting("rich", rich);
+        action?.Invoke(rich);
+    }
+
+    public void SetTextStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("textStyle", textStyle);
+        action?.Invoke(textStyle);
+    }
+
+    public void SetBackgroundColor(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("backgroundColor", colorex);
+        action?.Invoke(colorex);
+    }
+}

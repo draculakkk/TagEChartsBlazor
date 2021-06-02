@@ -1,0 +1,502 @@
+﻿@inherits BaseChartComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    private IDictionary<string, object> textStyle = new Dictionary<string, object>();
+
+    private IDictionary<string, object> tooltip = new Dictionary<string, object>();
+
+    private IList<Dictionary<string, object>> legendData = new List<Dictionary<string, object>>();
+
+    private IDictionary<string, object> pageIcons = new Dictionary<string, object>();
+
+    private IDictionary<string, object> pageTextStyle = new Dictionary<string, object>();
+
+    private IDictionary<string, object> emphasis = new Dictionary<string, object>();
+
+    private IDictionary<string, object> selectorLabel = new Dictionary<string, object>();
+
+    protected override string ComponentName => "legend";
+
+    /// <summary>
+    /// 图例的数据数组
+    /// </summary>
+    [Parameter]
+    public object[]? data { get; set; }
+
+    /// <summary>
+    /// 组件 ID
+    /// </summary>
+    [Parameter]
+    public string? id { get; set; }
+
+    /// <summary>
+    /// 图例的类型。可选值：'plain' 'scroll'
+    /// </summary>
+    [Parameter]
+    public string? type { get; set; }
+
+    /// <summary>
+    /// 是否显示
+    /// </summary>
+    [Parameter]
+    public bool? show { get; set; }
+
+    /// <summary>
+    /// 所有图形的 zlevel 值
+    /// </summary>
+    [Parameter]
+    public int? zlevel { get; set; }
+
+    /// <summary>
+    /// 组件的所有图形的z值
+    /// </summary>
+    [Parameter]
+    public int? z { get; set; }
+
+    /// <summary>
+    /// 图例组件离容器左侧的距离
+    /// </summary>
+    [Parameter]
+    public string? left { get; set; }
+
+    /// <summary>
+    /// 图例组件离容器右侧的距离
+    /// </summary>
+    [Parameter]
+    public string? right { get; set; }
+
+    /// <summary>
+    /// 图例组件离容器上侧的距离
+    /// </summary>
+    [Parameter]
+    public string? top { get; set; }
+
+    /// <summary>
+    /// 图例组件离容器下侧的距离
+    /// </summary>
+    [Parameter]
+    public string? bottom { get; set; }
+
+    /// <summary>
+    /// 图例组件的宽度。默认自适应
+    /// </summary>
+    [Parameter]
+    public string? width { get; set; }
+
+    /// <summary>
+    /// 图例组件的高度。默认自适应
+    /// </summary>
+    [Parameter]
+    public string? height { get; set; }
+
+    /// <summary>
+    /// 图例列表的布局朝向。可选：'horizontal' 'vertical'
+    /// </summary>
+    [Parameter]
+    public string? orient { get; set; }
+
+    /// <summary>
+    /// 图例标记和文本的对齐。默认自动 可选：'auto' 'left' 'left'
+    /// </summary>
+    [Parameter]
+    public string? align { get; set; }
+
+    /// <summary>
+    /// 图例内边距
+    /// </summary>
+    [Parameter]
+    public dynamic? padding { get; set; }
+
+    /// <summary>
+    /// 图例每项之间的间隔
+    /// </summary>
+    [Parameter]
+    public int? itemGap { get; set; }
+
+    /// <summary>
+    /// 图例标记的图形宽度
+    /// </summary>
+    [Parameter]
+    public int? itemWidth { get; set; }
+
+    /// <summary>
+    /// 图例标记的图形高度
+    /// </summary>
+    [Parameter]
+    public int? itemHeight { get; set; }
+
+    [Parameter]
+    public bool? symbolKeepAspect { get; set; }
+
+    /// <summary>
+    /// 用来格式化图例文本，支持字符串模板和回调函数两种形式
+    /// </summary>
+    [Parameter]
+    public string? formatter { get; set; }
+
+    /// <summary>
+    /// 图例选择的模式
+    /// </summary>
+    [Parameter]
+    public bool? selectedMode { get; set; }
+
+    /// <summary>
+    /// 图例关闭时的颜色
+    /// </summary>
+    [Parameter]
+    public string? inactiveColor { get; set; }
+
+    /// <summary>
+    /// 图例关闭时的描边颜色
+    /// </summary>
+    [Parameter]
+    public string? inactiveBorderColor { get; set; }
+
+    /// <summary>
+    /// 图例关闭时的描边粗细
+    /// </summary>
+    [Parameter]
+    public string? inactiveBorderWidth { get; set; }
+
+    /// <summary>
+    /// 图例项的 icon
+    /// </summary>
+    [Parameter]
+    public string? icon { get; set; }
+
+    /// <summary>
+    /// 图例背景色，默认透明
+    /// </summary>
+    [Parameter]
+    public string? backgroundColor { get; set; }
+
+    /// <summary>
+    /// 图例的边框颜色
+    /// </summary>
+    [Parameter]
+    public string? borderColor { get; set; }
+
+    /// <summary>
+    /// 图例的边框线宽
+    /// </summary>
+    [Parameter]
+    public int? borderWidth { get; set; }
+
+    /// <summary>
+    /// 图例选中状态表
+    /// </summary>
+    [Parameter]
+    public Dictionary<string, bool>? selected { get; set; }
+
+    /// <summary>
+    /// 圆角半径
+    /// </summary>
+    [Parameter]
+    public decimal? borderRadius { get; set; }
+
+    /// <summary>
+    /// 图形阴影的模糊大小
+    /// </summary>
+    [Parameter]
+    public int? shadowBlur { get; set; }
+
+    /// <summary>
+    /// 阴影颜色
+    /// </summary>
+    [Parameter]
+    public string? shadowColor { get; set; }
+
+    /// <summary>
+    /// 阴影水平方向上的偏移距离
+    /// </summary>
+    [Parameter]
+    public int? shadowOffsetX { get; set; }
+
+    /// <summary>
+    /// 阴影垂直方向上的偏移距离
+    /// </summary>
+    [Parameter]
+    public int? shadowOffsetY { get; set; }
+
+    /// <summary>
+    /// 图例当前最左上显示项的 dataIndex
+    /// </summary>
+    [Parameter]
+    public int? scrollDataIndex { get; set; }
+
+    /// <summary>
+    /// 图例控制块中，按钮和页信息之间的间隔
+    /// </summary>
+    [Parameter]
+    public int? pageButtonItemGap { get; set; }
+
+    /// <summary>
+    /// 图例控制块和图例项之间的间隔
+    /// </summary>
+    [Parameter]
+    public int? pageButtonGap { get; set; }
+
+    /// <summary>
+    /// 图例控制块的位置。可选值为：'start'：控制块在左或上。 'end'：控制块在右或下。
+    /// </summary>
+    [Parameter]
+    public string? pageButtonPosition { get; set; }
+
+    /// <summary>
+    /// 图例控制块中，页信息的显示格式
+    /// </summary>
+    [Parameter]
+    public string? pageFormatter { get; set; }
+
+    /// <summary>
+    /// 翻页按钮的颜色
+    /// </summary>
+    [Parameter]
+    public string? pageIconColor { get; set; }
+
+    /// <summary>
+    /// 翻页按钮不激活时（即翻页到头时）的颜色
+    /// </summary>
+    [Parameter]
+    public string? pageIconInactiveColor { get; set; }
+
+    /// <summary>
+    /// 翻页按钮的大小。可以是数字，也可以是数组
+    /// </summary>
+    [Parameter]
+    public dynamic? pageIconSize { get; set; }
+
+    /// <summary>
+    /// 图例翻页是否使用动画
+    /// </summary>
+    [Parameter]
+    public bool? animation { get; set; }
+
+    /// <summary>
+    /// 图例翻页时的动画时长
+    /// </summary>
+    [Parameter]
+    public int? animationDurationUpdate { get; set; }
+
+    /// <summary>
+    /// 图例组件中的选择器按钮
+    /// </summary>
+    [Parameter]
+    public dynamic? selector { get; set; }
+
+    /// <summary>
+    /// 选择器的位置
+    /// </summary>
+    [Parameter]
+    public string? selectorPosition { get; set; }
+
+    /// <summary>
+    /// 选择器按钮之间的间隔
+    /// </summary>
+    [Parameter]
+    public int? selectorItemGap { get; set; }
+
+    /// <summary>
+    /// 选择器按钮与图例组件之间的间隔
+    /// </summary>
+    [Parameter]
+    public int? selectorButtonGap { get; set; }
+
+    protected override Task SetParametersAsync()
+    {
+        if (data != null && data.Length > 0)
+            FillSetting("data", data);
+
+        if (!string.IsNullOrEmpty(id))
+            FillSetting("id", id);
+
+        if (!string.IsNullOrEmpty(type))
+            FillSetting("type", type);
+
+        if (show.HasValue)
+            FillSetting("subtext", show.Value);
+
+        if (zlevel.HasValue)
+            FillSetting("zlevel", zlevel.Value);
+
+        if (z.HasValue)
+            FillSetting("z", z.Value);
+
+        if (!string.IsNullOrEmpty(left))
+            FillSetting("left", left);
+
+        if (!string.IsNullOrEmpty(right))
+            FillSetting("right", right);
+
+        if (!string.IsNullOrEmpty(top))
+            FillSetting("top", top);
+
+        if (!string.IsNullOrEmpty(bottom))
+            FillSetting("bottom", bottom);
+
+        if (!string.IsNullOrEmpty(width))
+            FillSetting("width", width);
+
+        if (!string.IsNullOrEmpty(height))
+            FillSetting("height", height);
+
+        if (!string.IsNullOrEmpty(orient))
+            FillSetting("orient", orient);
+
+        if (!string.IsNullOrEmpty(align))
+            FillSetting("align", align);
+
+        if (padding != null)
+            FillSetting("padding", padding);
+
+        if (itemWidth.HasValue)
+            FillSetting("itemWidth", itemWidth.Value);
+
+        if (itemHeight.HasValue)
+            FillSetting("itemHeight", itemHeight.Value);
+
+        if (symbolKeepAspect.HasValue)
+            FillSetting("symbolKeepAspect", symbolKeepAspect.Value);
+
+        if (!string.IsNullOrEmpty(formatter))
+            FillSetting("formatter", formatter);
+
+        if (selectedMode.HasValue)
+            FillSetting("selectedMode", selectedMode.Value);
+
+        if (!string.IsNullOrEmpty(inactiveColor))
+            FillSetting("inactiveColor", inactiveColor);
+
+        if (!string.IsNullOrEmpty(inactiveBorderColor))
+            FillSetting("inactiveBorderColor", inactiveBorderColor);
+
+        if (!string.IsNullOrEmpty(inactiveBorderWidth))
+            FillSetting("inactiveBorderWidth", inactiveBorderWidth);
+
+        if (selected != null && selected.Count > 0)
+            FillSetting("selected", selected);
+
+        if (!string.IsNullOrEmpty(icon))
+            FillSetting("icon", icon);
+
+        if (!string.IsNullOrEmpty(backgroundColor))
+            FillSetting("backgroundColor", backgroundColor);
+
+        if (!string.IsNullOrEmpty(borderColor))
+            FillSetting("borderColor", borderColor);
+
+        if (borderWidth.HasValue)
+            FillSetting("borderWidth", borderWidth.Value);
+
+        if (borderRadius != null)
+            FillSetting("borderRadius", borderRadius);
+
+        if (shadowBlur.HasValue)
+            FillSetting("shadowBlur", shadowBlur.Value);
+
+        if (!string.IsNullOrEmpty(shadowColor))
+            FillSetting("shadowColor", shadowColor);
+
+        if (shadowOffsetX.HasValue)
+            FillSetting("shadowOffsetX", shadowOffsetX.Value);
+
+        if (shadowOffsetY.HasValue)
+            FillSetting("shadowOffsetY", shadowOffsetY.Value);
+
+        if (scrollDataIndex.HasValue)
+            FillSetting("scrollDataIndex", scrollDataIndex.Value);
+
+        if (pageButtonItemGap.HasValue)
+            FillSetting("pageButtonItemGap", pageButtonItemGap.Value);
+
+        if (pageButtonGap.HasValue)
+            FillSetting("pageButtonGap", pageButtonGap.Value);
+
+        if (!string.IsNullOrEmpty(pageButtonPosition))
+            FillSetting("pageButtonPosition", pageButtonPosition);
+
+        if (!string.IsNullOrEmpty(pageFormatter))
+            FillSetting("pageFormatter", pageFormatter);
+
+        if (!string.IsNullOrEmpty(pageIconColor))
+            FillSetting("pageIconColor", pageIconColor);
+
+        if (!string.IsNullOrEmpty(pageIconInactiveColor))
+            FillSetting("pageIconInactiveColor", pageIconInactiveColor);
+
+        if (pageIconSize != null)
+            FillSetting("pageIconSize", pageIconSize);
+
+        if (animation.HasValue)
+            FillSetting("animation", animation.Value);
+
+        if (animationDurationUpdate.HasValue)
+            FillSetting("animationDurationUpdate", animationDurationUpdate.Value);
+
+        if (selector != null)
+            FillSetting("selector", selector);
+
+        if (!string.IsNullOrEmpty(selectorPosition))
+            FillSetting("selectorPosition", selectorPosition);
+
+        if (selectorItemGap.HasValue)
+            FillSetting("selectorItemGap", selectorItemGap.Value);
+
+        if (selectorButtonGap.HasValue)
+            FillSetting("selectorButtonGap", selectorButtonGap.Value);
+
+        return Task.CompletedTask;
+    }
+
+    public void SetTextStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("textStyle", textStyle);
+        action?.Invoke(textStyle);
+    }
+
+    public void SetTooltip(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("tooltip", tooltip);
+        action?.Invoke(tooltip);
+    }
+
+    public void SetLegendData(Action<IList<Dictionary<string, object>>> action)
+    {
+        FillSetting("data", legendData);
+        action?.Invoke(legendData);
+    }
+
+    public void RemoveLegendData(Dictionary<string, object> item)
+    {
+        if (legendData.Contains(item))
+            legendData.Remove(item);
+    }
+
+    public void SetPageIcons(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("pageIcons", pageIcons);
+        action?.Invoke(pageIcons);
+    }
+
+    public void SetPageTextStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("pageTextStyle", pageTextStyle);
+        action?.Invoke(pageTextStyle);
+    }
+
+    public void SetEmphasis(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("emphasis", emphasis);
+        action?.Invoke(emphasis);
+    }
+
+    public void SetSelectorLabel(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("selectorLabel", selectorLabel);
+        action?.Invoke(selectorLabel);
+    }
+}

@@ -1,0 +1,268 @@
+﻿@inherits BaseChartComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    private IDictionary<string, object> label = new Dictionary<string, object>();
+    private IDictionary<string, object> itemStyle = new Dictionary<string, object>();
+    private Dictionary<string, object> emphasis = new Dictionary<string, object>();
+    private Dictionary<string, object> select = new Dictionary<string, object>();
+    private Dictionary<string, object> blur = new Dictionary<string, object>();
+    private Dictionary<string, object> tooltip = new Dictionary<string, object>();
+    private IList<Dictionary<string, object>> regionsData = new List<Dictionary<string, object>>();
+
+    protected override string ComponentName => "geo";
+
+    /// <summary>
+    /// 组件 ID
+    /// </summary>
+    [Parameter]
+    public string? id { get; set; }
+
+    /// <summary>
+    /// 是否显示地理坐标系组件
+    /// </summary>
+    [Parameter]
+    public bool? show { get; set; }
+
+    /// <summary>
+    /// 使用 registerMap 注册的地图名称
+    /// </summary>
+    [Parameter]
+    public string? map { get; set; }
+
+    /// <summary>
+    /// 是否开启鼠标缩放和平移漫游。默认不开启。如果只想要开启缩放或者平移，可以设置成 'scale' 或者 'move'。设置成 true 为都开启
+    /// </summary>
+    [Parameter]
+    public dynamic? roam { get; set; }
+
+    /// <summary>
+    /// 当前视角的中心点，用经纬度表示
+    /// </summary>
+    [Parameter]
+    public float[]? center { get; set; }
+
+    /// <summary>
+    /// 这个参数用于 scale 地图的长宽比
+    /// </summary>
+    [Parameter]
+    public float? aspectScale { get; set; }
+
+    /// <summary>
+    /// 二维数组，定义定位的左上角以及右下角分别所对应的经纬度
+    /// </summary>
+    [Parameter]
+    public float[,]? boundingCoords { get; set; }
+
+    /// <summary>
+    /// 当前视角的缩放比例
+    /// </summary>
+    [Parameter]
+    public int? zoom { get; set; }
+
+    /// <summary>
+    /// 滚轮缩放的极限控制
+    /// </summary>
+    [Parameter]
+    public ScaleLimit? scaleLimit { get; set; }
+
+    /// <summary>
+    /// 自定义地区的名称映射
+    /// </summary>
+    [Parameter]
+    public object? nameMap { get; set; }
+
+    /// <summary>
+    /// 默认是 'name'，针对 GeoJSON 要素的自定义属性名称，作为主键用于关联数据点和 GeoJSON 地理要素
+    /// </summary>
+    [Parameter]
+    public string? nameProperty { get; set; }
+
+    /// <summary>
+    /// 选中模式，表示是否支持多个选中
+    /// </summary>
+    [Parameter]
+    public bool? selectedMode { get; set; }
+
+    /// <summary>
+    /// 所有图形的 zlevel 值
+    /// </summary>
+    [Parameter]
+    public int? zlevel { get; set; }
+
+    /// <summary>
+    /// 组件的所有图形的z值。控制图形的前后顺序。z值小的图形会被z值大的图形覆盖
+    /// </summary>
+    [Parameter]
+    public int? z { get; set; }
+
+    /// <summary>
+    /// 组件离容器左侧的距离
+    /// </summary>
+    [Parameter]
+    public string? left { get; set; }
+
+    /// <summary>
+    /// 组件离容器上侧的距离
+    /// </summary>
+    [Parameter]
+    public string? top { get; set; }
+
+    /// <summary>
+    /// 组件离容器右侧的距离
+    /// </summary>
+    [Parameter]
+    public string? right { get; set; }
+
+    /// <summary>
+    /// 组件离容器下侧的距离
+    /// </summary>
+    [Parameter]
+    public string? bottom { get; set; }
+
+    /// <summary>
+    /// 定义地图中心在屏幕中的位置
+    /// </summary>
+    [Parameter]
+    public object[]? layoutCenter { get; set; }
+
+    /// <summary>
+    /// 地图的大小，见 layoutCenter。支持相对于屏幕宽高的百分比或者绝对的像素大小
+    /// </summary>
+    [Parameter]
+    public string? layoutSize { get; set; }
+
+    /// <summary>
+    /// 图形是否不响应和触发鼠标事件，默认为 false，即响应和触发鼠标事件
+    /// </summary>
+    [Parameter]
+    public bool? silent { get; set; }
+
+    /// <summary>
+    /// 在地图中对特定的区域配置样式
+    /// </summary>
+    [Parameter]
+    public dynamic? regions { get; set; }
+
+    protected override Task SetParametersAsync()
+    {
+        if (!string.IsNullOrEmpty(id))
+            FillSetting("id", id);
+
+        if (show.HasValue)
+            FillSetting("show", show.Value);
+
+        if (!string.IsNullOrEmpty(map))
+            FillSetting("map", map);
+
+        if (roam != null)
+            FillSetting("roam", roam);
+
+        if (center != null && center.Length > 0)
+            FillSetting("center", center);
+
+        if (aspectScale.HasValue)
+            FillSetting("aspectScale", aspectScale.Value);
+
+        if (boundingCoords != null && boundingCoords.Length > 0)
+            FillSetting("boundingCoords", boundingCoords);
+
+        if (zoom.HasValue)
+            FillSetting("zoom", zoom.Value);
+
+        if (scaleLimit != null && scaleLimit.HasValue)
+            FillSetting("scaleLimit", scaleLimit.Value);
+
+        if (nameMap != null)
+            FillSetting("nameMap", nameMap);
+
+        if (!string.IsNullOrEmpty(nameProperty))
+            FillSetting("nameProperty", nameProperty);
+
+        if (selectedMode.HasValue)
+            FillSetting("selectedMode", selectedMode.Value);
+
+        if (zlevel.HasValue)
+            FillSetting("zlevel", zlevel.Value);
+
+        if (z.HasValue)
+            FillSetting("z", z.Value);
+
+        if (!string.IsNullOrEmpty(left))
+            FillSetting("left", left);
+
+        if (!string.IsNullOrEmpty(top))
+            FillSetting("top", top);
+
+        if (!string.IsNullOrEmpty(right))
+            FillSetting("right", right);
+
+        if (!string.IsNullOrEmpty(bottom))
+            FillSetting("bottom", bottom);
+
+        if (layoutCenter != null && layoutCenter.Length > 0)
+            FillSetting("layoutCenter", layoutCenter);
+
+        if (!string.IsNullOrEmpty(layoutSize))
+            FillSetting("layoutSize", layoutSize);
+
+        if (silent.HasValue)
+            FillSetting("silent", silent.Value);
+
+        if (regions != null)
+            FillSetting("regions", regions);
+
+        return Task.CompletedTask;
+    }
+
+    public void SetLabel(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("label", label);
+        action?.Invoke(label);
+    }
+
+    public void SetItemStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("itemStyle", itemStyle);
+        action?.Invoke(itemStyle);
+    }
+
+    public void SetEmphasis(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("emphasis", emphasis);
+        action?.Invoke(emphasis);
+    }
+
+    public void SetSelect(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("select", select);
+        action?.Invoke(select);
+    }
+
+    public void SetBlur(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("blur", blur);
+        action?.Invoke(blur);
+    }
+
+    public void SetTooltip(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("tooltip", tooltip);
+        action?.Invoke(tooltip);
+    }
+
+    public void SetRegionsData(Action<IList<Dictionary<string, object>>> action)
+    {
+        FillSetting("regions", regionsData);
+        action?.Invoke(regionsData);
+    }
+
+    public void RemoveRegionsData(Dictionary<string, object> item)
+    {
+        if (regionsData.Contains(item))
+            regionsData.Remove(item);
+    }
+}

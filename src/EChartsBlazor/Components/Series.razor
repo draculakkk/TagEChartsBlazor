@@ -1,0 +1,1618 @@
+﻿@inherits BaseItemComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+
+    #region 私有
+
+    private Dictionary<string, object> setting = new Dictionary<string, object>();
+
+    private IDictionary<string, object> label = new Dictionary<string, object>();
+
+    private IDictionary<string, object> endLabel = new Dictionary<string, object>();
+
+    private IDictionary<string, object> labelLine = new Dictionary<string, object>();
+
+    private IDictionary<string, object> labelLayout = new Dictionary<string, object>();
+
+    private IDictionary<string, object> itemStyle = new Dictionary<string, object>();
+
+    private IDictionary<string, object> lineStyle = new Dictionary<string, object>();
+
+    private IDictionary<string, object> areaStyle = new Dictionary<string, object>();
+
+    private IDictionary<string, object> emphasis = new Dictionary<string, object>();
+
+    private IDictionary<string, object> blur = new Dictionary<string, object>();
+
+    private IDictionary<string, object> select = new Dictionary<string, object>();
+
+    private IDictionary<string, object> markPoint = new Dictionary<string, object>();
+
+    private IDictionary<string, object> markLine = new Dictionary<string, object>();
+
+    private IDictionary<string, object> markArea = new Dictionary<string, object>();
+
+    private IDictionary<string, object> backgroundStyle = new Dictionary<string, object>();
+
+    private IDictionary<string, object> dimensionsData = new Dictionary<string, object>();
+
+    private IDictionary<string, object> encode = new Dictionary<string, object>();
+
+    private IDictionary<string, object> leaves = new Dictionary<string, object>();
+
+    private IDictionary<string, object> effect = new Dictionary<string, object>();
+
+    private IDictionary<string, object> edgeLabel = new Dictionary<string, object>();
+
+    private IDictionary<string, object> categories = new Dictionary<string, object>();
+
+    private IDictionary<string, object> links = new Dictionary<string, object>();
+
+    private IDictionary<string, object> edges = new Dictionary<string, object>();
+
+    private IDictionary<string, object> levels = new Dictionary<string, object>();
+
+    private Dictionary<string, object> title = new Dictionary<string, object>();
+
+    private Dictionary<string, object> detail = new Dictionary<string, object>();
+
+    private IDictionary<string, object> axisLine = new Dictionary<string, object>();
+
+    private IDictionary<string, object> progress = new Dictionary<string, object>();
+
+    private IDictionary<string, object> splitLine = new Dictionary<string, object>();
+
+    private IDictionary<string, object> axisTick = new Dictionary<string, object>();
+
+    private IDictionary<string, object> axisLabel = new Dictionary<string, object>();
+
+    private IDictionary<string, object> pointer = new Dictionary<string, object>();
+
+    private IDictionary<string, object> anchor = new Dictionary<string, object>();
+
+    private IList<Dictionary<string, object>> datas = new List<Dictionary<string, object>>();
+
+    private IList<Dictionary<string, object>> nodess = new List<Dictionary<string, object>>();
+
+    #endregion
+
+    #region 参数
+
+    /// <summary>
+    /// 系列中的数据内容数组。数组项通常为具体的数据项
+    /// </summary>
+    [Parameter]
+    public dynamic? data { get; set; }
+
+    /// <summary>
+    /// 别名，同 data
+    /// </summary>
+    [Parameter]
+    public object[]? nodes { get; set; }
+
+    /// <summary>
+    /// 系列类型
+    /// </summary>
+    [Parameter]
+    public string? type { get; set; }
+
+    /// <summary>
+    /// 组件 ID
+    /// </summary>
+    [Parameter]
+    public string? id { get; set; }
+
+    /// <summary>
+    /// 系列名称
+    /// </summary>
+    [Parameter]
+    public string? name { get; set; }
+
+    /// <summary>
+    /// 该系列使用的坐标系
+    /// </summary>
+    [Parameter]
+    public string? coordinateSystem { get; set; }
+
+    /// <summary>
+    /// 使用的 x 轴的 index
+    /// </summary>
+    [Parameter]
+    public int? xAxisIndex { get; set; }
+
+    /// <summary>
+    /// 使用的 y 轴的 index
+    /// </summary>
+    [Parameter]
+    public int? yAxisIndex { get; set; }
+
+    /// <summary>
+    /// 使用的极坐标系的 index
+    /// </summary>
+    [Parameter]
+    public int? polarIndex { get; set; }
+
+    /// <summary>
+    /// 标记的图形，可选：'circle', 'rect', 'roundRect', 'triangle', 'diamond', 'pin', 'arrow', 'none'
+    /// </summary>
+    [Parameter]
+    public string? symbol { get; set; }
+
+    /// <summary>
+    /// 标记的大小
+    /// </summary>
+    [Parameter]
+    public dynamic? symbolSize { get; set; }
+
+    /// <summary>
+    /// 标记的旋转角度（而非弧度）
+    /// </summary>
+    [Parameter]
+    public string? symbolRotate { get; set; }
+
+    /// <summary>
+    /// 是否在缩放时保持该图形的长宽比
+    /// </summary>
+    [Parameter]
+    public bool? symbolKeepAspect { get; set; }
+
+    /// <summary>
+    /// 标记相对于原本位置的偏移
+    /// </summary>
+    [Parameter]
+    public object[]? symbolOffset { get; set; }
+
+    /// <summary>
+    /// 是否显示 symbol
+    /// </summary>
+    [Parameter]
+    public bool? showSymbol { get; set; }
+
+    /// <summary>
+    ///是否显示所有图形
+    /// </summary>
+    [Parameter]
+    public bool? showAllSymbol { get; set; }
+
+    /// <summary>
+    /// 是否启用图例 hover 时的联动高亮
+    /// </summary>
+    [Parameter]
+    public bool? legendHoverLink { get; set; }
+
+    /// <summary>
+    /// 特效类型，目前只支持涟漪特效'ripple'
+    /// </summary>
+    [Parameter]
+    public string? effectType { get; set; }
+
+    /// <summary>
+    /// 数据堆叠
+    /// </summary>
+    [Parameter]
+    public string? stack { get; set; }
+
+    /// <summary>
+    /// 鼠标悬浮时在图形元素上时鼠标的样式是什么
+    /// </summary>
+    [Parameter]
+    public string? cursor { get; set; }
+
+    /// <summary>
+    /// 是否连接空数据
+    /// </summary>
+    [Parameter]
+    public bool? connectNulls { get; set; }
+
+    /// <summary>
+    /// 是否裁剪超出坐标系部分的图形
+    /// </summary>
+    [Parameter]
+    public bool? clip { get; set; }
+
+    /// <summary>
+    /// 是否是阶梯线图
+    /// </summary>
+    [Parameter]
+    public bool? step { get; set; }
+
+    /// <summary>
+    /// 是否支持多个选中，默认关闭
+    /// </summary>
+    [Parameter]
+    public bool? selectedMode { get; set; }
+
+    /// <summary>
+    /// 是否平滑曲线显示
+    /// </summary>
+    [Parameter]
+    public bool? smooth { get; set; }
+
+    /// <summary>
+    /// 折线平滑后是否在一个维度上保持单调性，可以设置成'x', 'y'来指明是在 x 轴或者 y 轴上保持单调性
+    /// </summary>
+    [Parameter]
+    public string? smoothMonotone { get; set; }
+
+    /// <summary>
+    /// 折线图在数据量远大于像素点时候的降采样策略，可选：'lttb' 'average' 'max' 'min' 'sum'
+    /// </summary>
+    [Parameter]
+    public string? sampling { get; set; }
+
+    /// <summary>
+    /// 使用 dimensions 定义 series.data 或者 dataset.source 的每个维度的信息
+    /// </summary>
+    [Parameter]
+    public object[]? dimensions { get; set; }
+
+    /// <summary>
+    /// 系列“排布”到 dataset 的行还是列上，可选：'column' 'row'
+    /// </summary>
+    [Parameter]
+    public string? seriesLayoutBy { get; set; }
+
+    /// <summary>
+    /// 指定本系列使用那个 dataset
+    /// </summary>
+    [Parameter]
+    public int? datasetIndex { get; set; }
+
+    /// <summary>
+    /// 折线图所有图形的 zlevel 值
+    /// </summary>
+    [Parameter]
+    public int? zlevel { get; set; }
+
+    /// <summary>
+    /// 折线图组件的所有图形的z值
+    /// </summary>
+    [Parameter]
+    public int? z { get; set; }
+
+    /// <summary>
+    /// 图形是否不响应和触发鼠标事件
+    /// </summary>
+    [Parameter]
+    public bool? silent { get; set; }
+
+    /// <summary>
+    /// 是否开启动画
+    /// </summary>
+    [Parameter]
+    public bool? animation { get; set; }
+
+    /// <summary>
+    /// 是否开启动画的阈值
+    /// </summary>
+    [Parameter]
+    public int? animationThreshold { get; set; }
+
+    /// <summary>
+    /// 初始动画的时长，支持回调函数
+    /// </summary>
+    [Parameter]
+    public int? animationDuration { get; set; }
+
+    /// <summary>
+    /// 初始动画的缓动效果
+    /// </summary>
+    [Parameter]
+    public string? animationEasing { get; set; }
+
+    /// <summary>
+    /// 初始动画的延迟，支持回调函数
+    /// </summary>
+    [Parameter]
+    public int? animationDelay { get; set; }
+
+    /// <summary>
+    /// 数据更新动画的时长。支持回调函数
+    /// </summary>
+    [Parameter]
+    public int? animationDurationUpdate { get; set; }
+
+    /// <summary>
+    /// 数据更新动画的缓动效果
+    /// </summary>
+    [Parameter]
+    public string? animationEasingUpdate { get; set; }
+
+    /// <summary>
+    /// 数据更新动画的延迟，支持回调函数
+    /// </summary>
+    [Parameter]
+    public int? animationDelayUpdate { get; set; }
+
+    /// <summary>
+    /// 是否在环形柱条两侧使用圆弧效果
+    /// </summary>
+    [Parameter]
+    public bool? roundCap { get; set; }
+
+    /// <summary>
+    /// 是否显示柱条的背景色
+    /// </summary>
+    [Parameter]
+    public bool? showBackground { get; set; }
+
+    /// <summary>
+    /// 柱条的宽度，不设时自适应
+    /// </summary>
+    [Parameter]
+    public string? barWidth { get; set; }
+
+    /// <summary>
+    /// 柱条的最大宽度
+    /// </summary>
+    [Parameter]
+    public string? barMaxWidth { get; set; }
+
+    /// <summary>
+    /// 柱条的最小宽度
+    /// </summary>
+    [Parameter]
+    public string? barMinWidth { get; set; }
+
+    /// <summary>
+    /// 柱条最小高度
+    /// </summary>
+    [Parameter]
+    public int? barMinHeight { get; set; }
+
+    /// <summary>
+    /// 柱条最小角度
+    /// </summary>
+    [Parameter]
+    public int? barMinAngle { get; set; }
+
+    /// <summary>
+    /// 不同系列的柱间距离
+    /// </summary>
+    [Parameter]
+    public string? barGap { get; set; }
+
+    /// <summary>
+    /// 同一系列的柱间距离
+    /// </summary>
+    [Parameter]
+    public string? barCategoryGap { get; set; }
+
+    /// <summary>
+    /// 是否开启大数据量优化
+    /// </summary>
+    [Parameter]
+    public bool? large { get; set; }
+
+    /// <summary>
+    /// 开启绘制优化的阈值
+    /// </summary>
+    [Parameter]
+    public int? largeThreshold { get; set; }
+
+    /// <summary>
+    /// 渐进式渲染时每一帧绘制图形数量
+    /// </summary>
+    [Parameter]
+    public int? progressive { get; set; }
+
+    /// <summary>
+    /// 启用渐进式渲染的图形数量阈值
+    /// </summary>
+    [Parameter]
+    public int? progressiveThreshold { get; set; }
+
+    /// <summary>
+    /// 分片的方式。可选值：'sequential'  'mod'
+    /// </summary>
+    [Parameter]
+    public string? progressiveChunkMode { get; set; }
+
+    /// <summary>
+    /// 选中扇区的偏移距离
+    /// </summary>
+    [Parameter]
+    public int? selectedOffset { get; set; }
+
+    /// <summary>
+    /// 饼图的扇区是否是顺时针排布
+    /// </summary>
+    [Parameter]
+    public bool? clockwise { get; set; }
+
+    /// <summary>
+    /// 起始角度，支持范围[0, 360]
+    /// </summary>
+    [Parameter]
+    public int? startAngle { get; set; }
+
+    /// <summary>
+    /// 结束弧度
+    /// </summary>
+    [Parameter]
+    public int? endAngle { get; set; }
+
+    /// <summary>
+    /// 最小的扇区角度（0 ~ 360）
+    /// </summary>
+    [Parameter]
+    public int? minAngle { get; set; }
+
+    /// <summary>
+    /// 小于这个角度（0 ~ 360）的扇区，不显示标签（label 和 labelLine）
+    /// </summary>
+    [Parameter]
+    public int? minShowLabelAngle { get; set; }
+
+    /// <summary>
+    /// 是否展示成南丁格尔图，可选：'radius' 'area'
+    /// </summary>
+    [Parameter]
+    public string? roseType { get; set; }
+
+    /// <summary>
+    /// 是否启用防止标签重叠策略，默认开启
+    /// </summary>
+    [Parameter]
+    public bool? avoidLabelOverlap { get; set; }
+
+    /// <summary>
+    /// 是否在数据和为0（一般情况下所有数据为0） 的时候不显示扇区
+    /// </summary>
+    [Parameter]
+    public bool? stillShowZeroSum { get; set; }
+
+    /// <summary>
+    /// 饼图的中心（圆心）坐标，数组的第一项是横坐标，第二项是纵坐标
+    /// </summary>
+    [Parameter]
+    public object[]? center { get; set; }
+
+    /// <summary>
+    /// 饼图的半径
+    /// </summary>
+    [Parameter]
+    public dynamic? radius { get; set; }
+
+    /// <summary>
+    /// 配置何时显示特效。可选：'render' 绘制完成后显示特效。'emphasis' 高亮（hover）的时候显示特效
+    /// </summary>
+    [Parameter]
+    public string? showEffectOn { get; set; }
+
+    /// <summary>
+    /// 使用的地理坐标系的 index
+    /// </summary>
+    [Parameter]
+    public int? geoIndex { get; set; }
+
+    /// <summary>
+    /// 使用的日历坐标系的 index
+    /// </summary>
+    [Parameter]
+    public int? calendarIndex { get; set; }
+
+    /// <summary>
+    /// 组件离容器左侧的距离
+    /// </summary>
+    [Parameter]
+    public string? left { get; set; }
+
+    /// <summary>
+    /// 组件离容器上侧的距离
+    /// </summary>
+    [Parameter]
+    public string? top { get; set; }
+
+    /// <summary>
+    /// 组件离容器右侧的距离
+    /// </summary>
+    [Parameter]
+    public string? right { get; set; }
+
+    /// <summary>
+    /// 组件离容器下侧的距离
+    /// </summary>
+    [Parameter]
+    public string? bottom { get; set; }
+
+    /// <summary>
+    /// 树图在 正交布局 下，边的形状。分别有曲线和折线两种，对应的取值是 curve 和 polyline
+    /// </summary>
+    [Parameter]
+    public string? edgeShape { get; set; }
+
+    /// <summary>
+    /// 正交布局下当边的形状是折线时，子树中折线段分叉的位置
+    /// </summary>
+    [Parameter]
+    public string? edgeForkPosition { get; set; }
+
+    /// <summary>
+    /// 是否开启鼠标缩放和平移漫游
+    /// </summary>
+    [Parameter]
+    public bool? roam { get; set; }
+
+    /// <summary>
+    /// 子树折叠和展开的交互
+    /// </summary>
+    [Parameter]
+    public bool? expandAndCollapse { get; set; }
+
+    /// <summary>
+    /// 树图初始展开的层级（深度）
+    /// </summary>
+    [Parameter]
+    public int? initialTreeDepth { get; set; }
+
+    /// <summary>
+    /// 组件的宽度
+    /// </summary>
+    [Parameter]
+    public string? width { get; set; }
+
+    /// <summary>
+    /// 组件的高度
+    /// </summary>
+    [Parameter]
+    public string? height { get; set; }
+
+    /// <summary>
+    /// 期望矩形长宽比率
+    /// </summary>
+    [Parameter]
+    public float? squareRatio { get; set; }
+
+    /// <summary>
+    /// 展示几层
+    /// </summary>
+    [Parameter]
+    public int? leafDepth { get; set; }
+
+    /// <summary>
+    /// 当节点可以下钻时的提示符
+    /// </summary>
+    [Parameter]
+    public string? drillDownIcon { get; set; }
+
+    /// <summary>
+    /// 点击节点后的行为，可选：'zoomToNode' 'link'
+    /// </summary>
+    [Parameter]
+    public string? nodeClick { get; set; }
+
+    /// <summary>
+    ///点击某个节点，会自动放大那个节点到合适的比例
+    /// </summary>
+    [Parameter]
+    public float? zoomToNodeRatio { get; set; }
+
+    /// <summary>
+    /// 对数据其他维度进行视觉映射
+    /// </summary>
+    [Parameter]
+    public int? visualDimension { get; set; }
+
+    /// <summary>
+    /// 当前层级的最小 value 值
+    /// </summary>
+    [Parameter]
+    public int? visualMin { get; set; }
+
+    /// <summary>
+    /// 当前层级的最大 value 值
+    /// </summary>
+    [Parameter]
+    public int? visualMax { get; set; }
+
+    /// <summary>
+    /// 本系列默认的颜色透明度选取范围
+    /// </summary>
+    [Parameter]
+    public float[]? colorAlpha { get; set; }
+
+    /// <summary>
+    /// 本系列默认的节点的颜色饱和度 选取范围
+    /// </summary>
+    [Parameter]
+    public float? colorSaturation { get; set; }
+
+    /// <summary>
+    /// 在颜色列表中（参见 color 属性）选择时，按照什么来选择，可选：'value' 'index' 'id'
+    /// </summary>
+    [Parameter]
+    public string? colorMappingBy { get; set; }
+
+    /// <summary>
+    /// 如果某个节点的矩形的面积，小于这个数值（单位：px平方），这个节点就不显示
+    /// </summary>
+    [Parameter]
+    public int? visibleMin { get; set; }
+
+    /// <summary>
+    /// 如果某个节点的矩形面积，小于这个数值（单位：px平方），则不显示这个节点的子节点
+    /// </summary>
+    [Parameter]
+    public float? childrenVisibleMin { get; set; }
+
+    /// <summary>
+    /// 排序方式
+    /// </summary>
+    [Parameter]
+    public string? sort { get; set; }
+
+    /// <summary>
+    /// 如果数据没有 name，是否需要渲染文字
+    /// </summary>
+    [Parameter]
+    public bool? renderLabelForZeroData { get; set; }
+
+    /// <summary>
+    /// 是否开启 hover 在图形上的提示动画效果
+    /// </summary>
+    [Parameter]
+    public bool? hoverAnimation { get; set; }
+
+    /// <summary>
+    /// 树图的布局 可选：'orthogonal' 'radial'
+    /// </summary>
+    [Parameter]
+    public string? layout { get; set; }
+
+    /// <summary>
+    /// box 的宽度的上下限
+    /// </summary>
+    [Parameter]
+    public object[]? boxWidth { get; set; }
+
+    /// <summary>
+    /// 每个点的大小
+    /// </summary>
+    [Parameter]
+    public int? pointSize { get; set; }
+
+    /// <summary>
+    /// 每个点模糊的大小
+    /// </summary>
+    [Parameter]
+    public int? blurSize { get; set; }
+
+    /// <summary>
+    /// 最小的透明度
+    /// </summary>
+    [Parameter]
+    public float? minOpacity { get; set; }
+
+    /// <summary>
+    /// 最大的透明度
+    /// </summary>
+    [Parameter]
+    public float? maxOpacity { get; set; }
+
+    /// <summary>
+    /// 使用 registerMap 注册的地图名称
+    /// </summary>
+    [Parameter]
+    public string? map { get; set; }
+
+    /// <summary>
+    ///  scale 地图的长宽比
+    /// </summary>
+    [Parameter]
+    public float? aspectScale { get; set; }
+
+    /// <summary>
+    /// 定义定位的左上角以及右下角分别所对应的经纬度
+    /// </summary>
+    [Parameter]
+    public object[]? boundingCoords { get; set; }
+
+    /// <summary>
+    /// 当前视角的缩放比例
+    /// </summary>
+    [Parameter]
+    public float? zoom { get; set; }
+
+    /// <summary>
+    /// 滚轮缩放的极限控制，通过min, max最小和最大的缩放值
+    /// </summary>
+    [Parameter]
+    public ScaleLimit? scaleLimit { get; set; }
+
+    /// <summary>
+    /// 涟漪特效相关配置
+    /// </summary>
+    [Parameter]
+    public RippleEffect? rippleEffect { get; set; }
+
+    /// <summary>
+    /// 自定义地区的名称映射
+    /// </summary>
+    [Parameter]
+    public Dictionary<string, string>? nameMap { get; set; }
+
+    /// <summary>
+    /// 默认是 'name'，针对 GeoJSON 要素的自定义属性名称
+    /// </summary>
+    [Parameter]
+    public string? nameProperty { get; set; }
+
+    /// <summary>
+    /// 定义地图中心在屏幕中的位置
+    /// </summary>
+    [Parameter]
+    public object[]? layoutCenter { get; set; }
+
+    /// <summary>
+    /// 地图的大小
+    /// </summary>
+    [Parameter]
+    public string? layoutSize { get; set; }
+
+    /// <summary>
+    /// 配置统计的方式 可选：'sum' 取和。'average' 取平均值。'max' 取最大值。'min' 取最小值。
+    /// </summary>
+    [Parameter]
+    public string? mapValueCalculation { get; set; }
+
+    /// <summary>
+    /// 在图例相应区域显示图例的颜色标识
+    /// </summary>
+    [Parameter]
+    public bool? showLegendSymbol { get; set; }
+
+    /// <summary>
+    /// 使用的平行坐标系的 index
+    /// </summary>
+    [Parameter]
+    public int? parallelIndex { get; set; }
+
+    /// <summary>
+    /// 框选时，未被选中的条线会设置成这个『透明度』
+    /// </summary>
+    [Parameter]
+    public float? inactiveOpacity { get; set; }
+
+    /// <summary>
+    /// 框选时，选中的条线会设置成这个『透明度』
+    /// </summary>
+    [Parameter]
+    public float? activeOpacity { get; set; }
+
+    /// <summary>
+    /// 是否实时刷新
+    /// </summary>
+    [Parameter]
+    public bool? realtime { get; set; }
+
+    /// <summary>
+    /// 是否是多段线
+    /// </summary>
+    [Parameter]
+    public bool? polyline { get; set; }
+
+    /// <summary>
+    /// 鼠标漫游缩放时节点的相应缩放比例
+    /// </summary>
+    [Parameter]
+    public float? nodeScaleRatio { get; set; }
+
+    /// <summary>
+    /// 节点是否可拖拽
+    /// </summary>
+    [Parameter]
+    public bool? draggable { get; set; }
+
+    /// <summary>
+    /// 边两端的标记类型
+    /// </summary>
+    [Parameter]
+    public dynamic? edgeSymbol { get; set; }
+
+    /// <summary>
+    /// 边两端的标记大小
+    /// </summary>
+    [Parameter]
+    public dynamic? edgeSymbolSize { get; set; }
+
+    /// <summary>
+    /// 边的曲度
+    /// </summary>
+    [Parameter]
+    public dynamic? autoCurveness { get; set; }
+
+    /// <summary>
+    /// 桑基图中每个矩形节点的宽度
+    /// </summary>
+    [Parameter]
+    public int? nodeWidth { get; set; }
+
+    /// <summary>
+    /// 桑基图中每一列任意两个矩形节点之间的间隔
+    /// </summary>
+    [Parameter]
+    public int? nodeGap { get; set; }
+
+    /// <summary>
+    /// 桑基图中节点的对齐方式 可选：'justify' 'left' 'right'
+    /// </summary>
+    [Parameter]
+    public string? nodeAlign { get; set; }
+
+    /// <summary>
+    /// 布局的迭代次数
+    /// </summary>
+    [Parameter]
+    public int? layoutIterations { get; set; }
+
+    /// <summary>
+    /// 指定的数据最小值
+    /// </summary>
+    [Parameter]
+    public int? min { get; set; }
+
+    /// <summary>
+    /// 指定的数据最大值
+    /// </summary>
+    [Parameter]
+    public int? max { get; set; }
+
+    /// <summary>
+    /// 数据最小值 min 映射的宽度
+    /// </summary>
+    [Parameter]
+    public string? minSize { get; set; }
+
+    /// <summary>
+    /// 数据最大值 max 映射的宽度
+    /// </summary>
+    [Parameter]
+    public string? maxSize { get; set; }
+
+    /// <summary>
+    /// 数据图形间距
+    /// </summary>
+    [Parameter]
+    public int? gap { get; set; }
+
+    /// <summary>
+    /// 水平方向对齐布局类型，默认居中对齐，可用选项还有：'left' | 'right' | 'center'
+    /// </summary>
+    [Parameter]
+    public string? funnelAlign { get; set; }
+
+    /// <summary>
+    /// 仪表盘刻度的分割段数
+    /// </summary>
+    [Parameter]
+    public int? splitNumber { get; set; }
+
+    /// <summary>
+    /// 标记的旋转角度（而非弧度）
+    /// </summary>
+    [Parameter]
+    public dynamic? symbolRepeat { get; set; }
+
+    /// <summary>
+    /// 指定图形元素重复时，绘制的顺序
+    /// </summary>
+    [Parameter]
+    public string? symbolRepeatDirection { get; set; }
+
+    /// <summary>
+    /// 图形的两边间隔
+    /// </summary>
+    [Parameter]
+    public string? symbolMargin { get; set; }
+
+    /// <summary>
+    /// 是否剪裁图形
+    /// </summary>
+    [Parameter]
+    public bool? symbolClip { get; set; }
+
+    /// <summary>
+    /// 这个属性是『指定图形界限的值』
+    /// </summary>
+    [Parameter]
+    public dynamic? symbolBoundingData { get; set; }
+
+    /// <summary>
+    /// 可以使用图片作为图形的 pattern
+    /// </summary>
+    [Parameter]
+    public int? symbolPatternSize { get; set; }
+
+    /// <summary>
+    /// 图中与坐标轴正交的方向的边界间隙
+    /// </summary>
+    [Parameter]
+    public object[]? boundaryGap { get; set; }
+
+    /// <summary>
+    /// 单个时间轴的index
+    /// </summary>
+    [Parameter]
+    public int? singleAxisIndex { get; set; }
+
+    #endregion
+
+    public override void SetSetting(IDictionary<string, object> setting)
+    {
+        if (data != null)
+            FillSetting("data", data);
+
+        if (nodes != null && nodes.Length > 0)
+            FillSetting("nodes", nodes);
+
+        if (!string.IsNullOrEmpty(id))
+            FillSetting("id", id);
+
+        if (!string.IsNullOrEmpty(type))
+            FillSetting("type", type);
+
+        if (!string.IsNullOrEmpty(name))
+            FillSetting("name", name);
+
+        if (!string.IsNullOrEmpty(coordinateSystem))
+            FillSetting("coordinateSystem", coordinateSystem);
+
+        if (xAxisIndex.HasValue)
+            FillSetting("xAxisIndex", xAxisIndex.Value);
+
+        if (yAxisIndex.HasValue)
+            FillSetting("yAxisIndex", yAxisIndex.Value);
+
+        if (polarIndex.HasValue)
+            FillSetting("polarIndex", polarIndex.Value);
+
+        if (!string.IsNullOrEmpty(symbol))
+            FillSetting("symbol", symbol);
+
+        if (symbolSize != null)
+            FillSetting("symbolSize", symbolSize);
+
+        if (!string.IsNullOrEmpty(symbolRotate))
+            FillSetting("symbolRotate", symbolRotate);
+
+        if (symbolKeepAspect.HasValue)
+            FillSetting("symbolKeepAspect", symbolKeepAspect.Value);
+
+        if (symbolOffset != null && symbolOffset.Length > 0)
+            FillSetting("symbolOffset", symbolOffset);
+
+        if (showSymbol.HasValue)
+            FillSetting("showSymbol", showSymbol.Value);
+
+        if (showAllSymbol.HasValue)
+            FillSetting("showAllSymbol", showAllSymbol.Value);
+
+        if (legendHoverLink.HasValue)
+            FillSetting("legendHoverLink", legendHoverLink.Value);
+
+        if (!string.IsNullOrEmpty(effectType))
+            FillSetting("effectType", effectType);
+
+        if (!string.IsNullOrEmpty(stack))
+            FillSetting("stack", stack);
+
+        if (!string.IsNullOrEmpty(cursor))
+            FillSetting("cursor", cursor);
+
+        if (connectNulls.HasValue)
+            FillSetting("connectNulls", connectNulls.Value);
+
+        if (clip.HasValue)
+            FillSetting("clip", clip.Value);
+
+        if (step.HasValue)
+            FillSetting("step", step.Value);
+
+        if (selectedMode.HasValue)
+            FillSetting("selectedMode", selectedMode.Value);
+
+        if (smooth.HasValue)
+            FillSetting("smooth", smooth.Value);
+
+        if (!string.IsNullOrEmpty(smoothMonotone))
+            FillSetting("smoothMonotone", smoothMonotone);
+
+        if (!string.IsNullOrEmpty(sampling))
+            FillSetting("sampling", sampling);
+
+        if (dimensions != null && dimensions.Length > 0)
+            FillSetting("dimensions", dimensions);
+
+        if (!string.IsNullOrEmpty(seriesLayoutBy))
+            FillSetting("seriesLayoutBy", seriesLayoutBy);
+
+        if (datasetIndex.HasValue)
+            FillSetting("datasetIndex", datasetIndex.Value);
+
+        if (zlevel.HasValue)
+            FillSetting("zlevel", zlevel.Value);
+
+        if (z.HasValue)
+            FillSetting("z", z.Value);
+
+        if (silent.HasValue)
+            FillSetting("silent", silent.Value);
+
+        if (animation.HasValue)
+            FillSetting("animation", animation.Value);
+
+        if (animationThreshold.HasValue)
+            FillSetting("animationThreshold", animationThreshold.Value);
+
+        if (animationDuration.HasValue)
+            FillSetting("animationDuration", animationDuration.Value);
+
+        if (!string.IsNullOrEmpty(animationEasing))
+            FillSetting("animationEasing", animationEasing);
+
+        if (animationDelay.HasValue)
+            FillSetting("animationDelay", animationDelay.Value);
+
+        if (animationDurationUpdate.HasValue)
+            FillSetting("animationDurationUpdate", animationDurationUpdate.Value);
+
+        if (!string.IsNullOrEmpty(animationEasingUpdate))
+            FillSetting("animationEasingUpdate", animationEasingUpdate);
+
+        if (animationDelayUpdate.HasValue)
+            FillSetting("animationDelayUpdate", animationDelayUpdate.Value);
+
+        if (roundCap.HasValue)
+            FillSetting("roundCap", roundCap.Value);
+
+        if (showBackground.HasValue)
+            FillSetting("showBackground", showBackground.Value);
+
+        if (!string.IsNullOrEmpty(barWidth))
+            FillSetting("barWidth", barWidth);
+
+        if (!string.IsNullOrEmpty(barMaxWidth))
+            FillSetting("barMaxWidth", barMaxWidth);
+
+        if (!string.IsNullOrEmpty(barMinWidth))
+            FillSetting("barMinWidth", barMinWidth);
+
+        if (barMinHeight.HasValue)
+            FillSetting("barMinHeight", barMinHeight.Value);
+
+        if (barMinAngle.HasValue)
+            FillSetting("barMinAngle", barMinAngle.Value);
+
+        if (!string.IsNullOrEmpty(barGap))
+            FillSetting("barGap", barGap);
+
+        if (!string.IsNullOrEmpty(barCategoryGap))
+            FillSetting("barCategoryGap", barCategoryGap);
+
+        if (large.HasValue)
+            FillSetting("large", large.Value);
+
+        if (largeThreshold.HasValue)
+            FillSetting("largeThreshold", largeThreshold.Value);
+
+        if (progressive.HasValue)
+            FillSetting("progressive", progressive.Value);
+
+        if (progressiveThreshold.HasValue)
+            FillSetting("progressiveThreshold", progressiveThreshold.Value);
+
+        if (!string.IsNullOrEmpty(progressiveChunkMode))
+            FillSetting("progressiveChunkMode", progressiveChunkMode);
+
+        if (selectedOffset.HasValue)
+            FillSetting("selectedOffset", selectedOffset.Value);
+
+        if (clockwise.HasValue)
+            FillSetting("clockwise", clockwise.Value);
+
+        if (startAngle.HasValue)
+            FillSetting("startAngle", startAngle.Value);
+
+        if (endAngle.HasValue)
+            FillSetting("endAngle", endAngle.Value);
+
+        if (minAngle.HasValue)
+            FillSetting("minAngle", minAngle.Value);
+
+        if (minShowLabelAngle.HasValue)
+            FillSetting("minShowLabelAngle", minShowLabelAngle.Value);
+
+        if (!string.IsNullOrEmpty(roseType))
+            FillSetting("roseType", roseType);
+
+        if (avoidLabelOverlap.HasValue)
+            FillSetting("avoidLabelOverlap", avoidLabelOverlap.Value);
+
+        if (stillShowZeroSum.HasValue)
+            FillSetting("stillShowZeroSum", stillShowZeroSum.Value);
+
+        if (center != null && center.Length > 0)
+            FillSetting("center", center);
+
+        if (radius != null)
+            FillSetting("radius", radius);
+
+        if (!string.IsNullOrEmpty(showEffectOn))
+            FillSetting("showEffectOn", showEffectOn);
+
+        if (geoIndex.HasValue)
+            FillSetting("geoIndex", geoIndex.Value);
+
+        if (calendarIndex.HasValue)
+            FillSetting("calendarIndex", calendarIndex.Value);
+
+        if (!string.IsNullOrEmpty(left))
+            FillSetting("left", left);
+
+        if (!string.IsNullOrEmpty(right))
+            FillSetting("right", right);
+
+        if (!string.IsNullOrEmpty(top))
+            FillSetting("top", top);
+
+        if (!string.IsNullOrEmpty(bottom))
+            FillSetting("bottom", bottom);
+
+        if (!string.IsNullOrEmpty(edgeShape))
+            FillSetting("edgeShape", edgeShape);
+
+        if (!string.IsNullOrEmpty(edgeForkPosition))
+            FillSetting("edgeForkPosition", edgeForkPosition);
+
+        if (roam.HasValue)
+            FillSetting("roam", roam.Value);
+
+        if (expandAndCollapse.HasValue)
+            FillSetting("expandAndCollapse", expandAndCollapse.Value);
+
+        if (initialTreeDepth.HasValue)
+            FillSetting("initialTreeDepth", initialTreeDepth.Value);
+
+        if (!string.IsNullOrEmpty(width))
+            FillSetting("width", width);
+
+        if (!string.IsNullOrEmpty(height))
+            FillSetting("height", height);
+
+        if (squareRatio.HasValue)
+            FillSetting("squareRatio", squareRatio.Value);
+
+        if (leafDepth.HasValue)
+            FillSetting("leafDepth", leafDepth.Value);
+
+        if (!string.IsNullOrEmpty(drillDownIcon))
+            FillSetting("drillDownIcon", drillDownIcon);
+
+        if (!string.IsNullOrEmpty(nodeClick))
+            FillSetting("nodeClick ", nodeClick);
+
+        if (zoomToNodeRatio.HasValue)
+            FillSetting("zoomToNodeRatio", zoomToNodeRatio.Value);
+
+        if (visualDimension.HasValue)
+            FillSetting("visualDimension", visualDimension.Value);
+
+        if (visualMax.HasValue)
+            FillSetting("visualMax", visualMax.Value);
+
+        if (visualMin.HasValue)
+            FillSetting("visualMin", visualMin.Value);
+
+        if (colorAlpha != null && colorAlpha.Length > 0)
+            FillSetting("colorAlpha", colorAlpha);
+
+        if (colorSaturation.HasValue)
+            FillSetting("colorSaturation", colorSaturation.Value);
+
+        if (!string.IsNullOrEmpty(colorMappingBy))
+            FillSetting("colorMappingBy", colorMappingBy);
+
+        if (visualMin.HasValue)
+            FillSetting("visualMin", visualMin.Value);
+
+        if (childrenVisibleMin.HasValue)
+            FillSetting("childrenVisibleMin", childrenVisibleMin.Value);
+
+        if (!string.IsNullOrEmpty(sort))
+            FillSetting("sort", sort);
+
+        if (renderLabelForZeroData.HasValue)
+            FillSetting("renderLabelForZeroData", renderLabelForZeroData.Value);
+
+        if (hoverAnimation.HasValue)
+            FillSetting("hoverAnimation", hoverAnimation.Value);
+
+        if (!string.IsNullOrEmpty(layout))
+            FillSetting("layout", layout);
+
+        if (boxWidth != null && boxWidth.Length > 0)
+            FillSetting("boxWidth", boxWidth);
+
+        if (pointSize.HasValue)
+            FillSetting("pointSize", pointSize.Value);
+
+        if (blurSize.HasValue)
+            FillSetting("blurSize", blurSize.Value);
+
+        if (minOpacity.HasValue)
+            FillSetting("minOpacity", minOpacity.Value);
+
+        if (maxOpacity.HasValue)
+            FillSetting("maxOpacity", maxOpacity.Value);
+
+        if (!string.IsNullOrEmpty(map))
+            FillSetting("map", map);
+
+        if (aspectScale.HasValue)
+            FillSetting("aspectScale", aspectScale.Value);
+
+        if (boundingCoords != null && boundingCoords.Length > 0)
+            FillSetting("boundingCoords", boundingCoords);
+
+        if (zoom.HasValue)
+            FillSetting("zoom", zoom.Value);
+
+        if (scaleLimit != null)
+            FillSetting("scaleLimit", scaleLimit);
+
+        if (rippleEffect != null)
+            FillSetting("rippleEffect", rippleEffect.Value.ToOptionObject());
+
+        if (nameMap != null && nameMap.Count > 0)
+            FillSetting("nameMap", nameMap);
+
+        if (!string.IsNullOrEmpty(nameProperty))
+            FillSetting("nameProperty", nameProperty);
+
+        if (layoutCenter != null && layoutCenter.Length > 0)
+            FillSetting("layoutCenter", layoutCenter);
+
+        if (!string.IsNullOrEmpty(layoutSize))
+            FillSetting("layoutSize", layoutSize);
+
+        if (!string.IsNullOrEmpty(mapValueCalculation))
+            FillSetting("mapValueCalculation", mapValueCalculation);
+
+        if (showLegendSymbol.HasValue)
+            FillSetting("showLegendSymbol", showLegendSymbol.Value);
+
+        if (parallelIndex.HasValue)
+            FillSetting("parallelIndex", parallelIndex.Value);
+
+        if (inactiveOpacity.HasValue)
+            FillSetting("inactiveOpacity", inactiveOpacity.Value);
+
+        if (activeOpacity.HasValue)
+            FillSetting("activeOpacity", activeOpacity.Value);
+
+        if (realtime.HasValue)
+            FillSetting("realtime", realtime.Value);
+
+        if (polyline.HasValue)
+            FillSetting("polyline", polyline.Value);
+
+        if (nodeScaleRatio.HasValue)
+            FillSetting("nodeScaleRatio", nodeScaleRatio.Value);
+
+        if (draggable.HasValue)
+            FillSetting("draggable", draggable.Value);
+
+        if (edgeSymbol != null)
+            FillSetting("edgeSymbol", edgeSymbol);
+
+        if (edgeSymbolSize != null)
+            FillSetting("edgeSymbolSize", edgeSymbolSize);
+
+        if (autoCurveness != null)
+            FillSetting("autoCurveness", autoCurveness);
+
+        if (nodeWidth.HasValue)
+            FillSetting("nodeWidth", nodeWidth.Value);
+
+        if (nodeGap.HasValue)
+            FillSetting("nodeGap", nodeGap.Value);
+
+        if (!string.IsNullOrEmpty(nodeAlign))
+            FillSetting("nodeAlign", nodeAlign);
+
+        if (layoutIterations.HasValue)
+            FillSetting("layoutIterations", layoutIterations.Value);
+
+        if (min.HasValue)
+            FillSetting("min", min.Value);
+
+        if (max.HasValue)
+            FillSetting("max", max.Value);
+
+        if (!string.IsNullOrEmpty(maxSize))
+            FillSetting("maxSize", maxSize);
+
+        if (!string.IsNullOrEmpty(minSize))
+            FillSetting("minSize", minSize);
+
+        if (gap.HasValue)
+            FillSetting("gap", gap.Value);
+
+        if (!string.IsNullOrEmpty(funnelAlign))
+            FillSetting("funnelAlign", funnelAlign);
+
+        if (splitNumber.HasValue)
+            FillSetting("splitNumber", splitNumber.Value);
+
+        if (symbolRepeat != null)
+            FillSetting("symbolRepeat", symbolRepeat);
+
+        if (!string.IsNullOrEmpty(symbolRepeatDirection))
+            FillSetting("symbolRepeatDirection", symbolRepeatDirection);
+
+        if (!string.IsNullOrEmpty(symbolMargin))
+            FillSetting("symbolMargin", symbolMargin);
+
+        if (symbolClip.HasValue)
+            FillSetting("symbolClip", symbolClip.Value);
+
+        if (symbolBoundingData != null)
+            FillSetting("symbolBoundingData", symbolBoundingData);
+
+        if (symbolPatternSize.HasValue)
+            FillSetting("symbolPatternSize", symbolPatternSize.Value);
+
+        if (boundaryGap != null && boundaryGap.Length > 0)
+            FillSetting("boundaryGap", boundaryGap);
+
+        if (singleAxisIndex.HasValue)
+            FillSetting("singleAxisIndex", singleAxisIndex.Value);
+    }
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        if (Base is ECharts component)
+        {
+            component.SetSeriesData((series) =>
+            {
+                if (!series.Contains(setting))
+                    series.Add(setting);
+            });
+        }
+
+        return setting;
+    }
+
+    public void SetLabel(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("label", label);
+        action?.Invoke(label);
+    }
+
+    public void SetEndLabel(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("endLabel", endLabel);
+        action?.Invoke(endLabel);
+    }
+
+    public void SetLabelLine(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("labelLine", labelLine);
+        action?.Invoke(labelLine);
+    }
+
+    public void SetLabelLayout(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("labelLayout", labelLayout);
+        action?.Invoke(labelLayout);
+    }
+
+    public void SetItemStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("itemStyle", itemStyle);
+        action?.Invoke(itemStyle);
+    }
+
+    public void SetLineStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("lineStyle", lineStyle);
+        action?.Invoke(lineStyle);
+    }
+
+    public void SetAreaStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("areaStyle", areaStyle);
+        action?.Invoke(areaStyle);
+    }
+
+    public void SetEmphasis(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("emphasis", emphasis);
+        action?.Invoke(emphasis);
+    }
+
+    public void SetBlur(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("blur", blur);
+        action?.Invoke(blur);
+    }
+
+    public void SetSelect(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("select", select);
+        action?.Invoke(select);
+    }
+
+    public void SetMarkPoint(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("markPoint", markPoint);
+        action?.Invoke(markPoint);
+    }
+
+    public void SetMarkLine(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("markLine", markLine);
+        action?.Invoke(markLine);
+    }
+
+    public void SetMarkArea(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("markArea", markArea);
+        action?.Invoke(markArea);
+    }
+
+    public void SetBackgroundStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("backgroundStyle", backgroundStyle);
+        action?.Invoke(backgroundStyle);
+    }
+
+    public void SetDimensions(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("dimensions", dimensionsData);
+        action?.Invoke(dimensionsData);
+    }
+
+    public void SetEncode(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("encode", encode);
+        action?.Invoke(encode);
+    }
+
+    public void SetLeaves(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("leaves", leaves);
+        action?.Invoke(leaves);
+    }
+
+    public void SetEffect(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("effect", effect);
+        action?.Invoke(effect);
+    }
+
+    public void SetEdgeLabel(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("edgeLabel", edgeLabel);
+        action?.Invoke(edgeLabel);
+    }
+
+    public void SetCategories(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("categories", categories);
+        action?.Invoke(categories);
+    }
+
+    public void SetLinks(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("links", links);
+        action?.Invoke(links);
+    }
+
+    public void SetEdges(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("edges", edges);
+        action?.Invoke(edges);
+    }
+
+    public void SetLevels(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("levels", levels);
+        action?.Invoke(levels);
+    }
+
+    public void SetTitle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("title", title);
+        action?.Invoke(title);
+    }
+
+    public void SetDetail(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("detail", detail);
+        action?.Invoke(detail);
+    }
+
+    public void SetAxisLine(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("axisLine", axisLine);
+        action?.Invoke(axisLine);
+    }
+
+    public void SetProgress(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("progress", progress);
+        action?.Invoke(progress);
+    }
+
+    public void SetSplitLine(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("splitLine", splitLine);
+        action?.Invoke(splitLine);
+    }
+
+    public void SetAxisTick(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("axisTick", axisTick);
+        action?.Invoke(axisTick);
+    }
+
+    public void SetAxisLabel(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("axisLabel", axisLabel);
+        action?.Invoke(axisLabel);
+    }
+
+    public void SetPointer(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("pointer", pointer);
+        action?.Invoke(pointer);
+    }
+
+    public void SetAnchor(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("anchor", anchor);
+        action?.Invoke(anchor);
+    }
+
+    public void SetData(Action<IList<Dictionary<string, object>>> action)
+    {
+        FillSetting("data", datas);
+        action?.Invoke(datas);
+    }
+
+    public void SetNodes(Action<IList<Dictionary<string, object>>> action)
+    {
+        FillSetting("nodes", nodess);
+        action?.Invoke(nodess);
+    }
+
+    public void RemoveData(Dictionary<string, object> item)
+    {
+        if (datas.Contains(item))
+            datas.Remove(item);
+    }
+
+    public void RemoveNodes(Dictionary<string, object> item)
+    {
+        if (nodess.Contains(item))
+            nodess.Remove(item);
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            if (Base is ECharts component)
+            {
+                component.RemoveSeriesData(setting);
+            }
+        }
+    }
+}
+

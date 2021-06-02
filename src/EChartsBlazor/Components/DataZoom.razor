@@ -1,0 +1,522 @@
+﻿@inherits BaseItemComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+
+    private Dictionary<string, object> setting = new Dictionary<string, object>();
+    private IDictionary<string, object> dataBackground = new Dictionary<string, object>();
+    private IDictionary<string, object> selectedDataBackground = new Dictionary<string, object>();
+    private IDictionary<string, object> handleStyle = new Dictionary<string, object>();
+    private IDictionary<string, object> moveHandleStyle = new Dictionary<string, object>();
+    private IDictionary<string, object> textStyle = new Dictionary<string, object>();
+    private IDictionary<string, object> brushStyle = new Dictionary<string, object>();
+    private IDictionary<string, object> emphasis = new Dictionary<string, object>();
+    private IDictionary<string, object> iconStyle = new Dictionary<string, object>();
+
+    #region 参数
+
+    /// <summary>
+    /// 缩放类型 可选'inside' 'slider'
+    /// </summary>
+    [Parameter]
+    public string? type { get; set; }
+
+    /// <summary>
+    /// 组件 ID
+    /// </summary>
+    [Parameter]
+    public string? id { get; set; }
+
+    /// <summary>
+    /// 是否显示 组件
+    /// </summary>
+    [Parameter]
+    public bool? show { get; set; }
+
+    /// <summary>
+    /// 是否停止组件的功能
+    /// </summary>
+    [Parameter]
+    public bool? disabled { get; set; }
+
+    /// <summary>
+    /// 设置 dataZoom-inside 组件控制的 x轴
+    /// </summary>
+    [Parameter]
+    public dynamic? xAxisIndex { get; set; }
+
+    /// <summary>
+    /// 设置 dataZoom-inside 组件控制的 y轴
+    /// </summary>
+    [Parameter]
+    public dynamic? yAxisIndex { get; set; }
+
+    /// <summary>
+    /// 设置 dataZoom-inside 组件控制的 radius 轴
+    /// </summary>
+    [Parameter]
+    public dynamic? radiusAxisIndex { get; set; }
+
+    /// <summary>
+    /// 设置 dataZoom-inside 组件控制的 angle 轴
+    /// </summary>
+    [Parameter]
+    public dynamic? angleAxisIndex { get; set; }
+
+    /// <summary>
+    /// 数据过滤模式的设置不同，效果也不同，可选'filter'  'weakFilter' 'empty' 'none'
+    /// </summary>
+    [Parameter]
+    public string? filterMode { get; set; }
+
+    /// <summary>
+    /// 数据窗口范围的起始百分比。范围是：0 ~ 100。表示 0% ~ 100%
+    /// </summary>
+    [Parameter]
+    public int? start { get; set; }
+
+    /// <summary>
+    /// 数据窗口范围的结束百分比。范围是：0 ~ 100
+    /// </summary>
+    [Parameter]
+    public int? end { get; set; }
+
+    /// <summary>
+    /// 数据窗口范围的起始数值
+    /// </summary>
+    [Parameter]
+    public string? startValue { get; set; }
+
+    /// <summary>
+    /// 数据窗口范围的结束数值
+    /// </summary>
+    [Parameter]
+    public string? endValue { get; set; }
+
+    /// <summary>
+    /// 用于限制窗口大小的最小值（百分比值），取值范围是 0 ~ 100
+    /// </summary>
+    [Parameter]
+    public int? minSpan { get; set; }
+
+    /// <summary>
+    /// 用于限制窗口大小的最大值（百分比值），取值范围是 0 ~ 100
+    /// </summary>
+    [Parameter]
+    public int? maxSpan { get; set; }
+
+    /// <summary>
+    /// 用于限制窗口大小的最小值（实际数值）
+    /// </summary>
+    [Parameter]
+    public string? minValueSpan { get; set; }
+
+    /// <summary>
+    /// 用于限制窗口大小的最大值（实际数值）
+    /// </summary>
+    [Parameter]
+    public string? maxValueSpan { get; set; }
+
+    /// <summary>
+    /// 布局方式是横还是竖，可选值为：'horizontal'：水平。'vertical'：竖直。
+    /// </summary>
+    [Parameter]
+    public string? orient { get; set; }
+
+    /// <summary>
+    /// 是否锁定选择区域（或叫做数据窗口）的大小
+    /// </summary>
+    [Parameter]
+    public bool? zoomLock { get; set; }
+
+    /// <summary>
+    /// 设置触发视图刷新的频率。单位为毫秒（ms）
+    /// </summary>
+    [Parameter]
+    public int? throttle { get; set; }
+
+    /// <summary>
+    /// 形式为：[rangeModeForStart, rangeModeForEnd]，例如 rangeMode: ['value', 'percent']，表示 start 值取绝对数值，end 取百分比
+    /// </summary>
+    [Parameter]
+    public string[]? rangeMode { get; set; }
+
+    /// <summary>
+    /// 如何触发缩放。可选值为：true false 'shift' 'ctrl' 'alt'
+    /// </summary>
+    [Parameter]
+    public dynamic? zoomOnMouseWheel { get; set; }
+
+    /// <summary>
+    /// 如何触发数据窗口平移。可选值为：true false 'shift' 'ctrl' 'alt'
+    /// </summary>
+    [Parameter]
+    public dynamic? moveOnMouseMove { get; set; }
+
+    /// <summary>
+    /// 如何触发数据窗口平移。可选值为：true false 'shift' 'ctrl' 'alt'
+    /// </summary>
+    [Parameter]
+    public dynamic? moveOnMouseWheel { get; set; }
+
+    /// <summary>
+    /// 是否阻止 mousemove 事件的默认行为
+    /// </summary>
+    [Parameter]
+    public dynamic? preventDefaultMouseMove { get; set; }
+
+    /// <summary>
+    /// 组件的背景颜色
+    /// </summary>
+    [Parameter]
+    public string? backgroundColor { get; set; }
+
+    /// <summary>
+    /// 选中范围的填充颜色
+    /// </summary>
+    [Parameter]
+    public string? fillerColor { get; set; }
+
+    /// <summary>
+    /// 边框颜色
+    /// </summary>
+    [Parameter]
+    public string? borderColor { get; set; }
+
+    /// <summary>
+    /// 两侧缩放手柄的 icon 形状，支持路径字符串
+    /// </summary>
+    [Parameter]
+    public string? handleIcon { get; set; }
+
+    /// <summary>
+    /// 控制手柄的尺寸
+    /// </summary>
+    [Parameter]
+    public string? handleSize { get; set; }
+
+    /// <summary>
+    /// 移动手柄中间的 icon，支持路径字符串
+    /// </summary>
+    [Parameter]
+    public string? moveHandleIcon { get; set; }
+
+    /// <summary>
+    /// 移动手柄的尺寸高度
+    /// </summary>
+    [Parameter]
+    public int? moveHandleSize { get; set; }
+
+    /// <summary>
+    /// 显示label的小数精度。默认根据数据自动决定
+    /// </summary>
+    [Parameter]
+    public string? labelPrecision { get; set; }
+
+    /// <summary>
+    /// 显示的label的格式化器
+    /// </summary>
+    [Parameter]
+    public string? labelFormatter { get; set; }
+
+    /// <summary>
+    /// 是否显示detail，即拖拽时候显示详细数值信息
+    /// </summary>
+    [Parameter]
+    public bool? showDetail { get; set; }
+
+    /// <summary>
+    /// 是否在 dataZoom-silder 组件中显示数据阴影
+    /// </summary>
+    [Parameter]
+    public string? showDataShadow { get; set; }
+
+    /// <summary>
+    /// 拖动时，是否实时更新系列的视图
+    /// </summary>
+    [Parameter]
+    public bool? realtime { get; set; }
+
+    /// <summary>
+    /// 所有图形的 zlevel 值
+    /// </summary>
+    [Parameter]
+    public int? zlevel { get; set; }
+
+    /// <summary>
+    /// 组件的所有图形的z值
+    /// </summary>
+    [Parameter]
+    public int? z { get; set; }
+
+    /// <summary>
+    /// dataZoom-slider组件离容器左侧的距离
+    /// </summary>
+    [Parameter]
+    public string? left { get; set; }
+
+    /// <summary>
+    /// dataZoom-slider组件离容器上侧的距离
+    /// </summary>
+    [Parameter]
+    public string? top { get; set; }
+
+    /// <summary>
+    /// dataZoom-slider组件离容器右侧的距离
+    /// </summary>
+    [Parameter]
+    public string? right { get; set; }
+
+    /// <summary>
+    /// dataZoom-slider组件离容器下侧的距离
+    /// </summary>
+    [Parameter]
+    public string? bottom { get; set; }
+
+    /// <summary>
+    /// 是否开启刷选功能
+    /// </summary>
+    [Parameter]
+    public bool? brushSelect { get; set; }
+
+    /// <summary>
+    /// 缩放和还原的标题文本
+    /// </summary>
+    [Parameter]
+    public DataZoomInfo? title { get; set; }
+
+    /// <summary>
+    /// 缩放和还原的 icon path
+    /// </summary>
+    [Parameter]
+    public DataZoomInfo? icon { get; set; }
+
+    #endregion]
+
+    public override void SetSetting(IDictionary<string, object> setting)
+    {
+        if (!string.IsNullOrEmpty(id))
+            FillSetting("id", id);
+
+        if (!string.IsNullOrEmpty(type))
+            FillSetting("type", type);
+
+        if (show.HasValue)
+            FillSetting("show", show);
+
+        if (disabled.HasValue)
+            FillSetting("disabled", disabled);
+
+        if (disabled.HasValue)
+            FillSetting("disabled", disabled);
+
+        if (xAxisIndex != null)
+            FillSetting("xAxisIndex", xAxisIndex);
+
+        if (yAxisIndex != null)
+            FillSetting("yAxisIndex", yAxisIndex);
+
+        if (radiusAxisIndex != null)
+            FillSetting("radiusAxisIndex", radiusAxisIndex);
+
+        if (angleAxisIndex != null)
+            FillSetting("angleAxisIndex", angleAxisIndex);
+
+        if (!string.IsNullOrEmpty(filterMode))
+            FillSetting("filterMode", filterMode);
+
+        if (start.HasValue)
+            FillSetting("start", start);
+
+        if (end.HasValue)
+            FillSetting("end", end);
+
+        if (!string.IsNullOrEmpty(startValue))
+            FillSetting("startValue", startValue);
+
+        if (!string.IsNullOrEmpty(endValue))
+            FillSetting("endValue", endValue);
+
+        if (minSpan.HasValue)
+            FillSetting("minSpan", minSpan);
+
+        if (maxSpan.HasValue)
+            FillSetting("maxSpan", maxSpan);
+
+        if (!string.IsNullOrEmpty(minValueSpan))
+            FillSetting("minValueSpan", minValueSpan);
+
+        if (!string.IsNullOrEmpty(maxValueSpan))
+            FillSetting("maxValueSpan", maxValueSpan);
+
+        if (!string.IsNullOrEmpty(orient))
+            FillSetting("orient", orient);
+
+        if (zoomLock.HasValue)
+            FillSetting("zoomLock", zoomLock);
+
+        if (throttle.HasValue)
+            FillSetting("throttle", throttle);
+
+        if (rangeMode != null && rangeMode.Length > 0)
+            FillSetting("rangeMode", rangeMode);
+
+        if (zoomOnMouseWheel != null)
+            FillSetting("zoomOnMouseWheel", zoomOnMouseWheel);
+
+        if (moveOnMouseMove != null)
+            FillSetting("moveOnMouseMove", moveOnMouseMove);
+
+        if (moveOnMouseWheel != null)
+            FillSetting("moveOnMouseWheel", moveOnMouseWheel);
+
+        if (preventDefaultMouseMove != null)
+            FillSetting("preventDefaultMouseMove  ", preventDefaultMouseMove);
+
+        if (!string.IsNullOrEmpty(backgroundColor))
+            FillSetting("backgroundColor", backgroundColor);
+
+        if (!string.IsNullOrEmpty(fillerColor))
+            FillSetting("fillerColor", fillerColor);
+
+        if (!string.IsNullOrEmpty(borderColor))
+            FillSetting("borderColor", borderColor);
+
+        if (!string.IsNullOrEmpty(handleIcon))
+            FillSetting("handleIcon", handleIcon);
+
+        if (!string.IsNullOrEmpty(handleSize))
+            FillSetting("handleSize", handleSize);
+
+        if (!string.IsNullOrEmpty(moveHandleIcon))
+            FillSetting("moveHandleIcon", moveHandleIcon);
+
+        if (moveHandleSize.HasValue)
+            FillSetting("moveHandleSize", moveHandleSize.Value);
+
+        if (!string.IsNullOrEmpty(labelPrecision))
+            FillSetting("labelPrecision", labelPrecision);
+
+        if (!string.IsNullOrEmpty(labelFormatter))
+            FillSetting("labelFormatter ", labelFormatter);
+
+        if (showDetail.HasValue)
+            FillSetting("showDetail", showDetail.Value);
+
+        if (!string.IsNullOrEmpty(showDataShadow))
+            FillSetting("showDataShadow", showDataShadow);
+
+        if (realtime.HasValue)
+            FillSetting("realtime", realtime.Value);
+
+        if (zlevel.HasValue)
+            FillSetting("zlevel", zlevel.Value);
+
+        if (z.HasValue)
+            FillSetting("z", z.Value);
+
+        if (!string.IsNullOrEmpty(left))
+            FillSetting("left", left);
+
+        if (!string.IsNullOrEmpty(top))
+            FillSetting("top", top);
+
+        if (!string.IsNullOrEmpty(right))
+            FillSetting("right", right);
+
+        if (!string.IsNullOrEmpty(bottom))
+            FillSetting("bottom", bottom);
+
+        if (brushSelect.HasValue)
+            FillSetting("brushSelect", brushSelect.Value);
+
+        if (title.HasValue)
+            FillSetting("title", title.Value);
+
+        if (icon.HasValue)
+            FillSetting("icon", icon.Value);
+    }
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        if (Base is ECharts component)
+        {
+            component.SetDataZoomData((dataZoomData) =>
+            {
+                if (!dataZoomData.Contains(setting))
+                    dataZoomData.Add(setting);
+            });
+        }
+        else if (Base is Feature fcomponent)
+        {
+            fcomponent.SetDataZoom((dataZoom) =>
+            {
+                setting = dataZoom;
+            });
+        }
+
+        return setting;
+    }
+
+    public void SetDataBackground(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("dataBackground", dataBackground);
+        action?.Invoke(dataBackground);
+    }
+
+    public void SetSelectedDataBackground(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("selectedDataBackground", selectedDataBackground);
+        action?.Invoke(selectedDataBackground);
+    }
+
+    public void SetHandleStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("handleStyle", handleStyle);
+        action?.Invoke(handleStyle);
+    }
+
+    public void SetMoveHandleStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("moveHandleStyle", moveHandleStyle);
+        action?.Invoke(moveHandleStyle);
+    }
+
+    public void SetTextStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("textStyle", textStyle);
+        action?.Invoke(textStyle);
+    }
+
+    public void SetBrushStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("brushStyle", brushStyle);
+        action?.Invoke(brushStyle);
+    }
+
+    public void SetEmphasis(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("emphasis", emphasis);
+        action?.Invoke(emphasis);
+    }
+
+    public void SetIconStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("iconStyle ", iconStyle);
+        action?.Invoke(iconStyle);
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            if (Base is ECharts component)
+            {
+                component.RemoveDataZoomData(setting);
+            }
+        }
+    }
+}

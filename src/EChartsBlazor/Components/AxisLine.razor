@@ -1,0 +1,152 @@
+﻿@inherits BaseItemComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    private IDictionary<string, object> lineStyle = new Dictionary<string, object>();
+
+    /// <summary>
+    /// 是否显示坐标轴轴线
+    /// </summary>
+    [Parameter]
+    public bool? show { get; set; }
+
+    /// <summary>
+    /// X 轴或者 Y 轴的轴线是否在另一个轴的 0 刻度上
+    /// </summary>
+    [Parameter]
+    public bool? onZero { get; set; }
+
+    /// <summary>
+    /// 当有双轴时，可以用这个属性手动指定，在哪个轴的 0 刻度上
+    /// </summary>
+    [Parameter]
+    public int? onZeroAxisIndex { get; set; }
+
+    /// <summary>
+    /// 轴线两边的箭头
+    /// </summary>
+    [Parameter]
+    public dynamic? symbol { get; set; }
+
+    /// <summary>
+    /// 轴线两边的箭头的大小，宽度和高度
+    /// </summary>
+    [Parameter]
+    public int[]? symbolSize { get; set; }
+
+    /// <summary>
+    /// 轴线两边的箭头的偏移
+    /// </summary>
+    [Parameter]
+    public dynamic? symbolOffset { get; set; }
+
+    /// <summary>
+    /// 是否在两端显示成圆形
+    /// </summary>
+    [Parameter]
+    public bool? roundCap { get; set; }
+
+    public override void SetSetting(IDictionary<string, object> setting)
+    {
+        if (show.HasValue)
+            FillSetting("show", show.Value);
+
+        if (onZero.HasValue)
+            FillSetting("onZero", onZero.Value);
+
+        if (onZeroAxisIndex.HasValue)
+            FillSetting("onZeroAxisIndex", onZeroAxisIndex.Value);
+
+        if (symbol != null)
+            FillSetting("symbol", symbol);
+
+        if (symbolSize != null && symbolSize.Length > 0)
+            FillSetting("symbolSize", symbolSize);
+
+        if (symbolOffset != null)
+            FillSetting("symbolOffset", symbolOffset);
+
+        if (roundCap.HasValue)
+            FillSetting("roundCap", roundCap.Value);
+    }
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is YAxis ycomponent)
+        {
+            ycomponent.SetAxisLine((axisLine) =>
+            {
+                setting = axisLine;
+            });
+        }
+        else if (Base is XAxis xcomponent)
+        {
+            xcomponent.SetAxisLine((axisLine) =>
+            {
+                setting = axisLine;
+            });
+        }
+        else if (Base is RadiusAxis rcomponent)
+        {
+            rcomponent.SetAxisLine((axisLine) =>
+            {
+                setting = axisLine;
+            });
+        }
+        else if (Base is AngleAxis acomponent)
+        {
+            acomponent.SetAxisLine((axisLine) =>
+            {
+                setting = axisLine;
+            });
+        }
+        else if (Base is Radar racomponent)
+        {
+            racomponent.SetAxisLine((axisLine) =>
+            {
+                setting = axisLine;
+            });
+        }
+        else if (Base is Series scomponent)
+        {
+            scomponent.SetAxisLine((axisLine) =>
+            {
+                setting = axisLine;
+            });
+        }
+        else if (Base is ParallelAxisDefault plrcomponent)
+        {
+            plrcomponent.SetAxisLine((axisLine) =>
+            {
+                setting = axisLine;
+            });
+        }
+        else if (Base is ParallelAxis placomponent)
+        {
+            placomponent.SetAxisLine((axisLine) =>
+            {
+                setting = axisLine;
+            });
+        }
+        else if (Base is SingleAxis sicomponent)
+        {
+            sicomponent.SetAxisLine((axisLine) =>
+            {
+                setting = axisLine;
+            });
+        }
+
+        return setting ?? new Dictionary<string, object>();
+    }
+
+    public void SetLineStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("lineStyle", lineStyle);
+        action?.Invoke(lineStyle);
+    }
+}

@@ -1,0 +1,102 @@
+﻿@inherits BaseItemComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    private IDictionary<string, object> lineStyle = new Dictionary<string, object>();
+
+    /// <summary>
+    /// 是否显示次刻度线
+    /// </summary>
+    [Parameter]
+    public bool? show { get; set; }
+
+    /// <summary>
+    /// 次刻度线分割数，默认会分割成 5 段
+    /// </summary>
+    [Parameter]
+    public int? splitNumber { get; set; }
+
+    /// <summary>
+    /// 次刻度线的长度
+    /// </summary>
+    [Parameter]
+    public int? length { get; set; }
+
+    public override void SetSetting(IDictionary<string, object> setting)
+    {
+        if (show.HasValue)
+            FillSetting("show", show.Value);
+
+        if (splitNumber.HasValue)
+            FillSetting("splitNumber", splitNumber.Value);
+
+        if (length.HasValue)
+            FillSetting("length", length.Value);
+    }
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is YAxis ycomponent)
+        {
+            ycomponent.SetMinorTick((minorTick) =>
+            {
+                setting = minorTick;
+            });
+        }
+        else if (Base is XAxis xcomponent)
+        {
+            xcomponent.SetMinorTick((minorTick) =>
+            {
+                setting = minorTick;
+            });
+        }
+        else if (Base is RadiusAxis rcomponent)
+        {
+            rcomponent.SetMinorTick((minorTick) =>
+            {
+                setting = minorTick;
+            });
+        }
+        else if (Base is AngleAxis acomponent)
+        {
+            acomponent.SetMinorTick((minorTick) =>
+            {
+                setting = minorTick;
+            });
+        }
+        else if (Base is ParallelAxisDefault plrcomponent)
+        {
+            plrcomponent.SetMinorTick((minorTick) =>
+            {
+                setting = minorTick;
+            });
+        }
+        else if (Base is ParallelAxis placomponent)
+        {
+            placomponent.SetMinorTick((minorTick) =>
+            {
+                setting = minorTick;
+            });
+        }
+        else if (Base is SingleAxis sicomponent)
+        {
+            sicomponent.SetMinorTick((minorTick) =>
+            {
+                setting = minorTick;
+            });
+        }
+
+        return setting ?? new Dictionary<string, object>();
+    }
+
+    public void SetLineStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("lineStyle", lineStyle);
+        action?.Invoke(lineStyle);
+    }
+}

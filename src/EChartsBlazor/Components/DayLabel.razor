@@ -1,0 +1,42 @@
+﻿@inherits Label
+
+@code {
+
+    /// <summary>
+    /// 一周从周几开始，默认从周日开始
+    /// </summary>
+    [Parameter]
+    public int? firstDay { get; set; }
+
+    /// <summary>
+    /// 星期显示的效果，默认为'en' 可设置中英文以及自定义 下标0为对应星期天的文字显示
+    /// </summary>
+    [Parameter]
+    public dynamic? nameMap { get; set; }
+
+    public override void SetSetting(IDictionary<string, object> setting)
+    {
+        base.SetSetting(setting);
+
+        if (firstDay.HasValue)
+            FillSetting("firstDay", firstDay.Value);
+
+        if (nameMap != null)
+            FillSetting("nameMap", nameMap);
+    }
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is Calendar cdcomponent)
+        {
+            cdcomponent.SetDayLabel((dayLabel) =>
+            {
+                setting = dayLabel;
+            });
+        }
+
+        return setting ?? new Dictionary<string, object>();
+    }
+}

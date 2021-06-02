@@ -1,0 +1,167 @@
+﻿@inherits BaseChartComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    private IDictionary<string, object> splitLine = new Dictionary<string, object>();
+    private IDictionary<string, object> itemStyle = new Dictionary<string, object>();
+    private IDictionary<string, object> dayLabel = new Dictionary<string, object>();
+    private IDictionary<string, object> monthLabel = new Dictionary<string, object>();
+    private IDictionary<string, object> yearLabel = new Dictionary<string, object>();
+
+    protected override string ComponentName => "calendar";
+
+    /// <summary>
+    /// 组件 ID
+    /// </summary>
+    [Parameter]
+    public string? id { get; set; }
+
+    /// <summary>
+    /// 所有图形的 zlevel 值
+    /// </summary>
+    [Parameter]
+    public int? zlevel { get; set; }
+
+    /// <summary>
+    /// 组件的所有图形的z值。控制图形的前后顺序。z值小的图形会被z值大的图形覆盖
+    /// </summary>
+    [Parameter]
+    public int? z { get; set; }
+
+    /// <summary>
+    /// 组件离容器左侧的距离
+    /// </summary>
+    [Parameter]
+    public string? left { get; set; }
+
+    /// <summary>
+    /// 组件离容器上侧的距离
+    /// </summary>
+    [Parameter]
+    public string? top { get; set; }
+
+    /// <summary>
+    /// 组件离容器右侧的距离
+    /// </summary>
+    [Parameter]
+    public string? right { get; set; }
+
+    /// <summary>
+    /// 组件离容器下侧的距离
+    /// </summary>
+    [Parameter]
+    public string? bottom { get; set; }
+
+    /// <summary>
+    ///  组件的宽度。默认自适应
+    /// </summary>
+    [Parameter]
+    public string? width { get; set; }
+
+    /// <summary>
+    /// 组件的高度。默认自适应
+    /// </summary>
+    [Parameter]
+    public string? height { get; set; }
+
+    /// <summary>
+    /// 必填，日历坐标的范围 支持多种格式
+    /// </summary>
+    [Parameter]
+    public dynamic? range { get; set; }
+
+    /// <summary>
+    /// 日历每格框的大小，可设置单值 或数组 第一个元素是宽 第二个元素是高
+    /// </summary>
+    [Parameter]
+    public dynamic? cellSize { get; set; }
+
+    /// <summary>
+    /// 日历坐标的布局朝向 可选：'horizontal' 'vertical'
+    /// </summary>
+    [Parameter]
+    public string? orient { get; set; }
+
+    /// <summary>
+    /// 图形是否不响应和触发鼠标事件，默认为 false，即响应和触发鼠标事件
+    /// </summary>
+    [Parameter]
+    public bool? silent { get; set; }
+
+    protected override Task SetParametersAsync()
+    {
+        if (!string.IsNullOrEmpty(id))
+            FillSetting("id", id);
+
+        if (zlevel.HasValue)
+            FillSetting("zlevel", zlevel.Value);
+
+        if (z.HasValue)
+            FillSetting("z", z.Value);
+
+        if (!string.IsNullOrEmpty(left))
+            FillSetting("left", left);
+
+        if (!string.IsNullOrEmpty(top))
+            FillSetting("top", top);
+
+        if (!string.IsNullOrEmpty(right))
+            FillSetting("right", right);
+
+        if (!string.IsNullOrEmpty(bottom))
+            FillSetting("bottom", bottom);
+
+        if (!string.IsNullOrEmpty(width))
+            FillSetting("width", width);
+
+        if (!string.IsNullOrEmpty(height))
+            FillSetting("height", height);
+
+        if (range != null)
+            FillSetting("range", range);
+
+        if (cellSize != null)
+            FillSetting("cellSize", cellSize);
+
+        if (!string.IsNullOrEmpty(orient))
+            FillSetting("orient", orient);
+
+        if (silent.HasValue)
+            FillSetting("silent", silent.Value);
+
+        return Task.CompletedTask;
+    }
+
+    public void SetSplitLine(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("splitLine", splitLine);
+        action?.Invoke(splitLine);
+    }
+
+    public void SetItemStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("itemStyle", itemStyle);
+        action?.Invoke(itemStyle);
+    }
+
+    public void SetDayLabel(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("dayLabel", dayLabel);
+        action?.Invoke(dayLabel);
+    }
+
+    public void SetMonthLabel(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("monthLabel", monthLabel);
+        action?.Invoke(monthLabel);
+    }
+
+    public void SetYearLabel(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("yearLabel", yearLabel);
+        action?.Invoke(yearLabel);
+    }
+}

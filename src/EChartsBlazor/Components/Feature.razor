@@ -1,0 +1,70 @@
+﻿@inherits BaseItemComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    private IDictionary<string, object> saveAsImage = new Dictionary<string, object>();
+    private IDictionary<string, object> restore = new Dictionary<string, object>();
+    private IDictionary<string, object> dataView = new Dictionary<string, object>();
+    private Dictionary<string, object> dataZoom = new Dictionary<string, object>();
+    private IDictionary<string, object> magicType = new Dictionary<string, object>();
+    private IDictionary<string, object> brush = new Dictionary<string, object>();
+
+    public override void SetSetting(IDictionary<string, object> setting)
+    {
+
+    }
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is Toolbox tbomponent)
+        {
+            tbomponent.SetFeature((feature) =>
+            {
+                setting = feature;
+            });
+        }
+       
+        return setting ?? new Dictionary<string, object>();
+    }
+
+    public void SetSaveAsImage(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("saveAsImage", saveAsImage);
+        action?.Invoke(saveAsImage);
+    }
+
+    public void SetRestore(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("restore", restore);
+        action?.Invoke(restore);
+    }
+
+    public void SetDataView(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("dataView", dataView);
+        action?.Invoke(dataView);
+    }
+
+    public void SetDataZoom(Action<Dictionary<string, object>> action)
+    {
+        FillSetting("dataZoom", dataZoom);
+        action?.Invoke(dataZoom);
+    }
+
+    public void SetMagicType(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("magicType", magicType);
+        action?.Invoke(magicType);
+    }
+
+    public void SetBrush(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("brush", brush);
+        action?.Invoke(brush);
+    }
+}

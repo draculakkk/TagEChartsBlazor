@@ -1,0 +1,136 @@
+﻿@inherits BaseItemComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    private IDictionary<string, object> lineStyle = new Dictionary<string, object>();
+
+    /// <summary>
+    /// 是否显示坐标轴刻度
+    /// </summary>
+    [Parameter]
+    public bool? show { get; set; }
+
+    /// <summary>
+    /// 保证刻度线和标签对齐
+    /// </summary>
+    [Parameter]
+    public bool? alignWithLabel { get; set; }
+
+    /// <summary>
+    /// 坐标轴刻度的显示间隔
+    /// </summary>
+    [Parameter]
+    public string? interval { get; set; }
+
+    /// <summary>
+    /// 坐标轴刻度是否朝内，默认朝外
+    /// </summary>
+    [Parameter]
+    public bool? inside { get; set; }
+
+    /// <summary>
+    /// 坐标轴刻度的长度
+    /// </summary>
+    [Parameter]
+    public string? length { get; set; }
+
+    /// <summary>
+    /// 距离图形元素的距离
+    /// </summary>
+    [Parameter]
+    public int? distance { get; set; }
+
+    public override void SetSetting(IDictionary<string, object> setting)
+    {
+        if (show.HasValue)
+            FillSetting("show", show.Value);
+
+        if (alignWithLabel.HasValue)
+            FillSetting("alignWithLabel", alignWithLabel.Value);
+
+        if (!string.IsNullOrEmpty(interval))
+            FillSetting("interval", interval);
+
+        if (inside.HasValue)
+            FillSetting("inside", inside.Value);
+
+        if (!string.IsNullOrEmpty(length))
+            FillSetting("length", length);
+
+        if (distance.HasValue)
+            FillSetting("distance", distance.Value);
+    }
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is YAxis ycomponent)
+        {
+            ycomponent.SetAxisTick((axisTick) =>
+            {
+                setting = axisTick;
+            });
+        }
+        else if (Base is XAxis xcomponent)
+        {
+            xcomponent.SetAxisTick((axisTick) =>
+            {
+                setting = axisTick;
+            });
+        }
+        else if (Base is RadiusAxis rcomponent)
+        {
+            rcomponent.SetAxisTick((axisTick) =>
+            {
+                setting = axisTick;
+            });
+        }
+        else if (Base is AngleAxis acomponent)
+        {
+            acomponent.SetAxisTick((axisTick) =>
+            {
+                setting = axisTick;
+            });
+        }
+        else if (Base is Radar racomponent)
+        {
+            racomponent.SetAxisTick((axisTick) =>
+            {
+                setting = axisTick;
+            });
+        }
+        else if (Base is Series scomponent)
+        {
+            scomponent.SetAxisTick((axisTick) =>
+            {
+                setting = axisTick;
+            });
+        }
+        else if (Base is ParallelAxisDefault plrcomponent)
+        {
+            plrcomponent.SetAxisTick((axisTick) =>
+            {
+                setting = axisTick;
+            });
+        }
+        else if (Base is SingleAxis sicomponent)
+        {
+            sicomponent.SetAxisTick((axisTick) =>
+            {
+                setting = axisTick;
+            });
+        }
+
+        return setting ?? new Dictionary<string, object>();
+    }
+
+    public void SetLineStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("lineStyle", lineStyle);
+        action?.Invoke(lineStyle);
+    }
+}

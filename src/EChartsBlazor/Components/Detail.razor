@@ -1,0 +1,337 @@
+﻿@inherits BaseItemComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    private IDictionary<string, IDictionary<string, object>> rich = new Dictionary<string, IDictionary<string, object>>();
+
+    /// <summary>
+    /// 是否显示详情
+    /// </summary>
+    [Parameter]
+    public bool? show { get; set; }
+
+    /// <summary>
+    /// 文本颜色
+    /// </summary>
+    [Parameter]
+    public string? color { get; set; }
+
+    /// <summary>
+    /// 文字字体的风格。可选：'normal' 'italic' 'oblique'
+    /// </summary>
+    [Parameter]
+    public string? fontStyle { get; set; }
+
+    /// <summary>
+    /// 文字字体的粗细。可选：'normal' 'bold''bolder' 'lighter'100 | 200 | 300 | 400...
+    /// </summary>
+    [Parameter]
+    public string? fontWeight { get; set; }
+
+    /// <summary>
+    /// 文字的字体系列
+    /// </summary>
+    [Parameter]
+    public string? fontFamily { get; set; }
+
+    /// <summary>
+    /// 文字的字体大小
+    /// </summary>
+    [Parameter]
+    public int? fontSize { get; set; }
+
+    /// <summary>
+    /// 行高
+    /// </summary>
+    [Parameter]
+    public int? lineHeight { get; set; }
+
+    /// <summary>
+    /// 详情背景色
+    /// </summary>
+    [Parameter]
+    public string? backgroundColor { get; set; }
+
+    /// <summary>
+    /// 详情边框颜色
+    /// </summary>
+    [Parameter]
+    public string? borderColor { get; set; }
+
+    /// <summary>
+    /// 详情边框宽度
+    /// </summary>
+    [Parameter]
+    public int? borderWidth { get; set; }
+
+    /// <summary>
+    /// 文字块边框描边类型。 可选：'solid ''dashed' 'dotted'
+    /// </summary>
+    [Parameter]
+    public dynamic? borderType { get; set; }
+
+    /// <summary>
+    /// 用于设置虚线的偏移量，可搭配 borderType 指定 dash array 实现灵活的虚线效果
+    /// </summary>
+    [Parameter]
+    public int? borderDashOffset { get; set; }
+
+    /// <summary>
+    /// 文字块的圆角
+    /// </summary>
+    [Parameter]
+    public dynamic? borderRadius { get; set; }
+
+    /// <summary>
+    /// 文字块的内边距
+    /// </summary>
+    [Parameter]
+    public dynamic? padding { get; set; }
+
+    /// <summary>
+    /// 文字块的背景阴影颜色
+    /// </summary>
+    [Parameter]
+    public string? shadowColor { get; set; }
+
+    /// <summary>
+    /// 文字块的背景阴影长度
+    /// </summary>
+    [Parameter]
+    public int? shadowBlur { get; set; }
+
+    /// <summary>
+    /// 文字块的背景阴影 X 偏移
+    /// </summary>
+    [Parameter]
+    public int? shadowOffsetX { get; set; }
+
+    /// <summary>
+    /// 文字块的背景阴影 Y 偏移
+    /// </summary>
+    [Parameter]
+    public int? shadowOffsetY { get; set; }
+
+    /// <summary>
+    /// 详情宽度
+    /// </summary>
+    [Parameter]
+    public int? width { get; set; }
+
+    /// <summary>
+    /// 详情高度
+    /// </summary>
+    [Parameter]
+    public int? height { get; set; }
+
+    /// <summary>
+    /// 文字本身的描边颜色
+    /// </summary>
+    [Parameter]
+    public string? textBorderColor { get; set; }
+
+    /// <summary>
+    /// 文字本身的描边宽度
+    /// </summary>
+    [Parameter]
+    public int? textBorderWidth { get; set; }
+
+    /// <summary>
+    /// 用于设置虚线的偏移量
+    /// </summary>
+    [Parameter]
+    public int? textBorderDashOffset { get; set; }
+
+    /// <summary>
+    /// 文字本身的阴影颜色
+    /// </summary>
+    [Parameter]
+    public string? textShadowColor { get; set; }
+
+    /// <summary>
+    /// 文字本身的阴影长度
+    /// </summary>
+    [Parameter]
+    public int? textShadowBlur { get; set; }
+
+    /// <summary>
+    /// 文字本身的阴影 X 偏移
+    /// </summary>
+    [Parameter]
+    public int? textShadowOffsetX { get; set; }
+
+    /// <summary>
+    /// 文字本身的阴影 Y 偏移
+    /// </summary>
+    [Parameter]
+    public int? textShadowOffsetY { get; set; }
+
+    /// <summary>
+    /// 文字超出宽度是否截断或者换行
+    /// </summary>
+    [Parameter]
+    public string? overflow { get; set; }
+
+    /// <summary>
+    /// 在overflow配置为'truncate'的时候，可以通过该属性配置末尾显示的文本
+    /// </summary>
+    [Parameter]
+    public string? ellipsis { get; set; }
+
+    /// <summary>
+    /// 文本超出高度部分是否截断，配置height时有效
+    /// </summary>
+    [Parameter]
+    public string? lineOverflow { get; set; }
+
+    /// <summary>
+    /// 是否开启标签的数字动画
+    /// </summary>
+    [Parameter]
+    public bool? valueAnimation { get; set; }
+
+    /// <summary>
+    /// 相对于仪表盘中心的偏移位置，数组第一项是水平方向的偏移，第二项是垂直方向的偏移
+    /// </summary>
+    [Parameter]
+    public object[]? offsetCenter { get; set; }
+
+    /// <summary>
+    /// 格式化函数或者字符串
+    /// </summary>
+    [Parameter]
+    public string? formatter { get; set; }
+
+    public override void SetSetting(IDictionary<string, object> setting)
+    {
+        if (show.HasValue)
+            FillSetting("show", show.Value);
+
+        if (!string.IsNullOrWhiteSpace(formatter))
+            FillSetting("formatter", formatter);
+
+        if (!string.IsNullOrWhiteSpace(color))
+            FillSetting("color", color);
+
+        if (!string.IsNullOrWhiteSpace(fontStyle))
+            FillSetting("fontStyle", fontStyle);
+
+        if (!string.IsNullOrWhiteSpace(fontWeight))
+            FillSetting("fontWeight", fontWeight);
+
+        if (!string.IsNullOrWhiteSpace(fontFamily))
+            FillSetting("fontFamily", fontFamily);
+
+        if (fontSize.HasValue)
+            FillSetting("fontSize", fontSize.Value);
+
+        if (lineHeight.HasValue)
+            FillSetting("lineHeight", lineHeight.Value);
+
+        if (!string.IsNullOrWhiteSpace(backgroundColor))
+            FillSetting("backgroundColor", backgroundColor);
+
+        if (!string.IsNullOrWhiteSpace(borderColor))
+            FillSetting("borderColor", borderColor);
+
+        if (borderWidth.HasValue)
+            FillSetting("borderWidth", borderWidth.Value);
+
+        if (borderType != null)
+            FillSetting("borderType", borderType);
+
+        if (borderDashOffset.HasValue)
+            FillSetting("borderDashOffset", borderDashOffset.Value);
+
+        if (borderRadius != null)
+            FillSetting("borderRadius", borderRadius);
+
+        if (padding != null)
+            FillSetting("padding", padding);
+
+        if (!string.IsNullOrWhiteSpace(shadowColor))
+            FillSetting("shadowColor", shadowColor);
+
+        if (shadowBlur.HasValue)
+            FillSetting("shadowBlur", shadowBlur.Value);
+
+        if (shadowOffsetX.HasValue)
+            FillSetting("shadowOffsetX", shadowOffsetX.Value);
+
+        if (shadowOffsetY.HasValue)
+            FillSetting("shadowOffsetY", shadowOffsetY.Value);
+
+        if (width.HasValue)
+            FillSetting("width", width.Value);
+
+        if (height.HasValue)
+            FillSetting("height", height.Value);
+
+        if (!string.IsNullOrWhiteSpace(textBorderColor))
+            FillSetting("textBorderColor", textBorderColor);
+
+        if (textBorderWidth.HasValue)
+            FillSetting("textBorderWidth", textBorderWidth.Value);
+
+        if (textBorderDashOffset.HasValue)
+            FillSetting("textBorderDashOffset", textBorderDashOffset.Value);
+
+        if (!string.IsNullOrWhiteSpace(textShadowColor))
+            FillSetting("textShadowColor", textShadowColor);
+
+        if (textShadowBlur.HasValue)
+            FillSetting("textShadowBlur", textShadowBlur.Value);
+
+        if (textShadowOffsetX.HasValue)
+            FillSetting("textShadowOffsetX", textShadowOffsetX.Value);
+
+        if (textShadowOffsetY.HasValue)
+            FillSetting("textShadowOffsetY", textShadowOffsetY.Value);
+
+        if (!string.IsNullOrWhiteSpace(overflow))
+            FillSetting("overflow", overflow);
+
+        if (!string.IsNullOrWhiteSpace(ellipsis))
+            FillSetting("ellipsis", ellipsis);
+
+        if (!string.IsNullOrWhiteSpace(lineOverflow))
+            FillSetting("lineOverflow", lineOverflow);
+
+        if (valueAnimation.HasValue)
+            FillSetting("valueAnimation", valueAnimation);
+
+        if (offsetCenter != null && offsetCenter.Length > 0)
+            FillSetting("offsetCenter", offsetCenter);
+    }
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is Data dcomponent)
+        {
+            dcomponent.SetDetail((detail) =>
+            {
+                setting = detail;
+            });
+        }
+        else if (Base is Series scomponent)
+        {
+            scomponent.SetDetail((detail) =>
+            {
+                setting = detail;
+            });
+        }
+
+        return setting ?? new Dictionary<string, object>();
+    }
+
+    public void SetRich(Action<IDictionary<string, IDictionary<string, object>>> action)
+    {
+        FillSetting("rich", rich);
+        action?.Invoke(rich);
+    }
+}

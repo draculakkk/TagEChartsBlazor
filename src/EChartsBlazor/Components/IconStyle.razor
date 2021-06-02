@@ -1,0 +1,53 @@
+﻿@inherits BaseStyle
+
+@code {
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is SaveAsImage saicomponent)
+        {
+            saicomponent.SetIconStyle((iconStyle) =>
+            {
+                setting = iconStyle;
+            });
+        }
+        else if (Base is Emphasis ecomponent)
+        {
+            ecomponent.SetIconStyle((iconStyle) =>
+            {
+                setting = iconStyle;
+            });
+        }
+        else if (Base is Restore rscomponent)
+        {
+            rscomponent.SetIconStyle((iconStyle) =>
+            {
+                setting = iconStyle;
+            });
+        }
+        else if (Base is DataView dvcomponent)
+        {
+            dvcomponent.SetIconStyle((iconStyle) =>
+            {
+                setting = iconStyle;
+            });
+        }
+        else if (Base is DataZoom dzcomponent)
+        {
+            dzcomponent.SetIconStyle((iconStyle) =>
+            {
+                setting = iconStyle;
+            });
+        }
+        else if (Base is Toolbox tbcomponent)
+        {
+            tbcomponent.SetIconStyle((iconStyle) =>
+            {
+                setting = iconStyle;
+            });
+        }
+
+        return setting ?? new Dictionary<string, object>();
+    }
+}

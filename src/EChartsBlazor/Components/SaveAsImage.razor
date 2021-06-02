@@ -1,0 +1,94 @@
+﻿@inherits BaseItemComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    private IDictionary<string, object> iconStyle = new Dictionary<string, object>();
+    private IDictionary<string, object> emphasis = new Dictionary<string, object>();
+
+    [Parameter]
+    public string? type { get; set; }
+
+    [Parameter]
+    public string? name { get; set; }
+
+    [Parameter]
+    public string? backgroundColor { get; set; }
+
+    [Parameter]
+    public string? connectedBackgroundColor { get; set; }
+
+    [Parameter]
+    public string[]? excludeComponents { get; set; }
+
+    [Parameter]
+    public bool? show { get; set; }
+
+    [Parameter]
+    public string? title { get; set; }
+
+    [Parameter]
+    public string? icon { get; set; }
+
+    [Parameter]
+    public int? pixelRatio { get; set; }
+
+    public override void SetSetting(IDictionary<string, object> setting)
+    {
+        if (show.HasValue)
+            FillSetting("show", show.Value);
+
+        if (!string.IsNullOrEmpty(name))
+            FillSetting("name", name);
+
+        if (!string.IsNullOrEmpty(backgroundColor))
+            FillSetting("backgroundColor", backgroundColor);
+
+        if (!string.IsNullOrEmpty(connectedBackgroundColor))
+            FillSetting("connectedBackgroundColor", connectedBackgroundColor);
+
+        if (excludeComponents != null && excludeComponents.Length > 0)
+            FillSetting("excludeComponents", excludeComponents);
+
+        if (show.HasValue)
+            FillSetting("show", show.Value);
+
+        if (!string.IsNullOrEmpty(title))
+            FillSetting("title", title);
+
+        if (!string.IsNullOrEmpty(icon))
+            FillSetting("icon", icon);
+
+        if (pixelRatio.HasValue)
+            FillSetting("pixelRatio", pixelRatio.Value);
+    }
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is Feature fecomponent)
+        {
+            fecomponent.SetSaveAsImage((saveAsImag) =>
+            {
+                setting = saveAsImag;
+            });
+        }
+
+        return setting ?? new Dictionary<string, object>();
+    }
+
+    public void SetIconStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("iconStyle ", iconStyle);
+        action?.Invoke(iconStyle);
+    }
+
+    public void SetEmphasis(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("emphasis ", emphasis);
+        action?.Invoke(emphasis);
+    }
+}

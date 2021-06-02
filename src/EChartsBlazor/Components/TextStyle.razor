@@ -1,0 +1,71 @@
+﻿@inherits BaseTextStyle
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is Title component)
+        {
+            component.SetTextStyle((textStyle) =>
+            {
+                setting = textStyle;
+            });
+        }
+        else if (Base is Data datacomponent)
+        {
+            datacomponent.SetTextStyle((textStyle) =>
+            {
+                setting = textStyle;
+            });
+        }
+        else if (Base is Legend lgcomponent)
+        {
+            lgcomponent.SetTextStyle((textStyle) =>
+            {
+                setting = textStyle;
+            });
+        }
+        else if (Base is Tooltip ttcomponent)
+        {
+            ttcomponent.SetTextStyle((textStyle) =>
+            {
+                setting = textStyle;
+            });
+        }
+        else if (Base is DataZoom dzcomponent)
+        {
+            dzcomponent.SetTextStyle((textStyle) =>
+            {
+                setting = textStyle;
+            });
+        }
+        else if (Base is ECharts eccomponent)
+        {
+            eccomponent.SetTextStyle((textStyle) =>
+            {
+                setting = textStyle;
+            });
+        }
+        else if (Base is VisualMap vmcomponent)
+        {
+            vmcomponent.SetTextStyle((textStyle) =>
+            {
+                setting = textStyle;
+            });
+        }
+        else if (Base is AxisLabel alcomponent)
+        {
+            alcomponent.SetTextStyle((textStyle) =>
+            {
+                setting = textStyle;
+            });
+        }
+
+        return setting ?? new Dictionary<string, object>();
+    }
+}

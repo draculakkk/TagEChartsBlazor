@@ -1,0 +1,90 @@
+﻿@inherits BaseItemComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    private Dictionary<string, object> setting = new Dictionary<string, object>();
+    private IDictionary<string, object> label = new Dictionary<string, object>();
+    private IDictionary<string, object> itemStyle = new Dictionary<string, object>();
+    private IDictionary<string, object> emphasis = new Dictionary<string, object>();
+    private IDictionary<string, object> blur = new Dictionary<string, object>();
+    private IDictionary<string, object> tooltip = new Dictionary<string, object>();
+
+    /// <summary>
+    /// 地图区域的名称，例如 '广东'，'浙江'
+    /// </summary>
+    [Parameter]
+    public string? name { get; set; }
+
+    /// <summary>
+    /// 该区域是否选中
+    /// </summary>
+    [Parameter]
+    public bool? selected { get; set; }
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        if (Base is Geo geocomponent)
+        {
+            geocomponent.SetRegionsData((regionsData) =>
+            {
+                if (!regionsData.Contains(setting))
+                    regionsData.Add(setting);
+            });
+        }
+
+        return setting;
+    }
+
+    public override void SetSetting(IDictionary<string, object> setting)
+    {
+        if (!string.IsNullOrEmpty(name))
+            FillSetting("name", name);
+
+        if (selected.HasValue)
+            FillSetting("selected", selected.Value);
+    }
+
+    public void SetLabel(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("label", label);
+        action?.Invoke(label);
+    }
+
+    public void SetItemStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("itemStyle", itemStyle);
+        action?.Invoke(itemStyle);
+    }
+
+    public void SetEmphasis(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("emphasis", emphasis);
+        action?.Invoke(emphasis);
+    }
+
+    public void SetBlur(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("blur", blur);
+        action?.Invoke(blur);
+    }
+
+    public void SetTooltip(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("tooltip", tooltip);
+        action?.Invoke(tooltip);
+    }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            if (Base is Geo geocomponent)
+            {
+                geocomponent.RemoveRegionsData(setting);
+            }
+        }
+    }
+}

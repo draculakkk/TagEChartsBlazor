@@ -1,0 +1,118 @@
+﻿@inherits BaseItemComponent
+
+<CascadingValue Value="this" IsFixed="true">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    private IDictionary<string, object> lineStyle = new Dictionary<string, object>();
+
+    /// <summary>
+    /// 是否显示分隔线
+    /// </summary>
+    [Parameter]
+    public bool? show { get; set; }
+
+    /// <summary>
+    /// 坐标轴分隔线的显示间隔，在类目轴中有效
+    /// </summary>
+    [Parameter]
+    public dynamic? interval { get; set; }
+
+    /// <summary>
+    /// 分隔线线长。支持相对半径的百分比
+    /// </summary>
+    [Parameter]
+    public string? length { get; set; }
+
+    /// <summary>
+    /// 分隔线与轴线的距离
+    /// </summary>
+    [Parameter]
+    public int? distance { get; set; }
+
+    public override void SetSetting(IDictionary<string, object> setting)
+    {
+        if (show.HasValue)
+            FillSetting("show", show.Value);
+
+        if (interval != null)
+            FillSetting("interval", interval);
+
+        if (!string.IsNullOrEmpty(length))
+            FillSetting("length", length);
+
+        if (distance.HasValue)
+            FillSetting("distance", distance.Value);
+    }
+
+    protected override IDictionary<string, object> LoadSetting()
+    {
+        IDictionary<string, object>? setting = null;
+
+        if (Base is YAxis ycomponent)
+        {
+            ycomponent.SetSplitLine((splitLine) =>
+            {
+                setting = splitLine;
+            });
+        }
+        else if (Base is XAxis xcomponent)
+        {
+            xcomponent.SetSplitLine((splitLine) =>
+            {
+                setting = splitLine;
+            });
+        }
+        else if (Base is RadiusAxis rcomponent)
+        {
+            rcomponent.SetSplitLine((splitLine) =>
+            {
+                setting = splitLine;
+            });
+        }
+        else if (Base is AngleAxis acomponent)
+        {
+            acomponent.SetSplitLine((splitLine) =>
+            {
+                setting = splitLine;
+            });
+        }
+        else if (Base is Radar racomponent)
+        {
+            racomponent.SetSplitLine((splitLine) =>
+            {
+                setting = splitLine;
+            });
+        }
+        else if (Base is Series scomponent)
+        {
+            scomponent.SetSplitLine((splitLine) =>
+            {
+                setting = splitLine;
+            });
+        }
+        else if (Base is SingleAxis sicomponent)
+        {
+            sicomponent.SetSplitLine((splitLine) =>
+            {
+                setting = splitLine;
+            });
+        }
+        else if (Base is Calendar cdcomponent)
+        {
+            cdcomponent.SetSplitLine((splitLine) =>
+            {
+                setting = splitLine;
+            });
+        }
+
+        return setting ?? new Dictionary<string, object>();
+    }
+
+    public void SetLineStyle(Action<IDictionary<string, object>> action)
+    {
+        FillSetting("lineStyle", lineStyle);
+        action?.Invoke(lineStyle);
+    }
+}
