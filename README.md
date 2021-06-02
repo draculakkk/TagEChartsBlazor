@@ -2,7 +2,7 @@
 
 ## 简要说明：
 
-### 1：nuget 搜索 agEChartsBlazor安装类库
+### 1：nuget 搜索 TagEChartsBlazor安装类库
 ### 2：Program注册Services.AddECharts();
 ### 3：wwwroot/index.html(WebAssembly)或_Host.cshtml(Blazor Server)添加
 <script src="_content/TagEChartsBlazor/script/echarts.min.js"></script><br/>
