@@ -152,6 +152,7 @@
       await echartHelper.RegisterMapAsync(new RegisterMapOption("organ_diagram", opt: new MapOpt(svg: mapsvg)));
       string json = await Http.GetStringAsync("json/chalk.json");
       await echartHelper.RegisterThemeAsync("wyy", json);
+      initSuccess = true;
   }
 }
 ```
