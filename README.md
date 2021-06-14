@@ -3,11 +3,15 @@
 ## 简要说明：
 
 ### 1：nuget 搜索 TagEChartsBlazor安装类库
-### 2：Program注册Services.AddECharts();
-### 3：wwwroot/index.html(WebAssembly)或_Host.cshtml(Blazor Server)添加
+### 2：Program.cs(WebAssembly)或Startup.cs(BlazorServer)注入services.AddECharts();
+### 3：wwwroot/index.html(WebAssembly)或_Host.cshtml(BlazorServer)添加
+```html
 <script src="_content/TagEChartsBlazor/script/echarts.min.js"></script><br/>
 <script src="_content/TagEChartsBlazor/script/common.js"></script>
+```
 ### 4：_Imports.razor 添加 @using TagEChartsBlazor.Components
+### 5：所有标签属性在VS中自动识别，并自带官方中文注释
+### 6：由于echarts部分属性属于混合类型（如既可以是字符串也可以是数组甚至是函数），这部分属性在组件中会用dynamic类型替代，可根据具体echarts中的类型设置对应C#类型
 
 ## 顶层ECharts标签自带的属性说明：
 
@@ -22,7 +26,7 @@
 
 
 ### 示例1：标准用法，所有标签支持razor动态控制，目前所有formatter属性如需设置函数，需要填写js字符串
-```html
+```razor
 <ECharts Style="width: 800px; height: 400px;">
     <Title text="ECharts 入门示例"></Title>
     <Legend data="@(new[] { "销量" })"></Legend>
@@ -44,7 +48,7 @@
 ```
 
 ### 示例2：data属性支持匿名对象，也可以使用Data标签显示创建
-```html
+```razor
 <ECharts Style="width: 800px; height: 400px;">
     <Title text="折线图堆叠" />
     <Tooltip trigger="axis" />
@@ -66,7 +70,7 @@
 ```
 
 ### 示例3：顶层ECharts标签支持鼠标委托事件，极少对象没有标签，需要用类生成，如此例的colorStops渐变类
-```html
+```razor
 <ECharts Style="width: 800px; height: 400px;"
          OnClick="@(new(async (param, chart) =>
                     {
@@ -104,7 +108,7 @@
 
 ### 示例4：演示使用主题和外部资源，由于异步加载可能会执行2次render，且echarts会默认缓存首次加载信息，这里手动控制了外部资源加载完再输出标签，EChartsHelper对应echarts的全局类
 
-```html
+```razor
 @inject EChartsHelper echartHelper
 @inject HttpClient Http
 
