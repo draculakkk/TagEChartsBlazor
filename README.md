@@ -23,6 +23,8 @@
 |debugModel|启用后浏览器控台会输出图表的option项|
 |OnRenderComplete|OnAfterRender执行完的委托|
 |OnRenderBefore|OnAfterRender执行前的委托|
+|theme|配置当前echarts图表的主题|
+|RefreshForce()|强制刷新当前echarts图表的实例方法|
 
 
 ### 示例1：标准用法，所有标签支持razor动态控制，目前所有formatter属性如需设置函数，需要填写js字符串
