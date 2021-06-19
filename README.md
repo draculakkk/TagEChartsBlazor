@@ -10,8 +10,9 @@
 <script src="_content/TagEChartsBlazor/script/common.js"></script>
 ```
 ### 4：_Imports.razor 添加 @using TagEChartsBlazor.Components
-### 5：所有标签属性在VS中自动识别，并自带官方中文注释
-### 6：由于echarts部分属性属于混合类型（如既可以是字符串也可以是数组甚至是函数），这部分属性在组件中会用dynamic类型替代，可根据具体echarts中的类型设置对应C#类型
+### 5：标签的层级结构和顺序同echarts option对象完全匹配，具体可参考 [echarts官方配置项](https://echarts.apache.org/zh/option.html)
+### 6：所有标签属性在VS中自动识别，并自带官方中文注释
+### 7：由于echarts部分属性属于混合类型（如既可以是字符串也可以是数组甚至是函数），这部分属性在组件中会用dynamic类型替代，可根据具体echarts中的类型设置对应C#类型
 
 ## 顶层ECharts标签自带的属性说明：
 
