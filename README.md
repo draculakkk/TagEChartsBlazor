@@ -1,41 +1,48 @@
-# 一款基于Apache ECharts的blazor组件，主要以层级标签的方式来使用，所有属性说明可参考Apache ECharts官网api说明文档，版本5.1.1
 
-## 简要说明：
+<a href="https://echarts.apache.org/">
+    <img style="vertical-align: top;" src="https://github.com/apache/echarts/raw/master/asset/logo.png?raw=true" alt="logo" height="50px">
+</a>
 
-### 1：nuget 搜索 TagEChartsBlazor安装类库
-### 2：Program.cs(WebAssembly)或Startup.cs(BlazorServer)注入services.AddECharts();
-### 3：wwwroot/index.html(WebAssembly)或_Host.cshtml(BlazorServer)添加
+English | [简体中文](README-zh_CN.md)
+
+# A blazor component based on Apache ECharts, which is mainly used in the form of hierarchical tags. For all attribute descriptions, please refer to the Apache ECharts official website api documentation, version 5.1.1
+
+## introduction：
+
+### 1：nuget search TagEChartsBlazor install class library
+### 2：Program.cs(WebAssembly) or Startup.cs(BlazorServer) inject services.AddECharts();
+### 3：wwwroot/index.html(WebAssembly) or _Host.cshtml(BlazorServer) add
 ```html
 <script src="_content/TagEChartsBlazor/script/echarts.min.js"></script><br/>
 <script src="_content/TagEChartsBlazor/script/common.js"></script>
 ```
-### 4：_Imports.razor 添加 @using TagEChartsBlazor.Components
-### 5：标签的层级结构和顺序同echarts option对象完全匹配，具体可参考 [echarts官方配置项](https://echarts.apache.org/zh/option.html)
-### 6：所有标签属性在VS中自动识别，并自带官方中文注释
-### 7：由于echarts部分属性属于混合类型（如既可以是字符串也可以是数组甚至是函数），这部分属性在组件中会用dynamic类型替代，可根据具体echarts中的类型设置对应C#类型
+### 4：_Imports.razor add @using TagEChartsBlazor.Components
+### 5：The hierarchical structure and order of the tags match exactly with the echarts option object. For details, please refer to [echarts official configuration items](https://echarts.apache.org/zh/option.html)
+### 6：All label attributes are automatically recognized in Visual Studio
+### 7：Since some properties of echarts belong to mixed types (for example, it can be a string, an array or even a function), this part of the properties will be replaced with dynamic types in the component, and the corresponding C# type can be set according to the type in the specific echarts
 
-## 顶层Apache ECharts标签自带的属性说明：
+## The attribute description that comes with the top-level Apache ECharts tag：
 
-|属性|说明|
+|Property|description|
 |:---|:---|
-|Style|标签style样式|
-|ClassName|类名|
-|AutoRender|图表上的任何属性有变动会自动刷新图表，默认关闭|
-|debugModel|启用后浏览器控台会输出图表的option项|
-|OnRenderComplete|OnAfterRender执行完的委托|
-|OnRenderBefore|OnAfterRender执行前的委托|
-|theme|配置当前echarts图表的主题|
-|RefreshForce()|强制刷新当前echarts图表的实例方法|
+|Style|Label style|
+|ClassName|Class Name|
+|AutoRender|Any changes to the chart's properties will automatically refresh the chart, which is closed by default|
+|debugModel|After enabling, the browser console will output the option item of the chart|
+|OnRenderComplete|OnAfterRender executed delegate|
+|OnRenderBefore|Delegate before OnAfterRender execution|
+|theme|Configure the theme of the current echarts chart|
+|RefreshForce()|Instance method of forcibly refreshing the current echarts chart|
 
 
-### 示例1：标准用法，所有标签支持razor动态控制，目前所有formatter属性如需设置函数，需要填写js字符串
+### Example 1: Standard usage, all tags support razor dynamic control, currently all formatter attributes need to set functions, you need to fill in the javascript string
 ```razor
 <ECharts Style="width: 800px; height: 400px;">
-    <Title text="ECharts 入门示例"></Title>
-    <Legend data="@(new[] { "销量" })"></Legend>
+    <Title text="Apache ECharts Getting started example"></Title>
+    <Legend data="@(new[] { "Sales" })"></Legend>
     <Tooltip></Tooltip>
     <XAxis>
-        @foreach (var item in new[] { "衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子" })
+        @foreach (var item in new[] { "Shirt", "Sweater", "Chiffon Shirt", "Pants", "High Heels", "Socks" })
         {
             <Data value="@item">
                 <TextStyle color="red"></TextStyle>
@@ -45,34 +52,34 @@
     <YAxis>
         <AxisLabel formatter="(value, index) => {return value + ':';}"></AxisLabel>
     </YAxis>
-    <Series name="销量" type="bar" data="@(new[] { 5, 20, 36, 10, 10, 20 })">
+    <Series name="Sales" type="bar" data="@(new[] { 5, 20, 36, 10, 10, 20 })">
     </Series>
 </ECharts>
 ```
 
-### 示例2：data属性支持匿名对象，也可以使用Data标签显示创建
+### Example 2: The data attribute supports anonymous objects, and you can also use the Data tag to display the creation
 ```razor
 <ECharts Style="width: 800px; height: 400px;">
-    <Title text="折线图堆叠" />
+    <Title text="Line chart stacking" />
     <Tooltip trigger="axis" />
-    <Legend data="@(new object[] { "邮件营销", "联盟广告", "视频广告", "直接访问", "搜索引擎" })" />
+    <Legend data="@(new object[] { "Email Marketing", "Affiliate Advertising", "Video Advertising", "Direct Access", "Search Engine" })" />
     <Grid left="3%" right="4%" bottom="3%" containLabel="true" />
     <Toolbox>
         <Feature>
             <SaveAsImage></SaveAsImage>
         </Feature>
     </Toolbox>
-    <XAxis type="category" boundaryGap="false" data="@(new object[] { "周一", "周二", "周三", "周四", "周五", "周六", "周日" })" />
+    <XAxis type="category" boundaryGap="false" data="@(new object[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" })" />
     <YAxis type="value" />
-    <Series name="邮件营销" type="line" stack="总量" data="@(new[] { 120, 132, 101, 134, 90, 230, 210 })" />
-    <Series name="联盟广告" type="line" stack="总量" data="@(new[] { 220, 182, 191, 234, 290, 330, 310 })" />
-    <Series name="视频广告" type="line" stack="总量" data="@(new[] { 150, 232, 201, 154, 190, 330, 410 })" />
-    <Series name="直接访问" type="line" stack="总量" data="@(new[] { 320, 332, 301, 334, 390, 330, 320 })" />
-    <Series name="搜索引擎" type="line" stack="总量" data="@(new[] { 820, 932, 901, 934, 1290, 1330, 1320 })" />
+    <Series name="Email marketing" type="line" stack="Total" data="@(new[] { 120, 132, 101, 134, 90, 230, 210 })" />
+    <Series name="Affiliate advertising" type="line" stack="Total" data="@(new[] { 220, 182, 191, 234, 290, 330, 310 })" />
+    <Series name="Video ad" type="line" stack="Total" data="@(new[] { 150, 232, 201, 154, 190, 330, 410 })" />
+    <Series name="direct interview" type="line" stack="Total" data="@(new[] { 320, 332, 301, 334, 390, 330, 320 })" />
+    <Series name="search engine" type="line" stack="Total" data="@(new[] { 820, 932, 901, 934, 1290, 1330, 1320 })" />
 </ECharts>
 ```
 
-### 示例3：顶层Apache ECharts标签支持鼠标委托事件，极少对象没有标签，需要用类生成，如此例的colorStops渐变类
+### Example 3: The top-level Apache ECharts tag supports mouse delegate events. Very few objects have no tags and need to be generated by classes. The colorStops gradient class in this example
 ```razor
 <ECharts Style="width: 800px; height: 400px;"
          OnClick="@(new(async (param, chart) =>
@@ -82,7 +89,7 @@
                         var ev = dataAxis[System.Math.Min(param.dataIndex.GetValueOrDefault(0) + (zoomSize / 2), data.Length - 1)];
                         await chart.DispatchActionAsync(new DataZoomDispatchAction(DataZoomDispatchType.dataZoom, startValue: sv, endValue: ev));
                     }))">
-    <Title text="特性示例：渐变色 阴影 点击缩放" subtext="Feature Sample: Gradient Color, Shadow, Click Zoom"></Title>
+    <Title text="Feature example: gradient color shadow click to zoom" subtext="Feature Sample: Gradient Color, Shadow, Click Zoom"></Title>
     <XAxis data="dataAxis" z="10">
         <AxisLabel inside="true">
             <TextStyle color="#fff" />
@@ -109,7 +116,7 @@
 </ECharts>
 ```
 
-### 示例4：演示使用主题和外部资源，由于异步加载可能会执行2次render，且echarts会默认缓存首次加载信息，这里手动控制了外部资源加载完再输出标签，EChartsHelper对应echarts的全局类
+### Example 4: Demonstrate the use of themes and external resources. Because asynchronous loading may execute render twice, and echarts will cache the first load information by default. Here, you manually control the output of tags after external resources are loaded. EChartsHelper corresponds to the global class of echarts.
 
 ```razor
 @inject EChartsHelper echartHelper
