@@ -1,4 +1,4 @@
-# 一款基于ECharts的blazor组件，主要以层级标签的方式来使用，所有属性说明可参考echarts官网api说明文档，版本5.1.1
+# 一款基于Apache ECharts的blazor组件，主要以层级标签的方式来使用，所有属性说明可参考Apache ECharts官网api说明文档，版本5.1.1
 
 ## 简要说明：
 
@@ -14,7 +14,7 @@
 ### 6：所有标签属性在VS中自动识别，并自带官方中文注释
 ### 7：由于echarts部分属性属于混合类型（如既可以是字符串也可以是数组甚至是函数），这部分属性在组件中会用dynamic类型替代，可根据具体echarts中的类型设置对应C#类型
 
-## 顶层ECharts标签自带的属性说明：
+## 顶层Apache ECharts标签自带的属性说明：
 
 |属性|说明|
 |:---|:---|
@@ -72,7 +72,7 @@
 </ECharts>
 ```
 
-### 示例3：顶层ECharts标签支持鼠标委托事件，极少对象没有标签，需要用类生成，如此例的colorStops渐变类
+### 示例3：顶层Apache ECharts标签支持鼠标委托事件，极少对象没有标签，需要用类生成，如此例的colorStops渐变类
 ```razor
 <ECharts Style="width: 800px; height: 400px;"
          OnClick="@(new(async (param, chart) =>
